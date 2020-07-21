@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>NT-OC-A08_Sobel算子 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="20200215相关API12Sobel();&#x2F;&#x2F;索贝尔算子Scharr();&#x2F;&#x2F;Sobel的加强    笔记 Sobel: 边缘检测算法及各自的优缺点 Sobel是离散的一阶微分算子,可以用来计算图像的梯度(一阶), 常用于得到图像的边缘特征, 除了Sobel之外还有其他的算子, Sobel的优势是速度比较快, 但是在准确度上有欠缺    使用加减来简化计算机的负担: sobel算子的原理与实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NT-OC-A08_Sobel算子">
+<meta property="og:url" content="http://yoursite.com/2020/07/21/NT-OC-A08_Sobel%E7%AE%97%E5%AD%90/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="20200215相关API12Sobel();&#x2F;&#x2F;索贝尔算子Scharr();&#x2F;&#x2F;Sobel的加强    笔记 Sobel: 边缘检测算法及各自的优缺点 Sobel是离散的一阶微分算子,可以用来计算图像的梯度(一阶), 常用于得到图像的边缘特征, 除了Sobel之外还有其他的算子, Sobel的优势是速度比较快, 但是在准确度上有欠缺    使用加减来简化计算机的负担: sobel算子的原理与实现">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-07-21T05:57:44.615Z">
+<meta property="article:modified_time" content="2020-02-15T12:48:54.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-NT-OC-A08_Sobel算子" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/21/NT-OC-A08_Sobel%E7%AE%97%E5%AD%90/" class="article-date">
+  <time datetime="2020-07-21T05:57:44.615Z" itemprop="datePublished">2020-07-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      NT-OC-A08_Sobel算子
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="20200215"><a href="#20200215" class="headerlink" title="20200215"></a>20200215</h1><h3 id="相关API"><a href="#相关API" class="headerlink" title="相关API"></a>相关API</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Sobel();<span class="comment">//索贝尔算子</span></span><br><span class="line">Scharr();<span class="comment">//Sobel的加强</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h3><ul>
+<li><p><strong>Sobel:</strong> <a href="https://www.jianshu.com/p/2a06c68f6c14" target="_blank" rel="noopener">边缘检测算法及各自的优缺点</a></p>
+<p>Sobel是离散的一阶微分算子,可以用来计算图像的梯度(一阶), 常用于得到图像的边缘特征, 除了Sobel之外还有其他的算子, Sobel的优势是速度比较快, 但是在准确度上有欠缺</p>
+</li>
+</ul>
+<ul>
+<li><p><strong>使用加减来简化计算机的负担:</strong> <a href="https://blog.csdn.net/qq_37124237/article/details/82183177" target="_blank" rel="noopener">sobel算子的原理与实现</a></p>
+<p>乘除对计算机很费力, 对计算机应该采用近似计算, 在Sobel求边缘的合成阶段使用到了这种思想</p>
+</li>
+</ul>
+<ul>
+<li><p><strong>整个流程:</strong></p>
+<p> 高斯-&gt;转灰度-&gt;求梯度x与y-&gt;混合</p>
+</li>
+</ul>
+<h3 id="源"><a href="#源" class="headerlink" title="源"></a>源</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">无</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/07/21/NT-OC-A08_Sobel%E7%AE%97%E5%AD%90/" data-id="ckcvjfr4j000cywobhmnz16ev" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/07/21/NT-OC-A09_Canny%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          NT-OC-A09_Canny边缘检测算法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/07/21/NT-OC-A07_%E4%B8%8A%E4%B8%8B%E9%87%87%E6%A0%B7_%E9%AB%98%E6%96%AF%E4%B8%8D%E5%90%8C(DOG)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">NT-OC-A07_上下采样_高斯不同(DOG)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/try/" rel="tag">try</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/try/" style="font-size: 10px;">try</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/07/21/Vscode/">Vscode</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/21/NT-OC-A10_%E9%9C%8D%E5%A4%AB%E7%BA%BF%E5%92%8C%E5%9C%86%E6%A3%80%E6%B5%8B/">NT-OC-A10_霍夫线和圆检测</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/21/NT-OC-A09_Canny%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95/">NT-OC-A09_Canny边缘检测算法</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/21/NT-OC-A08_Sobel%E7%AE%97%E5%AD%90/">NT-OC-A08_Sobel算子</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/21/NT-OC-A07_%E4%B8%8A%E4%B8%8B%E9%87%87%E6%A0%B7_%E9%AB%98%E6%96%AF%E4%B8%8D%E5%90%8C(DOG)/">NT-OC-A07_上下采样_高斯不同(DOG)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

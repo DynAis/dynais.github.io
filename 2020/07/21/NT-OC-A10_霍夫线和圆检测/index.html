@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>NT-OC-A10_霍夫线和圆检测 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="20200216API1234567891011121314151617181920212223242526272829&#x2F;*霍夫线检测 输入图像要先Canny过 参数为- 输入图像- 输出向量数组,数据类型为Vec4i(就是两个点)- 默认1- 默认CV_PI &#x2F; 180, 转角步长- 阈值(我设了100)- 最小线长- 最大间隙, 小于这个值的两条线会连成一条, 对于断断续续的线效果好*&#x2F;voi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NT-OC-A10_霍夫线和圆检测">
+<meta property="og:url" content="http://yoursite.com/2020/07/21/NT-OC-A10_%E9%9C%8D%E5%A4%AB%E7%BA%BF%E5%92%8C%E5%9C%86%E6%A3%80%E6%B5%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="20200216API1234567891011121314151617181920212223242526272829&#x2F;*霍夫线检测 输入图像要先Canny过 参数为- 输入图像- 输出向量数组,数据类型为Vec4i(就是两个点)- 默认1- 默认CV_PI &#x2F; 180, 转角步长- 阈值(我设了100)- 最小线长- 最大间隙, 小于这个值的两条线会连成一条, 对于断断续续的线效果好*&#x2F;voi">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-07-21T05:57:44.617Z">
+<meta property="article:modified_time" content="2020-02-16T14:04:51.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-NT-OC-A10_霍夫线和圆检测" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/21/NT-OC-A10_%E9%9C%8D%E5%A4%AB%E7%BA%BF%E5%92%8C%E5%9C%86%E6%A3%80%E6%B5%8B/" class="article-date">
+  <time datetime="2020-07-21T05:57:44.617Z" itemprop="datePublished">2020-07-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      NT-OC-A10_霍夫线和圆检测
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="20200216"><a href="#20200216" class="headerlink" title="20200216"></a>20200216</h1><h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*霍夫线检测 输入图像要先Canny过 参数为</span></span><br><span class="line"><span class="comment">- 输入图像</span></span><br><span class="line"><span class="comment">- 输出向量数组,数据类型为Vec4i(就是两个点)</span></span><br><span class="line"><span class="comment">- 默认1</span></span><br><span class="line"><span class="comment">- 默认CV_PI / 180, 转角步长</span></span><br><span class="line"><span class="comment">- 阈值(我设了100)</span></span><br><span class="line"><span class="comment">- 最小线长</span></span><br><span class="line"><span class="comment">- 最大间隙, 小于这个值的两条线会连成一条, 对于断断续续的线效果好</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HoughLinesP</span><span class="params">( InputArray <span class="built_in">image</span>, OutputArray lines,</span></span></span><br><span class="line"><span class="function"><span class="params">                 <span class="keyword">double</span> rho, <span class="keyword">double</span> theta, <span class="keyword">int</span> threshold,</span></span></span><br><span class="line"><span class="function"><span class="params">                 <span class="keyword">double</span> minLineLength = <span class="number">0</span>, <span class="keyword">double</span> maxLineGap = <span class="number">0</span> )</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*霍夫圆检测 参数从前往后分别是</span></span><br><span class="line"><span class="comment">- 输入图像矩阵(8bit的灰度图,这个API自带Canny边缘检测)</span></span><br><span class="line"><span class="comment">- 输出向量数组,数据类型位Vec3f</span></span><br><span class="line"><span class="comment">- HOUGH_GRADIENT</span></span><br><span class="line"><span class="comment">- 图像缩放,默认1</span></span><br><span class="line"><span class="comment">- 圆心最小距离, 小于会认为是同心圆?</span></span><br><span class="line"><span class="comment">- Canny检测的大阈值,小的=大的除二计算</span></span><br><span class="line"><span class="comment">- 点重叠n个以上判定为圆,越小检出越多圆</span></span><br><span class="line"><span class="comment">- 最小圆半径</span></span><br><span class="line"><span class="comment">- 最大圆半径</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HoughCircles</span><span class="params">( InputArray <span class="built_in">image</span>, OutputArray circles,</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">int</span> method, <span class="keyword">double</span> dp, <span class="keyword">double</span> minDist,</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">double</span> param1 = <span class="number">100</span>, <span class="keyword">double</span> param2 = <span class="number">100</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">int</span> minRadius = <span class="number">0</span>, <span class="keyword">int</span> maxRadius = <span class="number">0</span> )</span></span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h3><ul>
+<li>圆检测对噪声敏感, 需要先中值滤波</li>
+<li>太难了,建议看下面的博客,线检测还好,圆检测真的看不懂</li>
+</ul>
+<h3 id="相关"><a href="#相关" class="headerlink" title="相关"></a>相关</h3><h3 id="源-检出NXP赛道上的几何图"><a href="#源-检出NXP赛道上的几何图" class="headerlink" title="源//检出NXP赛道上的几何图"></a>源//检出NXP赛道上的几何图</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// OpenCV_Template.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;opencv2\opencv.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line">Mat imgIn, imgOut;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span> </span>&#123;</span><br><span class="line">	<span class="comment">/****************************************	初始化	****************************************************/</span></span><br><span class="line"></span><br><span class="line">	imgIn = imread(<span class="string">"D:/WorkSpace/Projects/OpenCV Learning/ImageHub/直道进圆环.jpg"</span>, IMREAD_COLOR);</span><br><span class="line">	<span class="keyword">if</span> (imgIn.empty()) &#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"Can not open this IMG..."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//VideoCapture(0) &gt;&gt; imgIn;</span></span><br><span class="line">	imgOut = imgIn.clone();</span><br><span class="line"></span><br><span class="line">	<span class="comment">/****************************************	初始化	****************************************************/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">/****************************************	图像操作	****************************************************/</span></span><br><span class="line">	<span class="keyword">double</span> tCount = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">double</span> tSum = <span class="number">0</span>;</span><br><span class="line">	tCount = getTickCount();</span><br><span class="line"></span><br><span class="line">	cvtColor(imgIn, imgIn, COLOR_BGR2GRAY);</span><br><span class="line">	pyrDown(imgIn, imgIn, Size(imgIn.cols / <span class="number">2</span>, imgIn.rows / <span class="number">2</span>));</span><br><span class="line">	pyrDown(imgIn, imgIn, Size(imgIn.cols / <span class="number">2</span>, imgIn.rows / <span class="number">2</span>));</span><br><span class="line">	pyrDown(imgIn, imgIn, Size(imgIn.cols / <span class="number">2</span>, imgIn.rows / <span class="number">2</span>));</span><br><span class="line">	<span class="comment">//GaussianBlur(imgOut, imgOut, Size(3, 3), 1.4);</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//霍夫圆检测</span></span><br><span class="line">	imgOut = Mat::zeros(imgIn.<span class="built_in">size</span>(), imgIn.type());</span><br><span class="line">	<span class="built_in">vector</span>&lt;Vec3f&gt; circles;</span><br><span class="line">	HoughCircles(imgIn, circles, HOUGH_GRADIENT, <span class="number">1</span>, <span class="number">50</span>, <span class="number">125</span>, <span class="number">30</span>);<span class="comment">//参数很难试</span></span><br><span class="line">	Vec3f aCircle;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; circles.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">		aCircle = circles[i];</span><br><span class="line">		<span class="built_in">circle</span>(imgOut, Point(aCircle[<span class="number">0</span>],aCircle[<span class="number">1</span>]), aCircle[<span class="number">2</span>], Scalar(<span class="number">255</span>), <span class="number">1</span>, LINE_AA);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//霍夫直线检测</span></span><br><span class="line">	<span class="built_in">vector</span>&lt;Vec4i&gt; lines;</span><br><span class="line">	Canny(imgIn, imgIn, <span class="number">50</span>, <span class="number">125</span>, <span class="number">3</span>);</span><br><span class="line">	HoughLinesP(imgIn, lines, <span class="number">1</span>, CV_PI / <span class="number">180</span>, <span class="number">60</span>, <span class="number">0.0</span>, <span class="number">20.0</span>);</span><br><span class="line"></span><br><span class="line">	Vec4i aLine;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; lines.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">		aLine = lines[i];</span><br><span class="line">		<span class="built_in">line</span>(imgOut, Point(aLine[<span class="number">0</span>], aLine[<span class="number">1</span>]), Point(aLine[<span class="number">2</span>], aLine[<span class="number">3</span>]) ,Scalar(<span class="number">255</span>), <span class="number">1</span>, LINE_AA);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	tSum = (getTickCount() - tCount) / getTickFrequency();</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Time consume %.4f\n\n"</span>, tSum);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">/****************************************	图像操作	****************************************************/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">/****************************************	图像输出	****************************************************/</span></span><br><span class="line">	namedWindow(<span class="string">"input"</span>, WINDOW_AUTOSIZE);</span><br><span class="line">	imshow(<span class="string">"input"</span>, imgIn);</span><br><span class="line">	namedWindow(<span class="string">"output"</span>, WINDOW_AUTOSIZE);</span><br><span class="line">	imshow(<span class="string">"output"</span>, imgOut);</span><br><span class="line">	waitKey(<span class="number">0</span>);</span><br><span class="line">	<span class="comment">//cout &lt;&lt; imgOut &lt;&lt; endl;</span></span><br><span class="line">&#125;</span><br><span class="line">	<span class="comment">/****************************************	图像输出	****************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 运行程序: Ctrl + F5 或调试 &gt;“开始执行(不调试)”菜单</span></span><br><span class="line"><span class="comment">// 调试程序: F5 或调试 &gt;“开始调试”菜单</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 入门使用技巧: </span></span><br><span class="line"><span class="comment">//   1. 使用解决方案资源管理器窗口添加/管理文件</span></span><br><span class="line"><span class="comment">//   2. 使用团队资源管理器窗口连接到源代码管理</span></span><br><span class="line"><span class="comment">//   3. 使用输出窗口查看生成输出和其他消息</span></span><br><span class="line"><span class="comment">//   4. 使用错误列表窗口查看错误</span></span><br><span class="line"><span class="comment">//   5. 转到“项目”&gt;“添加新项”以创建新的代码文件，或转到“项目”&gt;“添加现有项”以将现有代码文件添加到项目</span></span><br><span class="line"><span class="comment">//   6. 将来，若要再次打开此项目，请转到“文件”&gt;“打开”&gt;“项目”并选择 .sln 文件</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/07/21/NT-OC-A10_%E9%9C%8D%E5%A4%AB%E7%BA%BF%E5%92%8C%E5%9C%86%E6%A3%80%E6%B5%8B/" data-id="ckcvjfr4l000eywoba4c6b1w1" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/07/21/Vscode/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Vscode
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/07/21/NT-OC-A09_Canny%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">NT-OC-A09_Canny边缘检测算法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/try/" rel="tag">try</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/try/" style="font-size: 10px;">try</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/07/21/Vscode/">Vscode</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/21/NT-OC-A10_%E9%9C%8D%E5%A4%AB%E7%BA%BF%E5%92%8C%E5%9C%86%E6%A3%80%E6%B5%8B/">NT-OC-A10_霍夫线和圆检测</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/21/NT-OC-A09_Canny%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95/">NT-OC-A09_Canny边缘检测算法</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/21/NT-OC-A08_Sobel%E7%AE%97%E5%AD%90/">NT-OC-A08_Sobel算子</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/21/NT-OC-A07_%E4%B8%8A%E4%B8%8B%E9%87%87%E6%A0%B7_%E9%AB%98%E6%96%AF%E4%B8%8D%E5%90%8C(DOG)/">NT-OC-A07_上下采样_高斯不同(DOG)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
