@@ -5,9 +5,9 @@
   <subtitle>DynAis&#39;s blog</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://dynais.xyz.com/"/>
+  <link href="http://dynais.xyz/"/>
   <updated>2020-07-22T09:09:37.686Z</updated>
-  <id>http://dynais.xyz.com/</id>
+  <id>http://dynais.xyz/</id>
   
   <author>
     <name>DynAis</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hallo-World</title>
-    <link href="http://dynais.xyz.com/2020/07/21/HalloWorld/"/>
-    <id>http://dynais.xyz.com/2020/07/21/HalloWorld/</id>
+    <link href="http://dynais.xyz/2020/07/21/HalloWorld/"/>
+    <id>http://dynais.xyz/2020/07/21/HalloWorld/</id>
     <published>2020-07-21T09:36:35.000Z</published>
     <updated>2020-07-22T09:09:37.686Z</updated>
     
@@ -33,7 +33,7 @@
     
     
     
-      <category term="note" scheme="http://dynais.xyz.com/tags/note/"/>
+      <category term="note" scheme="http://dynais.xyz/tags/note/"/>
     
   </entry>
   
