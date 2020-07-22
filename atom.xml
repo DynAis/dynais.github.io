@@ -5,9 +5,9 @@
   <subtitle>DynAis&#39;s blog</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
-  <updated>2020-07-22T08:58:44.737Z</updated>
-  <id>http://yoursite.com/</id>
+  <link href="http://dynais.xyz.com/"/>
+  <updated>2020-07-22T09:09:37.686Z</updated>
+  <id>http://dynais.xyz.com/</id>
   
   <author>
     <name>DynAis</name>
@@ -18,12 +18,12 @@
   
   <entry>
     <title>Hallo-World</title>
-    <link href="http://yoursite.com/2020/07/21/HalloWorld/"/>
-    <id>http://yoursite.com/2020/07/21/HalloWorld/</id>
+    <link href="http://dynais.xyz.com/2020/07/21/HalloWorld/"/>
+    <id>http://dynais.xyz.com/2020/07/21/HalloWorld/</id>
     <published>2020-07-21T09:36:35.000Z</published>
-    <updated>2020-07-22T08:58:44.737Z</updated>
+    <updated>2020-07-22T09:09:37.686Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="这是一篇测试文档"><a href="#这是一篇测试文档" class="headerlink" title="这是一篇测试文档"></a>这是一篇测试文档</h1><h2 id="这是一篇测试文档-1"><a href="#这是一篇测试文档-1" class="headerlink" title="这是一篇测试文档"></a>这是一篇测试文档</h2><h3 id="这是一篇测试文档-2"><a href="#这是一篇测试文档-2" class="headerlink" title="这是一篇测试文档"></a>这是一篇测试文档</h3><h4 id="这是一篇测试文档-3"><a href="#这是一篇测试文档-3" class="headerlink" title="这是一篇测试文档"></a>这是一篇测试文档</h4><h5 id="这是一篇测试文档-4"><a href="#这是一篇测试文档-4" class="headerlink" title="这是一篇测试文档"></a>这是一篇测试文档</h5><a id="more"></a><hr><p>这是一篇测试文档</p><p><strong>这是一篇测试文档</strong></p><p><em>这是一篇测试文档</em></p><p><code>这是一篇测试文档</code></p><p><div class="alert danger info"><p>这是一篇测试文档</p></div></p><p><span class="highlight-text blue">这是一篇测试文档</span></p><blockquote><p>代码测试</p></blockquote><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"this is a test file"</span>)</span><br></pre></td></tr></table></figure><blockquote><p>图片测试</p></blockquote><p><div class="figure center" style="width:;"><a class="fancybox" href="Lena.jpg" title="this is a test img" data-caption="this is a test img" data-fancybox="test"><img class="fig-img" src="Lena.jpg" alt="this is a test img"></a><span class="caption">this is a test img</span></div><div style="clear:both;"></div></p><blockquote><p>视频测试</p></blockquote><div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;">    <iframe src="//player.bilibili.com/player.html?aid=73527536&bvid=BV1CE411a7WH&cid=125771837&page=1"  scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;"></iframe></div>]]></content>
+    <content type="html"><![CDATA[<h1 id="这是一篇测试文档"><a href="#这是一篇测试文档" class="headerlink" title="这是一篇测试文档"></a>这是一篇测试文档</h1><h2 id="这是一篇测试文档-1"><a href="#这是一篇测试文档-1" class="headerlink" title="这是一篇测试文档"></a>这是一篇测试文档</h2><h3 id="这是一篇测试文档-2"><a href="#这是一篇测试文档-2" class="headerlink" title="这是一篇测试文档"></a>这是一篇测试文档</h3><h4 id="这是一篇测试文档-3"><a href="#这是一篇测试文档-3" class="headerlink" title="这是一篇测试文档"></a>这是一篇测试文档</h4><h5 id="这是一篇测试文档-4"><a href="#这是一篇测试文档-4" class="headerlink" title="这是一篇测试文档"></a>这是一篇测试文档</h5><a id="more"></a><hr><p>这是一篇测试文档</p><p><strong>这是一篇测试文档</strong></p><p><em>这是一篇测试文档</em></p><p><code>这是一篇测试文档</code></p><blockquote><p>这是一篇测试文档</p></blockquote><p><blockquote><p>这是一篇测试文档</p></blockquote></p><p><div class="alert danger info"><p>这是一篇测试文档</p></div></p><p><span class="highlight-text blue">这是一篇测试文档</span></p><blockquote><p>代码测试</p></blockquote><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"this is a test file"</span>)</span><br></pre></td></tr></table></figure><blockquote><p>图片测试</p></blockquote><p><div class="figure center" style="width:;"><a class="fancybox" href="Lena.jpg" title="this is a test img" data-caption="this is a test img" data-fancybox="test"><img class="fig-img" src="Lena.jpg" alt="this is a test img"></a><span class="caption">this is a test img</span></div><div style="clear:both;"></div></p><blockquote><p>视频测试</p></blockquote><div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;">    <iframe src="//player.bilibili.com/player.html?aid=73527536&bvid=BV1CE411a7WH&cid=125771837&page=1"  scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;"></iframe></div>]]></content>
     
     <summary type="html">
     
@@ -33,7 +33,7 @@
     
     
     
-      <category term="note" scheme="http://yoursite.com/tags/note/"/>
+      <category term="note" scheme="http://dynais.xyz.com/tags/note/"/>
     
   </entry>
   
