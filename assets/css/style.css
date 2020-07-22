@@ -9353,7 +9353,7 @@ figure.highlight,
     width: 100%; }
     figure.highlight .code pre,
     .codeblock .code pre {
-      max-width: calc(750px - 50px);
+      max-width: calc(1000px - 50px);
       overflow-x: auto;
       overflow-y: hidden; }
   figure.highlight .line,
@@ -9596,7 +9596,7 @@ a.fancybox {
 
 .main-content-wrap {
   display: block;
-  max-width: 750px;
+  max-width: 1000px;
   margin: 0 auto;
   padding-right: 20px;
   padding-left: 20px; }
@@ -9675,7 +9675,7 @@ a.fancybox {
 .modal {
   width: 100%;
   height: 100%;
-  max-width: 750px;
+  max-width: 1000px;
   box-sizing: border-box;
   position: relative;
   margin: 0 auto;
@@ -9887,7 +9887,7 @@ a.fancybox {
     display: table-cell;
     vertical-align: middle; }
     .post-header-cover .post-header .post-title {
-      max-width: 750px;
+      max-width: 1000px;
       margin: 0 auto;
       color: white;
       text-shadow: 0 2px 0 rgba(0, 0, 0, 0.9);
@@ -9895,7 +9895,7 @@ a.fancybox {
       .post-header-cover .post-header .post-title:hover {
         text-decoration: none; }
     .post-header-cover .post-header .post-meta {
-      max-width: 750px;
+      max-width: 1000px;
       font-family: "Open Sans", sans-serif;
       font-size: 1.6rem;
       color: white !important;
