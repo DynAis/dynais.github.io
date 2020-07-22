@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://dynais.xyz/"/>
-  <updated>2020-07-22T17:43:06.105Z</updated>
+  <updated>2020-07-22T17:56:47.855Z</updated>
   <id>http://dynais.xyz/</id>
   
   <author>
@@ -21,9 +21,17 @@
     <link href="http://dynais.xyz/2030/01/01/Willkommen/"/>
     <id>http://dynais.xyz/2030/01/01/Willkommen/</id>
     <published>2029-12-31T16:00:00.000Z</published>
-    <updated>2020-07-22T17:43:06.105Z</updated>
+    <updated>2020-07-22T17:56:47.855Z</updated>
+    
+    <content type="html"><![CDATA[<p>欢迎来到我的个人博客，这是我的第二次尝试，我会尝试持续更新的😉</p><p>Willkommen zum meinem persönlichen Blog, dies ist mein zweiter Versuch und ich werde versuchen, ihn ständig zu aktualisieren😉</p>]]></content>
     
     <summary type="html">
+    
+      
+      
+        &lt;p&gt;欢迎来到我的个人博客，这是我的第二次尝试，我会尝试持续更新的😉&lt;/p&gt;
+&lt;p&gt;Willkommen zum meinem persönlichen Blog, dies ist mein zweiter Versuch und ich werde versuchen, i
+      
     
     </summary>
     
