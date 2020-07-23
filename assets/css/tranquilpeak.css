@@ -88,7 +88,7 @@ h6 {
   margin: 1em 0 0.5em 0; }
 
 h1 {
-  font-size: 2.8rem; }
+  font-size: 4rem; }
 
 h2 {
   font-size: 2.4rem; }
@@ -189,7 +189,7 @@ blockquote {
   code {
     font-size: 1.4rem; }
   h1 {
-    font-size: 2.6rem; }
+    font-size: 3.8rem; }
   h2 {
     font-size: 2.2rem; }
   h3 {
@@ -203,7 +203,7 @@ blockquote {
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   h1 {
-    font-size: 2.65rem; }
+    font-size: 3.85rem; }
   h2 {
     font-size: 2.25rem; }
   h3 {
@@ -1944,11 +1944,11 @@ a.fancybox {
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   .post .post-header .post-title {
-    font-size: 3.3rem; } }
+    font-size: 4.5rem; } }
 
 @media only screen and (min-width: 1024px) {
   .post .post-header .post-title {
-    font-size: 3.7rem; } }
+    font-size: 4.9rem; } }
 
 @media only screen and (min-width: 768px) {
   .post-content {
@@ -2068,11 +2068,11 @@ a.fancybox {
 
 @media only screen and (max-width: 399px) {
   .post-header-cover .post-header .post-title {
-    font-size: 2.8rem; } }
+    font-size: 4rem; } }
 
 @media only screen and (min-width: 400px) and (max-width: 767px) {
   .post-header-cover .post-header .post-title {
-    font-size: 3.3rem; } }
+    font-size: 4.5rem; } }
 
 @media only screen and (max-width: 767px) {
   .post-header-cover {
@@ -2089,7 +2089,7 @@ a.fancybox {
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   .post-header-cover .post-header .post-title {
-    font-size: 5.8rem;
+    font-size: 7rem;
     line-height: 1.3em; }
   .post-header-cover[data-behavior="1"], .post-header-cover[data-behavior="2"], .post-header-cover[data-behavior="3"] {
     width: calc(100% - 75px);
@@ -2111,7 +2111,7 @@ a.fancybox {
 
 @media only screen and (min-width: 1024px) and (max-width: 1279px) {
   .post-header-cover .post-header .post-title {
-    font-size: 6.5rem;
+    font-size: 7.7rem;
     line-height: 1.3em; }
   .post-header-cover[data-behavior="1"], .post-header-cover[data-behavior="2"] {
     width: calc(100% - 250px);
@@ -2136,7 +2136,7 @@ a.fancybox {
 
 @media only screen and (min-width: 1280px) {
   .post-header-cover .post-header .post-title {
-    font-size: 6.5rem;
+    font-size: 7.7rem;
     line-height: 1.3em; }
   .post-header-cover[data-behavior="1"] {
     width: calc(100% - 500px);
@@ -2234,25 +2234,25 @@ a.fancybox {
     margin: 5px 0 30px 15px; }
     .postShorten.postShorten--thumbnailimg-right .postShorten-thumbnailimg img {
       display: block;
-      width: 140px;
-      height: 140px;
+      width: 150px;
+      height: 150px;
       object-fit: cover;
       overflow: hidden; }
   .postShorten.postShorten--thumbnailimg-right .postShorten-wrap {
     float: left;
-    width: calc(100% - 140px - 20px); }
+    width: calc(100% - 150px - 20px); }
   .postShorten.postShorten--thumbnailimg-left .postShorten-thumbnailimg {
     float: left;
     margin: 5px 15px 30px 0; }
     .postShorten.postShorten--thumbnailimg-left .postShorten-thumbnailimg img {
       display: block;
-      width: 140px;
-      height: 140px;
+      width: 150px;
+      height: 150px;
       object-fit: cover;
       overflow: hidden; }
   .postShorten.postShorten--thumbnailimg-left .postShorten-wrap {
     float: right;
-    width: calc(100% - 140px - 20px); }
+    width: calc(100% - 150px - 20px); }
   .postShorten.postShorten--thumbnailimg-top .postShorten-thumbnailimg {
     margin-top: 5px; }
   .postShorten.postShorten--thumbnailimg-bottom .postShorten-wrap {

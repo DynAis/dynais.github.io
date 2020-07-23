@@ -1,3 +1,10 @@
-http://dynais.xyz/2020/07/23/%E8%BD%AC%E8%BD%BD-Hexo-Github-Page%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/
+http://dynais.xyz/2020/06/17/NT-NR-%E5%A6%82%E4%BD%95%E5%AD%A6%E4%B9%A0/
 http://dynais.xyz/2030/01/01/Willkommen/
-http://dynais.xyz/2020/07/21/HalloWorld/
+http://dynais.xyz/2020/02/16/NT-OC-A10_%E9%9C%8D%E5%A4%AB%E7%BA%BF%E5%92%8C%E5%9C%86%E6%A3%80%E6%B5%8B/
+http://dynais.xyz/2020/01/14/NT-OC-A01_Mat%E6%93%8D%E4%BD%9C/
+http://dynais.xyz/2020/02/20/NT-OC-A12_%E6%A8%A1%E6%9D%BF%E5%8C%B9%E9%85%8D/
+http://dynais.xyz/2020/02/19/NT-OC-A11_%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%9D%87%E8%A1%A1%E5%8C%96_%E6%AF%94%E8%BE%83_%E5%8F%8D%E5%90%91%E6%8A%95%E5%BD%B1/
+http://dynais.xyz/2020/02/16/NT-OC-A09_Canny%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95/
+http://dynais.xyz/2020/02/15/NT-OC-A07_%E4%B8%8A%E4%B8%8B%E9%87%87%E6%A0%B7_%E9%AB%98%E6%96%AF%E4%B8%8D%E5%90%8C(DOG)/
+http://dynais.xyz/2020/02/15/NT-OC-A08_Sobel%E7%AE%97%E5%AD%90/
+http://dynais.xyz/2020/01/30/NT-OC-A06_%E5%BD%A2%E6%80%81%E5%AD%A6%E6%93%8D%E4%BD%9C/

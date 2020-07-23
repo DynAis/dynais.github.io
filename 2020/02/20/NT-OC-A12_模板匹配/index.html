@@ -1,0 +1,696 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="想成为魔法师的D·y·n·A·i·s">
+    <title>OpenCV学习笔记12-模板匹配 - 想成为魔法师的D·y·n·A·i·s</title>
+    <meta name="author" content="DynAis">
+    
+    
+        <link rel="icon" href="http://dynais.xyz../../../../assets/images/logo-web.ico">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="../../../../atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg"},"articleBody":"API12matchTemplate();//模式查找,API比较简单minMaxLoc();//用于在模式查找的输出图像中找到极值点,也就是匹配点\n笔记\n模板匹配(Templet Match)\n相当于上一节说的直方图匹配的实用化,通过现有图像在目标图像上滑行(原文Slide),也就是左到右上到下的以像素为单位进行匹配,找到匹配值最大的点.但也是因为这个原因,对模板图像和在目标图像里的目标的大小进行匹配就非常重要,如果大小差得远,效果就不好,所以使用条件相当苛刻.\n\n\n\n注意输出图像的大小\n在API中需要提供一个储存输出结果的Mat, 他的大小是\n1Size(src.cols-templ.cols+1, src.rows-templ.rows+1)\n\n\n\n\nOpenCV的查找模式\nOpenCV提供了很多种方法,在官网上都有介绍,大部分都是取用了最大值作为最匹配\n根据最小值匹配的只有 TM_SQDIFF 和 MT_SQDIFF_NORMED\nFor the first two methods ( TM_SQDIFF and MT_SQDIFF_NORMED ) the best match are the lowest values.\n\n\n\nOpenCV中32位的图像\n每个数值是一个位于[0,1]间的小数,相当于8位的[0,255]\n\n\n\n源//API实现模式查找1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162// OpenCV_Template.cpp : 此文件包含 \"main\" 函数。程序执行将在此处开始并结束。//#include &lt;iostream&gt;#include&lt;opencv2\\opencv.hpp&gt;using namespace std;using namespace cv;Mat src, dst, temp;int main(int, char**)&#123;\ttemp = imread(\"D:/WorkSpace/Projects/OpenCV Learning/ImageHub/Lena.jpg\");\tsrc = imread(\"D:/WorkSpace/Projects/OpenCV Learning/ImageHub/Day1.png\");\t//测试尺度不变性\t//pyrDown(temp, temp, Size(temp.cols / 2, temp.rows / 2));\tpyrUp(temp, temp, Size(temp.cols * 2, temp.rows * 2));\t//pyrUp(temp, temp, Size(temp.cols * 2, temp.rows * 2));\tif (temp.empty() || src.empty()) &#123;\t\tcout &lt;&lt; \"Can not open this IMG... Check again!\";\t\treturn -1;\t&#125;\tMat result = Mat_&lt;float&gt;::zeros(src.cols - temp.cols + 1, src.rows - temp.rows + 1 );\tmatchTemplate(src, temp, result, TM_CCOEFF_NORMED);\t//cout &lt;&lt; result;\tdouble minVal; double maxVal; Point minLoc; Point maxLoc;\tPoint matchLoc;\tminMaxLoc(result, &amp;minVal, &amp;maxVal, &amp;minLoc, &amp;maxLoc, Mat());\tcout &lt;&lt; minVal &lt;&lt; endl &lt;&lt; maxVal &lt;&lt; endl &lt;&lt; minLoc &lt;&lt; endl &lt;&lt; maxLoc &lt;&lt; endl;\trectangle(src, maxLoc, Point(maxLoc.x + temp.cols, maxLoc.y + temp.rows), Scalar(0,0,255), 2, 8);\trectangle(result, Point(maxLoc.x - temp.cols/2, maxLoc.y - temp.rows/2), Point(maxLoc.x + temp.cols/2, maxLoc.y + temp.rows/2), Scalar::all(1), 2, 8, 0);\tnamedWindow(\"src\", WINDOW_AUTOSIZE);\tpyrDown(src, src, Size(src.cols / 2, src.rows / 2));\tpyrDown(src, src, Size(src.cols / 2, src.rows / 2));\timshow(\"src\", src);\tnamedWindow(\"result\", WINDOW_AUTOSIZE);\tpyrDown(result, result, Size(result.cols / 2, result.rows / 2));\tpyrDown(result, result, Size(result.cols / 2, result.rows / 2));\timshow(\"result\", result);\twaitKey(0);\treturn 0;&#125;// 运行程序: Ctrl + F5 或调试 &gt;“开始执行(不调试)”菜单// 调试程序: F5 或调试 &gt;“开始调试”菜单// 入门使用技巧: //   1. 使用解决方案资源管理器窗口添加/管理文件//   2. 使用团队资源管理器窗口连接到源代码管理//   3. 使用输出窗口查看生成输出和其他消息//   4. 使用错误列表窗口查看错误//   5. 转到“项目”&gt;“添加新项”以创建新的代码文件，或转到“项目”&gt;“添加现有项”以将现有代码文件添加到项目//   6. 将来，若要再次打开此项目，请转到“文件”&gt;“打开”&gt;“项目”并选择 .sln 文件\n","dateCreated":"2020-02-20T00:00:00+08:00","dateModified":"2020-07-23T18:09:50+08:00","datePublished":"2020-02-20T00:00:00+08:00","description":"API12matchTemplate();//模式查找,API比较简单minMaxLoc();//用于在模式查找的输出图像中找到极值点,也就是匹配点\n笔记\n模板匹配(Templet Match)\n相当于上一节说的直方图匹配的实用化,通过现有图像在目标图像上滑行(原文Slide),也就是左到右上到下的以像素为单位进行匹配,找到匹配值最大的点.但也是因为这个原因,对模板图像和在目标图像里的目标的大小进行匹配就非常重要,如果大小差得远,效果就不好,所以使用条件相当苛刻.\n\n\n\n注意输出图像的大小\n在API中需要提供一个储存输出结果的Mat, 他的大小是\n1Size(src.cols-templ.cols+1, src.rows-templ.rows+1)\n\n","headline":"OpenCV学习笔记12-模板匹配","image":["https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png","https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../../../../http:/dynais.xyz/2020/02/20/NT-OC-A12_%E6%A8%A1%E6%9D%BF%E5%8C%B9%E9%85%8D/"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg","logo":{"@type":"ImageObject","url":"logo.jpg"}},"url":"../../../../http:/dynais.xyz/2020/02/20/NT-OC-A12_%E6%A8%A1%E6%9D%BF%E5%8C%B9%E9%85%8D/","keywords":"数字图像处理, open-cv, cpp","thumbnailUrl":"https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png"}</script>
+    <meta name="description" content="API12matchTemplate();&#x2F;&#x2F;模式查找,API比较简单minMaxLoc();&#x2F;&#x2F;用于在模式查找的输出图像中找到极值点,也就是匹配点 笔记 模板匹配(Templet Match) 相当于上一节说的直方图匹配的实用化,通过现有图像在目标图像上滑行(原文Slide),也就是左到右上到下的以像素为单位进行匹配,找到匹配值最大的点.但也是因为这个原因,对模板图像和在目标图像里的目标的大小进">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="OpenCV学习笔记12-模板匹配">
+<meta property="og:url" content="http://dynais.xyz/2020/02/20/NT-OC-A12_%E6%A8%A1%E6%9D%BF%E5%8C%B9%E9%85%8D/index.html">
+<meta property="og:site_name" content="想成为魔法师的D·y·n·A·i·s">
+<meta property="og:description" content="API12matchTemplate();&#x2F;&#x2F;模式查找,API比较简单minMaxLoc();&#x2F;&#x2F;用于在模式查找的输出图像中找到极值点,也就是匹配点 笔记 模板匹配(Templet Match) 相当于上一节说的直方图匹配的实用化,通过现有图像在目标图像上滑行(原文Slide),也就是左到右上到下的以像素为单位进行匹配,找到匹配值最大的点.但也是因为这个原因,对模板图像和在目标图像里的目标的大小进">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-07-23T10:09:50.172Z">
+<meta property="article:author" content="DynAis">
+<meta property="article:tag" content="数字图像处理">
+<meta property="article:tag" content="open-cv">
+<meta property="article:tag" content="cpp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@dyn_ais">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://dynais.xyz../../../../assets/images/logo.jpg"/>
+    
+    
+        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png"/>
+    
+    
+        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="../../../../assets/css/style-vbih9sdcpqirnhnznal1vb8zi5ykitwphb2prpmfjj3gedbe2blwii4kzkoo.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+    <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?Tc22eOwijt3imQUU";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+
+
+    
+        
+            
+<link rel="stylesheet" href="../../../../assets/css/gitalk.css">
+
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="6">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="http://dynais.xyz/"
+            aria-label=""
+        >
+            想成为魔法师的D·y·n·A·i·s
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="../../../../#about"
+                aria-label="打开链接: ../../../../#about"
+            >
+        
+        
+            <img class="header-picture" src="../../../../assets/images/logo.jpg" alt="作者的图片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="6">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="../../../../#about"
+                    aria-label="阅读有关作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="../../../../assets/images/logo.jpg" alt="作者的图片"/>
+                </a>
+                <h4 class="sidebar-profile-name">DynAis</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>败家玩意，喜欢折腾各种觉得好玩的东西</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../index.html"
+                            
+                            rel="noopener"
+                            title="首页"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../all-categories"
+                            
+                            rel="noopener"
+                            title="分类"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../all-tags"
+                            
+                            rel="noopener"
+                            title="标签"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../all-archives"
+                            
+                            rel="noopener"
+                            title="归档"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../#about"
+                            
+                            rel="noopener"
+                            title="关于"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../https:/github.com/DynAis"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../https:/twitter.com/dyn_ais"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg');"
+             data-behavior="6">
+            
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            OpenCV学习笔记12-模板匹配
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-02-20T00:00:00+08:00">
+	
+		    2月 20, 2020
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="../../../../categories/note/">note</a>, <a class="category-link" href="../../../../categories/note/open-cv/">open-cv</a>
+
+
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="6"
+                 class="hasCover
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">matchTemplate();<span class="comment">//模式查找,API比较简单</span></span><br><span class="line">minMaxLoc();<span class="comment">//用于在模式查找的输出图像中找到极值点,也就是匹配点</span></span><br></pre></td></tr></table></figure>
+<h3 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h3><ul>
+<li><p>模板匹配(Templet Match)</p>
+<p>相当于上一节说的直方图匹配的实用化,通过现有图像在目标图像上滑行(原文Slide),也就是左到右上到下的以像素为单位进行匹配,找到匹配值最大的点.但也是因为这个原因,对模板图像和在目标图像里的目标的大小进行匹配就非常重要,如果大小差得远,效果就不好,所以使用条件相当苛刻.</p>
+</li>
+</ul>
+<ul>
+<li><p>注意输出图像的大小</p>
+<p>在API中需要提供一个储存输出结果的Mat, 他的大小是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Size(src.cols-templ.cols+1, src.rows-templ.rows+1)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li><p>OpenCV的查找模式</p>
+<p>OpenCV提供了很多种方法,在官网上都有介绍,大部分都是取用了最大值作为最匹配</p>
+<p>根据最小值匹配的只有 <strong>TM_SQDIFF</strong> 和 <strong>MT_SQDIFF_NORMED</strong></p>
+<p><em>For the first two methods ( TM_SQDIFF and MT_SQDIFF_NORMED ) the best match are the lowest values.</em></p>
+</li>
+</ul>
+<ul>
+<li><p>OpenCV中32位的图像</p>
+<p>每个数值是一个位于[0,1]间的小数,相当于8位的[0,255]</p>
+</li>
+</ul>
+<hr>
+<h3 id="源-API实现模式查找"><a href="#源-API实现模式查找" class="headerlink" title="源//API实现模式查找"></a>源//API实现模式查找</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// OpenCV_Template.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;opencv2\opencv.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line">Mat src, dst, temp;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">char</span>**)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	temp = imread(<span class="string">"D:/WorkSpace/Projects/OpenCV Learning/ImageHub/Lena.jpg"</span>);</span><br><span class="line">	src = imread(<span class="string">"D:/WorkSpace/Projects/OpenCV Learning/ImageHub/Day1.png"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//测试尺度不变性</span></span><br><span class="line">	<span class="comment">//pyrDown(temp, temp, Size(temp.cols / 2, temp.rows / 2));</span></span><br><span class="line">	pyrUp(temp, temp, Size(temp.cols * <span class="number">2</span>, temp.rows * <span class="number">2</span>));</span><br><span class="line">	<span class="comment">//pyrUp(temp, temp, Size(temp.cols * 2, temp.rows * 2));</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (temp.empty() || src.empty()) &#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"Can not open this IMG... Check again!"</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	Mat result = Mat_&lt;<span class="keyword">float</span>&gt;::zeros(src.cols - temp.cols + <span class="number">1</span>, src.rows - temp.rows + <span class="number">1</span> );</span><br><span class="line"></span><br><span class="line">	matchTemplate(src, temp, result, TM_CCOEFF_NORMED);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//cout &lt;&lt; result;</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">double</span> minVal; <span class="keyword">double</span> maxVal; Point minLoc; Point maxLoc;</span><br><span class="line">	Point matchLoc;</span><br><span class="line">	minMaxLoc(result, &amp;minVal, &amp;maxVal, &amp;minLoc, &amp;maxLoc, Mat());</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; minVal &lt;&lt; <span class="built_in">endl</span> &lt;&lt; maxVal &lt;&lt; <span class="built_in">endl</span> &lt;&lt; minLoc &lt;&lt; <span class="built_in">endl</span> &lt;&lt; maxLoc &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	rectangle(src, maxLoc, Point(maxLoc.x + temp.cols, maxLoc.y + temp.rows), Scalar(<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>), <span class="number">2</span>, <span class="number">8</span>);</span><br><span class="line">	rectangle(result, Point(maxLoc.x - temp.cols/<span class="number">2</span>, maxLoc.y - temp.rows/<span class="number">2</span>), Point(maxLoc.x + temp.cols/<span class="number">2</span>, maxLoc.y + temp.rows/<span class="number">2</span>), Scalar::all(<span class="number">1</span>), <span class="number">2</span>, <span class="number">8</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	namedWindow(<span class="string">"src"</span>, WINDOW_AUTOSIZE);</span><br><span class="line">	pyrDown(src, src, Size(src.cols / <span class="number">2</span>, src.rows / <span class="number">2</span>));</span><br><span class="line">	pyrDown(src, src, Size(src.cols / <span class="number">2</span>, src.rows / <span class="number">2</span>));</span><br><span class="line">	imshow(<span class="string">"src"</span>, src);</span><br><span class="line">	namedWindow(<span class="string">"result"</span>, WINDOW_AUTOSIZE);</span><br><span class="line">	pyrDown(result, result, Size(result.cols / <span class="number">2</span>, result.rows / <span class="number">2</span>));</span><br><span class="line">	pyrDown(result, result, Size(result.cols / <span class="number">2</span>, result.rows / <span class="number">2</span>));</span><br><span class="line">	imshow(<span class="string">"result"</span>, result);</span><br><span class="line"></span><br><span class="line">	waitKey(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 运行程序: Ctrl + F5 或调试 &gt;“开始执行(不调试)”菜单</span></span><br><span class="line"><span class="comment">// 调试程序: F5 或调试 &gt;“开始调试”菜单</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 入门使用技巧: </span></span><br><span class="line"><span class="comment">//   1. 使用解决方案资源管理器窗口添加/管理文件</span></span><br><span class="line"><span class="comment">//   2. 使用团队资源管理器窗口连接到源代码管理</span></span><br><span class="line"><span class="comment">//   3. 使用输出窗口查看生成输出和其他消息</span></span><br><span class="line"><span class="comment">//   4. 使用错误列表窗口查看错误</span></span><br><span class="line"><span class="comment">//   5. 转到“项目”&gt;“添加新项”以创建新的代码文件，或转到“项目”&gt;“添加现有项”以将现有代码文件添加到项目</span></span><br><span class="line"><span class="comment">//   6. 将来，若要再次打开此项目，请转到“文件”&gt;“打开”&gt;“项目”并选择 .sln 文件</span></span><br></pre></td></tr></table></figure>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="../../../../tags/cpp/" rel="tag">cpp</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/open-cv/" rel="tag">open-cv</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag">数字图像处理</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="../../../03/05/NT-TEX-Latex%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/"
+                    data-tooltip="在Markdown中用Latex插入数学公式"
+                    aria-label="上一篇: 在Markdown中用Latex插入数学公式"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="../../19/NT-OC-A11_%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%9D%87%E8%A1%A1%E5%8C%96_%E6%AF%94%E8%BE%83_%E5%8F%8D%E5%90%91%E6%8A%95%E5%BD%B1/"
+                    data-tooltip="OpenCV学习笔记11-直方图均衡化-直方图比较-反向投影"
+                    aria-label="下一篇: OpenCV学习笔记11-直方图均衡化-直方图比较-反向投影"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/2020/02/20/NT-OC-A12_%E6%A8%A1%E6%9D%BF%E5%8C%B9%E9%85%8D/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/2020/02/20/NT-OC-A12_%E6%A8%A1%E6%9D%BF%E5%8C%B9%E9%85%8D/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 DynAis. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="6">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="../../../03/05/NT-TEX-Latex%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/"
+                    data-tooltip="在Markdown中用Latex插入数学公式"
+                    aria-label="上一篇: 在Markdown中用Latex插入数学公式"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="../../19/NT-OC-A11_%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%9D%87%E8%A1%A1%E5%8C%96_%E6%AF%94%E8%BE%83_%E5%8F%8D%E5%90%91%E6%8A%95%E5%BD%B1/"
+                    data-tooltip="OpenCV学习笔记11-直方图均衡化-直方图比较-反向投影"
+                    aria-label="下一篇: OpenCV学习笔记11-直方图均衡化-直方图比较-反向投影"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/2020/02/20/NT-OC-A12_%E6%A8%A1%E6%9D%BF%E5%8C%B9%E9%85%8D/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/2020/02/20/NT-OC-A12_%E6%A8%A1%E6%9D%BF%E5%8C%B9%E9%85%8D/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="6">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/2020/02/20/NT-OC-A12_%E6%A8%A1%E6%9D%BF%E5%8C%B9%E9%85%8D/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://dynais.xyz/2020/02/20/NT-OC-A12_%E6%A8%A1%E6%9D%BF%E5%8C%B9%E9%85%8D/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="../../../../assets/images/logo.jpg" alt="作者的图片"/>
+        
+            <h4 id="about-card-name">DynAis</h4>
+        
+            <div id="about-card-bio"><p>败家玩意，喜欢折腾各种觉得好玩的东西</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>无·业·游·民</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Zhejiang, China Ostfalia, Deutsch
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('../../../../assets/images/cover-jk.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="../../../../assets/js/script-g1rjom7obrs1ry8ybtynfzytmeia7ckofq1vg7dv5v8cjtz4mklgv44q2bbz.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://dynais.xyz/2020/02/20/NT-OC-A12_%E6%A8%A1%E6%9D%BF%E5%8C%B9%E9%85%8D/';
+              
+            this.page.identifier = '2020/02/20/NT-OC-A12_模板匹配/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'http-dynais-xyz';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
+</html>

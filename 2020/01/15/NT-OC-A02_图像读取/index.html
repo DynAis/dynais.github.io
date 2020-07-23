@@ -1,0 +1,680 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="想成为魔法师的D·y·n·A·i·s">
+    <title>OpenCV学习笔记02-图像读取 - 想成为魔法师的D·y·n·A·i·s</title>
+    <meta name="author" content="DynAis">
+    
+    
+        <link rel="icon" href="http://dynais.xyz../../../../assets/images/logo-web.ico">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="../../../../atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg"},"articleBody":"完成\n实现静态图片读取功能\n\n复习cmd指令\n\n学习了在cmd下使用exe文件\n\n\n实现\n相关","dateCreated":"2020-01-15T00:00:00+08:00","dateModified":"2020-07-23T17:55:50+08:00","datePublished":"2020-01-15T00:00:00+08:00","description":"完成\n实现静态图片读取功能\n\n复习cmd指令\n\n学习了在cmd下使用exe文件\n\n\n实现\n相关","headline":"OpenCV学习笔记02-图像读取","image":["https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png","https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../../../../http:/dynais.xyz/2020/01/15/NT-OC-A02_%E5%9B%BE%E5%83%8F%E8%AF%BB%E5%8F%96/"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg","logo":{"@type":"ImageObject","url":"logo.jpg"}},"url":"../../../../http:/dynais.xyz/2020/01/15/NT-OC-A02_%E5%9B%BE%E5%83%8F%E8%AF%BB%E5%8F%96/","keywords":"数字图像处理, open-cv, cpp","thumbnailUrl":"https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png"}</script>
+    <meta name="description" content="完成 实现静态图片读取功能  复习cmd指令  学习了在cmd下使用exe文件   实现 相关">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="OpenCV学习笔记02-图像读取">
+<meta property="og:url" content="http://dynais.xyz/2020/01/15/NT-OC-A02_%E5%9B%BE%E5%83%8F%E8%AF%BB%E5%8F%96/index.html">
+<meta property="og:site_name" content="想成为魔法师的D·y·n·A·i·s">
+<meta property="og:description" content="完成 实现静态图片读取功能  复习cmd指令  学习了在cmd下使用exe文件   实现 相关">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175528.png">
+<meta property="article:published_time" content="2020-01-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-07-23T09:55:50.147Z">
+<meta property="article:author" content="DynAis">
+<meta property="article:tag" content="数字图像处理">
+<meta property="article:tag" content="open-cv">
+<meta property="article:tag" content="cpp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175528.png">
+<meta name="twitter:creator" content="@dyn_ais">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://dynais.xyz../../../../assets/images/logo.jpg"/>
+    
+    
+        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png"/>
+    
+    
+        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="../../../../assets/css/style-vbih9sdcpqirnhnznal1vb8zi5ykitwphb2prpmfjj3gedbe2blwii4kzkoo.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+    <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?Tc22eOwijt3imQUU";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+
+
+    
+        
+            
+<link rel="stylesheet" href="../../../../assets/css/gitalk.css">
+
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="6">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="http://dynais.xyz/"
+            aria-label=""
+        >
+            想成为魔法师的D·y·n·A·i·s
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="../../../../#about"
+                aria-label="打开链接: ../../../../#about"
+            >
+        
+        
+            <img class="header-picture" src="../../../../assets/images/logo.jpg" alt="作者的图片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="6">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="../../../../#about"
+                    aria-label="阅读有关作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="../../../../assets/images/logo.jpg" alt="作者的图片"/>
+                </a>
+                <h4 class="sidebar-profile-name">DynAis</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>败家玩意，喜欢折腾各种觉得好玩的东西</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../index.html"
+                            
+                            rel="noopener"
+                            title="首页"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../all-categories"
+                            
+                            rel="noopener"
+                            title="分类"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../all-tags"
+                            
+                            rel="noopener"
+                            title="标签"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../all-archives"
+                            
+                            rel="noopener"
+                            title="归档"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../#about"
+                            
+                            rel="noopener"
+                            title="关于"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../https:/github.com/DynAis"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../https:/twitter.com/dyn_ais"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../../../../atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg');"
+             data-behavior="6">
+            
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            OpenCV学习笔记02-图像读取
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-01-15T00:00:00+08:00">
+	
+		    1月 15, 2020
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="../../../../categories/note/">note</a>, <a class="category-link" href="../../../../categories/note/open-cv/">open-cv</a>
+
+
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="6"
+                 class="hasCover
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h3><ul>
+<li><p>实现静态图片读取功能</p>
+</li>
+<li><p>复习cmd指令</p>
+</li>
+<li><p>学习了在cmd下使用exe文件</p>
+</li>
+</ul>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p><img src="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175528.png" alt="D:\WorkSpace\Learning\OpenCV\ImageHub\Day1.png"></p>
+<h3 id="相关"><a href="#相关" class="headerlink" title="相关"></a>相关</h3><a id="more"></a>
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="../../../../tags/cpp/" rel="tag">cpp</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/open-cv/" rel="tag">open-cv</a> <a class="tag tag--primary tag--small t-link" href="../../../../tags/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag">数字图像处理</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="../../21/NT-OC-A03_%E7%BA%BF%E6%80%A7%E6%BB%A4%E6%B3%A2%E5%99%A8_%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4%E8%BD%AC%E6%8D%A2/"
+                    data-tooltip="OpenCV学习笔记03-线性滤波器-色彩空间转换"
+                    aria-label="上一篇: OpenCV学习笔记03-线性滤波器-色彩空间转换"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="../NT-CS-CMD%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"
+                    data-tooltip="CMD控制台常用指令"
+                    aria-label="下一篇: CMD控制台常用指令"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/2020/01/15/NT-OC-A02_%E5%9B%BE%E5%83%8F%E8%AF%BB%E5%8F%96/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/2020/01/15/NT-OC-A02_%E5%9B%BE%E5%83%8F%E8%AF%BB%E5%8F%96/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 DynAis. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="6">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="../../21/NT-OC-A03_%E7%BA%BF%E6%80%A7%E6%BB%A4%E6%B3%A2%E5%99%A8_%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4%E8%BD%AC%E6%8D%A2/"
+                    data-tooltip="OpenCV学习笔记03-线性滤波器-色彩空间转换"
+                    aria-label="上一篇: OpenCV学习笔记03-线性滤波器-色彩空间转换"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="../NT-CS-CMD%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"
+                    data-tooltip="CMD控制台常用指令"
+                    aria-label="下一篇: CMD控制台常用指令"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/2020/01/15/NT-OC-A02_%E5%9B%BE%E5%83%8F%E8%AF%BB%E5%8F%96/"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/2020/01/15/NT-OC-A02_%E5%9B%BE%E5%83%8F%E8%AF%BB%E5%8F%96/"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="6">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/2020/01/15/NT-OC-A02_%E5%9B%BE%E5%83%8F%E8%AF%BB%E5%8F%96/"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://dynais.xyz/2020/01/15/NT-OC-A02_%E5%9B%BE%E5%83%8F%E8%AF%BB%E5%8F%96/"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="../../../../assets/images/logo.jpg" alt="作者的图片"/>
+        
+            <h4 id="about-card-name">DynAis</h4>
+        
+            <div id="about-card-bio"><p>败家玩意，喜欢折腾各种觉得好玩的东西</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>无·业·游·民</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Zhejiang, China Ostfalia, Deutsch
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('../../../../assets/images/cover-jk.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="../../../../assets/js/script-g1rjom7obrs1ry8ybtynfzytmeia7ckofq1vg7dv5v8cjtz4mklgv44q2bbz.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://dynais.xyz/2020/01/15/NT-OC-A02_%E5%9B%BE%E5%83%8F%E8%AF%BB%E5%8F%96/';
+              
+            this.page.identifier = '2020/01/15/NT-OC-A02_图像读取/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'http-dynais-xyz';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
+</html>
