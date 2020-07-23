@@ -1,0 +1,757 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="想成为魔法师的D·y·n·A·i·s">
+    <title>计算机语言学习大纲 - 想成为魔法师的D·y·n·A·i·s</title>
+    <meta name="author" content="DynAis">
+    
+    
+        <link rel="icon" href="http://dynais.xyz../assets/images/logo-web.ico">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg"},"articleBody":"基础语法部分基本语法\n数据类型\n作用域\n\n逻辑/算术操作\n\n\n控制流程\n循环\n选择\n\n数据结构与算法\n数据结构的实现与基本操作\n\n列表\n队列\n\n\n优先队列\n\n链表\n集合\n\n\n字典\n\n堆\n栈\n\n\n算法的实现\n\n排序\n\n\n\n字符串操作\n字符串数字转换\n字符串反转\n字符串截取\n字符串单位操作\n字符替换\n字符查找\n\n函数\n函数的定义\n变量的传递\n传递的形式\n特殊数据结构的传递\n不定变量个数的传递\n\n\n函数的返回\n函数重载\n匿名函数\n内置函数\n随机\n系统时间获取\n\n\n\n类\n类的定义\n继承\n函数重写\n枚举\n\nI/O操作, 文件读写\n命令行输入输出\n文件读写\n打开和关闭文件\n文件指针控制\n\n\n\n多文件编程\n函数引入\n数据储存\n\n异常处理\n处理异常\n定义异常\n抛出异常\n\n应用程序\n命令行应用\n命令行参数的传入\n\n\n\n功能库部分桌面可视化可交互应用库本文永久链接： http://dynais.xyz/posts/ca09a65d.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-06-07T00:00:00+08:00","dateModified":"2020-07-23T21:02:51+08:00","datePublished":"2020-06-07T00:00:00+08:00","description":"基础语法部分基本语法\n数据类型\n作用域\n\n逻辑/算术操作\n\n\n控制流程\n循环\n选择\n\n数据结构与算法\n数据结构的实现与基本操作\n\n列表\n队列","headline":"计算机语言学习大纲","image":[null,"https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/ca09a65d.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg","logo":{"@type":"ImageObject","url":"logo.jpg"}},"url":"../http:/dynais.xyz/posts/ca09a65d.html","keywords":"计算机科学","thumbnailUrl":"https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"}</script>
+    <meta name="description" content="基础语法部分基本语法 数据类型 作用域  逻辑&#x2F;算术操作   控制流程 循环 选择  数据结构与算法 数据结构的实现与基本操作  列表 队列">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="计算机语言学习大纲">
+<meta property="og:url" content="http://dynais.xyz/posts/ca09a65d.html">
+<meta property="og:site_name" content="想成为魔法师的D·y·n·A·i·s">
+<meta property="og:description" content="基础语法部分基本语法 数据类型 作用域  逻辑&#x2F;算术操作   控制流程 循环 选择  数据结构与算法 数据结构的实现与基本操作  列表 队列">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723204329.png">
+<meta property="article:published_time" content="2020-06-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-07-23T13:02:51.638Z">
+<meta property="article:author" content="DynAis">
+<meta property="article:tag" content="计算机科学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723204329.png">
+<meta name="twitter:creator" content="@dyn_ais">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://dynais.xyz../assets/images/logo.jpg"/>
+    
+    
+    
+        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="../assets/css/style-85acec8keqq7ozzemurs4iqzl38ubz28auwu1g8jsfu46rslk3sycyabtlrm.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+    <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?Tc22eOwijt3imQUU";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+
+
+    
+        
+            
+<link rel="stylesheet" href="../assets/css/gitalk.css">
+
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="6">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="http://dynais.xyz/"
+            aria-label=""
+        >
+            想成为魔法师的D·y·n·A·i·s
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="../#about"
+                aria-label="打开链接: ../#about"
+            >
+        
+        
+            <img class="header-picture" src="../assets/images/logo.jpg" alt="作者的图片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="6">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="../#about"
+                    aria-label="阅读有关作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="../assets/images/logo.jpg" alt="作者的图片"/>
+                </a>
+                <h4 class="sidebar-profile-name">DynAis</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>败家玩意，喜欢折腾各种觉得好玩的东西</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../index.html"
+                            
+                            rel="noopener"
+                            title="首页"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../all-categories"
+                            
+                            rel="noopener"
+                            title="分类"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../all-tags"
+                            
+                            rel="noopener"
+                            title="标签"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../all-archives"
+                            
+                            rel="noopener"
+                            title="归档"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../#about"
+                            
+                            rel="noopener"
+                            title="关于"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/github.com/DynAis"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/twitter.com/dyn_ais"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg');"
+             data-behavior="6">
+            
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            计算机语言学习大纲
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-06-07T00:00:00+08:00">
+	
+		    6月 07, 2020
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="../categories/note/">note</a>, <a class="category-link" href="../categories/note/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/">计算机科学</a>
+
+
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="6"
+                 class="hasCover
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="基础语法部分"><a href="#基础语法部分" class="headerlink" title="基础语法部分"></a>基础语法部分</h2><h5 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h5><ul>
+<li>数据类型</li>
+<li><p>作用域</p>
+</li>
+<li><p>逻辑/算术操作</p>
+</li>
+</ul>
+<h5 id="控制流程"><a href="#控制流程" class="headerlink" title="控制流程"></a>控制流程</h5><ul>
+<li>循环</li>
+<li>选择</li>
+</ul>
+<h5 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h5><ul>
+<li><p>数据结构的实现与基本操作</p>
+<ul>
+<li>列表</li>
+<li><p>队列</p>
+<a id="more"></a>
+</li>
+<li><p>优先队列</p>
+</li>
+<li>链表</li>
+<li>集合</li>
+</ul>
+</li>
+<li><p>字典</p>
+<ul>
+<li>堆</li>
+<li>栈</li>
+</ul>
+</li>
+<li><p>算法的实现</p>
+<ul>
+<li>排序</li>
+</ul>
+</li>
+</ul>
+<h5 id="字符串操作"><a href="#字符串操作" class="headerlink" title="字符串操作"></a>字符串操作</h5><ul>
+<li>字符串数字转换</li>
+<li>字符串反转</li>
+<li>字符串截取</li>
+<li>字符串单位操作</li>
+<li>字符替换</li>
+<li>字符查找</li>
+</ul>
+<h5 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h5><ul>
+<li>函数的定义</li>
+<li>变量的传递<ul>
+<li>传递的形式</li>
+<li>特殊数据结构的传递</li>
+<li>不定变量个数的传递</li>
+</ul>
+</li>
+<li>函数的返回</li>
+<li>函数重载</li>
+<li>匿名函数</li>
+<li>内置函数<ul>
+<li>随机</li>
+<li>系统时间获取</li>
+</ul>
+</li>
+</ul>
+<h5 id="类"><a href="#类" class="headerlink" title="类"></a>类</h5><ul>
+<li>类的定义</li>
+<li>继承</li>
+<li>函数重写</li>
+<li>枚举</li>
+</ul>
+<h5 id="I-O操作-文件读写"><a href="#I-O操作-文件读写" class="headerlink" title="I/O操作, 文件读写"></a>I/O操作, 文件读写</h5><ul>
+<li>命令行输入输出</li>
+<li>文件读写<ul>
+<li>打开和关闭文件</li>
+<li>文件指针控制</li>
+</ul>
+</li>
+</ul>
+<h5 id="多文件编程"><a href="#多文件编程" class="headerlink" title="多文件编程"></a>多文件编程</h5><ul>
+<li>函数引入</li>
+<li>数据储存</li>
+</ul>
+<h5 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h5><ul>
+<li>处理异常</li>
+<li>定义异常</li>
+<li>抛出异常</li>
+</ul>
+<h5 id="应用程序"><a href="#应用程序" class="headerlink" title="应用程序"></a>应用程序</h5><ul>
+<li>命令行应用<ul>
+<li>命令行参数的传入</li>
+</ul>
+</li>
+</ul>
+<h2 id="功能库部分"><a href="#功能库部分" class="headerlink" title="功能库部分"></a>功能库部分</h2><h5 id="桌面可视化可交互应用库"><a href="#桌面可视化可交互应用库" class="headerlink" title="桌面可视化可交互应用库"></a>桌面可视化可交互应用库</h5><p><br /><br /><br /><strong>本文永久链接</strong>： <a href="http://dynais.xyz/posts/ca09a65d.html">http://dynais.xyz/posts/ca09a65d.html</a> <br /><strong>版权声明</strong><br /><img src="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723204329.png" alt=""><br />This site by DynAis is licensed under a Creative Commons <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC-BY-NC-SA 4.0 International License</a>.<br />由Dynais创作并维护的博客采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">创作共用-署名-非商业性-相同方式共享4.0国际许可证</a>。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="../tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" rel="tag">计算机科学</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="7fe946a2.html"
+                    data-tooltip="读后感-&lt;如何学习&gt;"
+                    aria-label="上一篇: 读后感-&lt;如何学习&gt;"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="a33aff37.html"
+                    data-tooltip="使用差分散列的重复图片检测"
+                    aria-label="下一篇: 使用差分散列的重复图片检测"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/posts/ca09a65d.html"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/ca09a65d.html"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 DynAis. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="6">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="7fe946a2.html"
+                    data-tooltip="读后感-&lt;如何学习&gt;"
+                    aria-label="上一篇: 读后感-&lt;如何学习&gt;"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="a33aff37.html"
+                    data-tooltip="使用差分散列的重复图片检测"
+                    aria-label="下一篇: 使用差分散列的重复图片检测"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/posts/ca09a65d.html"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/ca09a65d.html"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="6">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/posts/ca09a65d.html"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/ca09a65d.html"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="../assets/images/logo.jpg" alt="作者的图片"/>
+        
+            <h4 id="about-card-name">DynAis</h4>
+        
+            <div id="about-card-bio"><p>败家玩意，喜欢折腾各种觉得好玩的东西</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>无·业·游·民</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Zhejiang, China Ostfalia, Deutsch
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('../assets/images/cover-jk.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="../assets/js/script-ihcvejfru0k5hd6jpjmzo1jkyokr1zcnwrtqpplont7gtsdmmgoasvsrr2gb.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://dynais.xyz/posts/ca09a65d.html';
+              
+            this.page.identifier = 'posts/ca09a65d.html';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'http-dynais-xyz';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
+</html>

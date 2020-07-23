@@ -1,0 +1,718 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="想成为魔法师的D·y·n·A·i·s">
+    <title>使用差分散列的重复图片检测 - 想成为魔法师的D·y·n·A·i·s</title>
+    <meta name="author" content="DynAis">
+    
+    
+        <link rel="icon" href="http://dynais.xyz../assets/images/logo-web.ico">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg"},"articleBody":"Detect and remove duplicate images from a dataset for deep learning\n\n文章链接:\nhttps://www.pyimagesearch.com/2017/11/27/image-hashing-opencv-python/\nhttps://www.pyimagesearch.com/2020/04/20/detect-and-remove-duplicate-images-from-a-dataset-for-deep-learning/?__s=bnfo5g8qgjr6gztmvjlb\n前言: \n为什么要删去数据集中重复的图片?\nHaving duplicate images in your dataset creates a problem for two reasons:\n\nIt introduces bias into your dataset, giving your deep neural network additional opportunities to learn patterns specific to the duplicates\nIt hurts the ability of your model to generalize to new images outside of what it was trained on\n\nTake the time to remove duplicates from your image dataset so you don’t accidentally introduce bias or hurt the ability of your model to generalize.\n\n\n一. 关于图像散列值\n关于散列(Hash), 网上的介绍有很多,这里就不费力介绍.\n而对于这个具体的项目要求来说, 我们所做的只是需要把一个图像转换为一个Hash值, 然后储存到字典中. 并且有一下要求:\n\n视觉上相差不大的图片, 他们的Hash值也应该相同\n这个Hash计算需要快, 因为有时候数据量会很大\n\n那么我们有以下几个Hash函数的选择:\n\n差分散列(difference hashing)\nmd5\nsha-1\n\n最终我们选择了差分散列的方法, 有以下的原因:\n\n差分散列速度很快, 计算量小\n对于肉眼相差不大的图片, 差分散列可以得出相似的值\nmd5 和 sha-1 只要有一点变化, 输出值就会完全改变(这本来很好, 但在这里非常不好!)\n\n二. 我们所需的步骤1. Convert to grayscale 转灰度在这里, 颜色信息对于判定两张图是否相同其实并不是很重要, 所以将三通道转为一个通道可以很好的减少我们的工作量\n2. Resize 忽略长宽比缩放这是为了得到一个合适的大小, 以便符合后续的Hash计算, 所有需要保证所有的图片具有相同的大小尺寸, 这牵扯到差分散列的工作原理, 这会在后面解释\n在这里, 我们需要将原图缩放到只有$9*8$大小\n3. Compute the difference 计算差分(梯度)差分散列算法, 故名思与需要计算差分信息, 在图片里, 指的就是相邻像素之间的梯度.\n好了, 这就是之前我们为什么需要$98$像素的原因了, 因为我们需要得到的是一个64位的二进制信息, 而$88=64$, 由于是计算差分(梯度), 所以必然需要九行\n需要注意: 这里虽然说是差分, 但实际上使用的是非常简化的版本: 但前一个像素大于后一个像素时, 给出一个$1$, 否则, 给出一个$0$, 也就是说, 可以看作只提取梯度的正负符号信息, 公式为 \n​                                                $P[x] &gt; P[x + 1] = 1 else 0$\n那么现在我们得到了一个64bit的值, 接下来就对他进行Hash计算\n4. Build the hash 计算散列值12345678910111213def dhash(image, hashSize=8):\t# convert the image to grayscale and resize the grayscale image,\t# adding a single column (width) so we can compute the horizontal\t# gradient\tgray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)\tresized = cv2.resize(gray, (hashSize + 1, hashSize))\t# compute the (relative) horizontal gradient between adjacent\t# column pixels\tdiff = resized[:, 1:] &gt; resized[:, :-1]\t# convert the difference image to a hash and return it\treturn sum([2 ** i for (i, v) in enumerate(diff.flatten()) if v])\n我看不懂\n5. 初始化字典, 寻找重复并输出略\n本文永久链接： http://dynais.xyz/posts/a33aff37.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-04-22T00:00:00+08:00","dateModified":"2020-07-23T21:02:51+08:00","datePublished":"2020-04-22T00:00:00+08:00","description":"Detect and remove duplicate images from a dataset for deep learning\n\n文章链接:\nhttps://www.pyimagesearch.com/2017/11/27/image-hashing-opencv-python/\nhttps://www.pyimagesearch.com/2020/04/20/detect-and-remove-duplicate-images-from-a-dataset-for-deep-learning/?__s=bnfo5g8qgjr6gztmvjlb\n前言: \n为什么要删去数据集中重复的图片?\nHaving duplicate images in your dataset creates a problem for two reasons:\n\nIt introduces bias into your dataset, giving your deep neural network additional opportunities to learn patterns specific to the duplicates\nIt hurts the ability of your model to generalize to new images outside of what it was trained on\n\nTake the time to remove duplicates from your image dataset so you don’t accidentally introduce bias or hurt the ability of your model to generalize.\n","headline":"使用差分散列的重复图片检测","image":["https://raw.githubusercontent.com/DynAis/img-hub/master/img/image_hashing_header.png","https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/a33aff37.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg","logo":{"@type":"ImageObject","url":"logo.jpg"}},"url":"../http:/dynais.xyz/posts/a33aff37.html","keywords":"数字图像处理, python, open-cv-py","thumbnailUrl":"https://raw.githubusercontent.com/DynAis/img-hub/master/img/image_hashing_header.png"}</script>
+    <meta name="description" content="Detect and remove duplicate images from a dataset for deep learning  文章链接: https:&#x2F;&#x2F;www.pyimagesearch.com&#x2F;2017&#x2F;11&#x2F;27&#x2F;image-hashing-opencv-python&#x2F; https:&#x2F;&#x2F;www.pyimagesearch.com&#x2F;2020&#x2F;04&#x2F;20&#x2F;detect-and-rem">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="使用差分散列的重复图片检测">
+<meta property="og:url" content="http://dynais.xyz/posts/a33aff37.html">
+<meta property="og:site_name" content="想成为魔法师的D·y·n·A·i·s">
+<meta property="og:description" content="Detect and remove duplicate images from a dataset for deep learning  文章链接: https:&#x2F;&#x2F;www.pyimagesearch.com&#x2F;2017&#x2F;11&#x2F;27&#x2F;image-hashing-opencv-python&#x2F; https:&#x2F;&#x2F;www.pyimagesearch.com&#x2F;2020&#x2F;04&#x2F;20&#x2F;detect-and-rem">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/image_hashing_header.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723204329.png">
+<meta property="article:published_time" content="2020-04-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-07-23T13:02:51.653Z">
+<meta property="article:author" content="DynAis">
+<meta property="article:tag" content="数字图像处理">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="open-cv-py">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/image_hashing_header.png">
+<meta name="twitter:creator" content="@dyn_ais">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://dynais.xyz../assets/images/logo.jpg"/>
+    
+    
+        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/image_hashing_header.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/image_hashing_header.png"/>
+    
+    
+        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="../assets/css/style-85acec8keqq7ozzemurs4iqzl38ubz28auwu1g8jsfu46rslk3sycyabtlrm.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+    <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?Tc22eOwijt3imQUU";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+
+
+    
+        
+            
+<link rel="stylesheet" href="../assets/css/gitalk.css">
+
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="6">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="http://dynais.xyz/"
+            aria-label=""
+        >
+            想成为魔法师的D·y·n·A·i·s
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="../#about"
+                aria-label="打开链接: ../#about"
+            >
+        
+        
+            <img class="header-picture" src="../assets/images/logo.jpg" alt="作者的图片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="6">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="../#about"
+                    aria-label="阅读有关作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="../assets/images/logo.jpg" alt="作者的图片"/>
+                </a>
+                <h4 class="sidebar-profile-name">DynAis</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>败家玩意，喜欢折腾各种觉得好玩的东西</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../index.html"
+                            
+                            rel="noopener"
+                            title="首页"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../all-categories"
+                            
+                            rel="noopener"
+                            title="分类"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../all-tags"
+                            
+                            rel="noopener"
+                            title="标签"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../all-archives"
+                            
+                            rel="noopener"
+                            title="归档"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../#about"
+                            
+                            rel="noopener"
+                            title="关于"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/github.com/DynAis"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/twitter.com/dyn_ais"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg');"
+             data-behavior="6">
+            
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            使用差分散列的重复图片检测
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-04-22T00:00:00+08:00">
+	
+		    4月 22, 2020
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="../categories/note/">note</a>, <a class="category-link" href="../categories/note/open-cv-py/">open-cv-py</a>
+
+
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="6"
+                 class="hasCover
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="Detect-and-remove-duplicate-images-from-a-dataset-for-deep-learning"><a href="#Detect-and-remove-duplicate-images-from-a-dataset-for-deep-learning" class="headerlink" title="Detect and remove duplicate images from a dataset for deep learning"></a>Detect and remove duplicate images from a dataset for deep learning</h2><h1 id="table-of-contents">目录</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Detect-and-remove-duplicate-images-from-a-dataset-for-deep-learning"><span class="toc-text">Detect and remove duplicate images from a dataset for deep learning</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一-关于图像散列值"><span class="toc-text">一. 关于图像散列值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-我们所需的步骤"><span class="toc-text">二. 我们所需的步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Convert-to-grayscale-转灰度"><span class="toc-text">1. Convert to grayscale 转灰度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Resize-忽略长宽比缩放"><span class="toc-text">2. Resize 忽略长宽比缩放</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Compute-the-difference-计算差分-梯度"><span class="toc-text">3. Compute the difference 计算差分(梯度)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Build-the-hash-计算散列值"><span class="toc-text">4. Build the hash 计算散列值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-初始化字典-寻找重复并输出"><span class="toc-text">5. 初始化字典, 寻找重复并输出</span></a></li></ol></li></ol>
+<blockquote>
+<p>文章链接:</p>
+<p><a href="https://www.pyimagesearch.com/2017/11/27/image-hashing-opencv-python/" target="_blank" rel="noopener">https://www.pyimagesearch.com/2017/11/27/image-hashing-opencv-python/</a></p>
+<p><a href="https://www.pyimagesearch.com/2020/04/20/detect-and-remove-duplicate-images-from-a-dataset-for-deep-learning/?__s=bnfo5g8qgjr6gztmvjlb" target="_blank" rel="noopener">https://www.pyimagesearch.com/2020/04/20/detect-and-remove-duplicate-images-from-a-dataset-for-deep-learning/?__s=bnfo5g8qgjr6gztmvjlb</a></p>
+<p>前言: </p>
+<p>为什么要删去数据集中重复的图片?</p>
+<p><em>Having duplicate images in your dataset creates a problem for two reasons:</em></p>
+<ol>
+<li><em>It introduces bias into your dataset, giving your deep neural network additional opportunities to learn patterns specific to the duplicates</em></li>
+<li><em>It hurts the ability of your model to generalize to new images outside of what it was trained on</em></li>
+</ol>
+<p><em>Take the time to remove duplicates from your image dataset so you don’t accidentally introduce bias or hurt the ability of your model to generalize.</em></p>
+</blockquote>
+<a id="more"></a>
+<h2 id="一-关于图像散列值"><a href="#一-关于图像散列值" class="headerlink" title="一. 关于图像散列值"></a>一. 关于图像散列值</h2><p><img src="https://raw.githubusercontent.com/DynAis/img-hub/master/img/image_hashing_header.png" alt="img" style="zoom: 67%;" /></p>
+<p>关于散列(Hash), 网上的介绍有很多,这里就不费力介绍.</p>
+<p>而对于这个具体的项目要求来说, 我们所做的只是需要把一个图像转换为一个Hash值, 然后储存到字典中. 并且有一下要求:</p>
+<ul>
+<li>视觉上相差不大的图片, 他们的Hash值也应该相同</li>
+<li>这个Hash计算需要快, 因为有时候数据量会很大</li>
+</ul>
+<p>那么我们有以下几个Hash函数的选择:</p>
+<ul>
+<li><strong>差分散列(<em>difference hashing</em>)</strong></li>
+<li><strong>md5</strong></li>
+<li><strong>sha-1</strong></li>
+</ul>
+<p>最终我们选择了<strong>差分散列</strong>的方法, 有以下的原因:</p>
+<ol>
+<li>差分散列速度很快, 计算量小</li>
+<li>对于肉眼相差不大的图片, 差分散列可以得出相似的值</li>
+<li>md5 和 sha-1 只要有一点变化, 输出值就会完全改变(这本来很好, 但在这里非常不好!)</li>
+</ol>
+<h2 id="二-我们所需的步骤"><a href="#二-我们所需的步骤" class="headerlink" title="二. 我们所需的步骤"></a>二. 我们所需的步骤</h2><h3 id="1-Convert-to-grayscale-转灰度"><a href="#1-Convert-to-grayscale-转灰度" class="headerlink" title="1. Convert to grayscale 转灰度"></a>1. Convert to grayscale 转灰度</h3><p>在这里, 颜色信息对于判定两张图是否相同其实并不是很重要, 所以将三通道转为一个通道可以很好的减少我们的工作量</p>
+<h3 id="2-Resize-忽略长宽比缩放"><a href="#2-Resize-忽略长宽比缩放" class="headerlink" title="2. Resize 忽略长宽比缩放"></a>2. Resize 忽略长宽比缩放</h3><p>这是为了得到一个合适的大小, 以便符合后续的Hash计算, 所有需要保证所有的图片具有相同的大小尺寸, 这牵扯到差分散列的工作原理, 这会在后面解释</p>
+<p>在这里, 我们需要将原图缩放到只有$9*8$大小</p>
+<h3 id="3-Compute-the-difference-计算差分-梯度"><a href="#3-Compute-the-difference-计算差分-梯度" class="headerlink" title="3. Compute the difference 计算差分(梯度)"></a>3. Compute the difference 计算差分(梯度)</h3><p>差分散列算法, 故名思与需要计算差分信息, 在图片里, 指的就是相邻像素之间的梯度.</p>
+<p>好了, 这就是之前我们为什么需要$9<em>8$像素的原因了, 因为我们需要得到的是一个64位的二进制信息, 而$8</em>8=64$, 由于是计算差分(梯度), 所以必然需要九行</p>
+<p><strong>需要注意:</strong> 这里虽然说是差分, 但实际上使用的是非常简化的版本: 但前一个像素大于后一个像素时, 给出一个$1$, 否则, 给出一个$0$, 也就是说, 可以看作只提取梯度的正负符号信息, 公式为 </p>
+<p>​                                                $P[x] &gt; P[x + 1] = 1 else 0$</p>
+<p>那么现在我们得到了一个64bit的值, 接下来就对他进行Hash计算</p>
+<h3 id="4-Build-the-hash-计算散列值"><a href="#4-Build-the-hash-计算散列值" class="headerlink" title="4. Build the hash 计算散列值"></a>4. Build the hash 计算散列值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dhash</span><span class="params">(image, hashSize=<span class="number">8</span>)</span>:</span></span><br><span class="line">	<span class="comment"># convert the image to grayscale and resize the grayscale image,</span></span><br><span class="line">	<span class="comment"># adding a single column (width) so we can compute the horizontal</span></span><br><span class="line">	<span class="comment"># gradient</span></span><br><span class="line">	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line">	resized = cv2.resize(gray, (hashSize + <span class="number">1</span>, hashSize))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># compute the (relative) horizontal gradient between adjacent</span></span><br><span class="line">	<span class="comment"># column pixels</span></span><br><span class="line">	diff = resized[:, <span class="number">1</span>:] &gt; resized[:, :<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line">	<span class="comment"># convert the difference image to a hash and return it</span></span><br><span class="line">	<span class="keyword">return</span> sum([<span class="number">2</span> ** i <span class="keyword">for</span> (i, v) <span class="keyword">in</span> enumerate(diff.flatten()) <span class="keyword">if</span> v])</span><br></pre></td></tr></table></figure>
+<p>我看不懂</p>
+<h3 id="5-初始化字典-寻找重复并输出"><a href="#5-初始化字典-寻找重复并输出" class="headerlink" title="5. 初始化字典, 寻找重复并输出"></a>5. 初始化字典, 寻找重复并输出</h3><p>略</p>
+<p><br /><br /><br /><strong>本文永久链接</strong>： <a href="http://dynais.xyz/posts/a33aff37.html">http://dynais.xyz/posts/a33aff37.html</a> <br /><strong>版权声明</strong><br /><img src="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723204329.png" alt=""><br />This site by DynAis is licensed under a Creative Commons <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC-BY-NC-SA 4.0 International License</a>.<br />由Dynais创作并维护的博客采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">创作共用-署名-非商业性-相同方式共享4.0国际许可证</a>。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="../tags/open-cv-py/" rel="tag">open-cv-py</a> <a class="tag tag--primary tag--small t-link" href="../tags/python/" rel="tag">python</a> <a class="tag tag--primary tag--small t-link" href="../tags/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag">数字图像处理</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="ca09a65d.html"
+                    data-tooltip="计算机语言学习大纲"
+                    aria-label="上一篇: 计算机语言学习大纲"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="237b1f9f.html"
+                    data-tooltip="重构完成, 焕发新生"
+                    aria-label="下一篇: 重构完成, 焕发新生"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/posts/a33aff37.html"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/a33aff37.html"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目录">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 DynAis. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="6">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="ca09a65d.html"
+                    data-tooltip="计算机语言学习大纲"
+                    aria-label="上一篇: 计算机语言学习大纲"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="237b1f9f.html"
+                    data-tooltip="重构完成, 焕发新生"
+                    aria-label="下一篇: 重构完成, 焕发新生"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/posts/a33aff37.html"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/a33aff37.html"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目录">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="6">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/posts/a33aff37.html"
+                        aria-label="分享到 Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/a33aff37.html"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="../assets/images/logo.jpg" alt="作者的图片"/>
+        
+            <h4 id="about-card-name">DynAis</h4>
+        
+            <div id="about-card-bio"><p>败家玩意，喜欢折腾各种觉得好玩的东西</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>无·业·游·民</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Zhejiang, China Ostfalia, Deutsch
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('../assets/images/cover-jk.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="../assets/js/script-ihcvejfru0k5hd6jpjmzo1jkyokr1zcnwrtqpplont7gtsdmmgoasvsrr2gb.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'http://dynais.xyz/posts/a33aff37.html';
+              
+            this.page.identifier = 'posts/a33aff37.html';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'http-dynais-xyz';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
+</html>
