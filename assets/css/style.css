@@ -9482,11 +9482,11 @@ figure.highlight,
 .hide {
   display: none; }
 
-@media only screen and (max-width: 479px) {
+@media only screen and (max-width: 399px) {
   .hide-xs {
     display: none; } }
 
-@media only screen and (min-width: 480px) and (max-width: 767px) {
+@media only screen and (min-width: 400px) and (max-width: 767px) {
   .hide-sm {
     display: none; } }
 
@@ -9835,7 +9835,7 @@ a.fancybox {
   .post-actions-wrap ul.post-action-share {
     width: 75%; } }
 
-@media only screen and (max-width: 479px) {
+@media only screen and (max-width: 399px) {
   .post-actions-wrap ul.post-action-nav {
     width: 35%; }
   .post-actions-wrap ul.post-action-share {
@@ -9912,11 +9912,11 @@ a.fancybox {
 .post-header-cover-caption {
   margin: 5px 0 50px 0; }
 
-@media only screen and (max-width: 479px) {
+@media only screen and (max-width: 399px) {
   .post-header-cover .post-header .post-title {
     font-size: 2.8rem; } }
 
-@media only screen and (min-width: 480px) and (max-width: 767px) {
+@media only screen and (min-width: 400px) and (max-width: 767px) {
   .post-header-cover .post-header .post-title {
     font-size: 3.3rem; } }
 
@@ -10068,13 +10068,13 @@ a.fancybox {
   .postShorten .postShorten-content {
     margin-top: 25px; }
 
-@media only screen and (max-width: 479px) {
+@media only screen and (max-width: 399px) {
   .postShorten .postShorten-thumbnailimg {
     display: none; }
     .postShorten .postShorten-thumbnailimg img {
       display: none; } }
 
-@media only screen and (min-width: 480px) {
+@media only screen and (min-width: 400px) {
   .postShorten.postShorten--thumbnailimg-right .postShorten-thumbnailimg {
     float: right;
     margin: 5px 0 30px 15px; }
