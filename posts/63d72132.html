@@ -9,15 +9,17 @@
     <title>OpenCV学习笔记12-模板匹配 - 想成为魔法师的D·y·n·A·i·s</title>
     <meta name="author" content="DynAis">
     
+        <meta name="keywords" content="DynAis,Dynais,dynais,opencv">
     
-        <link rel="icon" href="http://dynais.xyz../assets/images/logo-web.ico">
+    
+        <link rel="icon" href="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723213945.png">
     
     
         
             <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg"},"articleBody":"API12matchTemplate();//模式查找,API比较简单minMaxLoc();//用于在模式查找的输出图像中找到极值点,也就是匹配点\n笔记\n模板匹配(Templet Match)\n相当于上一节说的直方图匹配的实用化,通过现有图像在目标图像上滑行(原文Slide),也就是左到右上到下的以像素为单位进行匹配,找到匹配值最大的点.但也是因为这个原因,对模板图像和在目标图像里的目标的大小进行匹配就非常重要,如果大小差得远,效果就不好,所以使用条件相当苛刻.\n\n\n\n注意输出图像的大小\n在API中需要提供一个储存输出结果的Mat, 他的大小是\n1Size(src.cols-templ.cols+1, src.rows-templ.rows+1)\n\n\n\n\nOpenCV的查找模式\nOpenCV提供了很多种方法,在官网上都有介绍,大部分都是取用了最大值作为最匹配\n根据最小值匹配的只有 TM_SQDIFF 和 MT_SQDIFF_NORMED\nFor the first two methods ( TM_SQDIFF and MT_SQDIFF_NORMED ) the best match are the lowest values.\n\n\n\nOpenCV中32位的图像\n每个数值是一个位于[0,1]间的小数,相当于8位的[0,255]\n\n\n\n源//API实现模式查找1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162// OpenCV_Template.cpp : 此文件包含 \"main\" 函数。程序执行将在此处开始并结束。//#include &lt;iostream&gt;#include&lt;opencv2\\opencv.hpp&gt;using namespace std;using namespace cv;Mat src, dst, temp;int main(int, char**)&#123;\ttemp = imread(\"D:/WorkSpace/Projects/OpenCV Learning/ImageHub/Lena.jpg\");\tsrc = imread(\"D:/WorkSpace/Projects/OpenCV Learning/ImageHub/Day1.png\");\t//测试尺度不变性\t//pyrDown(temp, temp, Size(temp.cols / 2, temp.rows / 2));\tpyrUp(temp, temp, Size(temp.cols * 2, temp.rows * 2));\t//pyrUp(temp, temp, Size(temp.cols * 2, temp.rows * 2));\tif (temp.empty() || src.empty()) &#123;\t\tcout &lt;&lt; \"Can not open this IMG... Check again!\";\t\treturn -1;\t&#125;\tMat result = Mat_&lt;float&gt;::zeros(src.cols - temp.cols + 1, src.rows - temp.rows + 1 );\tmatchTemplate(src, temp, result, TM_CCOEFF_NORMED);\t//cout &lt;&lt; result;\tdouble minVal; double maxVal; Point minLoc; Point maxLoc;\tPoint matchLoc;\tminMaxLoc(result, &amp;minVal, &amp;maxVal, &amp;minLoc, &amp;maxLoc, Mat());\tcout &lt;&lt; minVal &lt;&lt; endl &lt;&lt; maxVal &lt;&lt; endl &lt;&lt; minLoc &lt;&lt; endl &lt;&lt; maxLoc &lt;&lt; endl;\trectangle(src, maxLoc, Point(maxLoc.x + temp.cols, maxLoc.y + temp.rows), Scalar(0,0,255), 2, 8);\trectangle(result, Point(maxLoc.x - temp.cols/2, maxLoc.y - temp.rows/2), Point(maxLoc.x + temp.cols/2, maxLoc.y + temp.rows/2), Scalar::all(1), 2, 8, 0);\tnamedWindow(\"src\", WINDOW_AUTOSIZE);\tpyrDown(src, src, Size(src.cols / 2, src.rows / 2));\tpyrDown(src, src, Size(src.cols / 2, src.rows / 2));\timshow(\"src\", src);\tnamedWindow(\"result\", WINDOW_AUTOSIZE);\tpyrDown(result, result, Size(result.cols / 2, result.rows / 2));\tpyrDown(result, result, Size(result.cols / 2, result.rows / 2));\timshow(\"result\", result);\twaitKey(0);\treturn 0;&#125;// 运行程序: Ctrl + F5 或调试 &gt;“开始执行(不调试)”菜单// 调试程序: F5 或调试 &gt;“开始调试”菜单// 入门使用技巧: //   1. 使用解决方案资源管理器窗口添加/管理文件//   2. 使用团队资源管理器窗口连接到源代码管理//   3. 使用输出窗口查看生成输出和其他消息//   4. 使用错误列表窗口查看错误//   5. 转到“项目”&gt;“添加新项”以创建新的代码文件，或转到“项目”&gt;“添加现有项”以将现有代码文件添加到项目//   6. 将来，若要再次打开此项目，请转到“文件”&gt;“打开”&gt;“项目”并选择 .sln 文件\n本文永久链接： http://dynais.xyz/posts/63d72132.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-02-20T00:00:00+08:00","dateModified":"2020-07-23T21:02:51+08:00","datePublished":"2020-02-20T00:00:00+08:00","description":"API12matchTemplate();//模式查找,API比较简单minMaxLoc();//用于在模式查找的输出图像中找到极值点,也就是匹配点\n笔记\n模板匹配(Templet Match)\n相当于上一节说的直方图匹配的实用化,通过现有图像在目标图像上滑行(原文Slide),也就是左到右上到下的以像素为单位进行匹配,找到匹配值最大的点.但也是因为这个原因,对模板图像和在目标图像里的目标的大小进行匹配就非常重要,如果大小差得远,效果就不好,所以使用条件相当苛刻.\n\n\n\n注意输出图像的大小\n在API中需要提供一个储存输出结果的Mat, 他的大小是\n1Size(src.cols-templ.cols+1, src.rows-templ.rows+1)\n\n","headline":"OpenCV学习笔记12-模板匹配","image":["https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png","https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/63d72132.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg","logo":{"@type":"ImageObject","url":"logo.jpg"}},"url":"../http:/dynais.xyz/posts/63d72132.html","keywords":"open-cv, cpp, 数字图像处理","thumbnailUrl":"https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg"},"articleBody":"API12matchTemplate();//模式查找,API比较简单minMaxLoc();//用于在模式查找的输出图像中找到极值点,也就是匹配点\n笔记\n模板匹配(Templet Match)\n相当于上一节说的直方图匹配的实用化,通过现有图像在目标图像上滑行(原文Slide),也就是左到右上到下的以像素为单位进行匹配,找到匹配值最大的点.但也是因为这个原因,对模板图像和在目标图像里的目标的大小进行匹配就非常重要,如果大小差得远,效果就不好,所以使用条件相当苛刻.\n\n\n\n注意输出图像的大小\n在API中需要提供一个储存输出结果的Mat, 他的大小是\n1Size(src.cols-templ.cols+1, src.rows-templ.rows+1)\n\n\n\n\nOpenCV的查找模式\nOpenCV提供了很多种方法,在官网上都有介绍,大部分都是取用了最大值作为最匹配\n根据最小值匹配的只有 TM_SQDIFF 和 MT_SQDIFF_NORMED\nFor the first two methods ( TM_SQDIFF and MT_SQDIFF_NORMED ) the best match are the lowest values.\n\n\n\nOpenCV中32位的图像\n每个数值是一个位于[0,1]间的小数,相当于8位的[0,255]\n\n\n\n源//API实现模式查找1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162// OpenCV_Template.cpp : 此文件包含 \"main\" 函数。程序执行将在此处开始并结束。//#include &lt;iostream&gt;#include&lt;opencv2\\opencv.hpp&gt;using namespace std;using namespace cv;Mat src, dst, temp;int main(int, char**)&#123;\ttemp = imread(\"D:/WorkSpace/Projects/OpenCV Learning/ImageHub/Lena.jpg\");\tsrc = imread(\"D:/WorkSpace/Projects/OpenCV Learning/ImageHub/Day1.png\");\t//测试尺度不变性\t//pyrDown(temp, temp, Size(temp.cols / 2, temp.rows / 2));\tpyrUp(temp, temp, Size(temp.cols * 2, temp.rows * 2));\t//pyrUp(temp, temp, Size(temp.cols * 2, temp.rows * 2));\tif (temp.empty() || src.empty()) &#123;\t\tcout &lt;&lt; \"Can not open this IMG... Check again!\";\t\treturn -1;\t&#125;\tMat result = Mat_&lt;float&gt;::zeros(src.cols - temp.cols + 1, src.rows - temp.rows + 1 );\tmatchTemplate(src, temp, result, TM_CCOEFF_NORMED);\t//cout &lt;&lt; result;\tdouble minVal; double maxVal; Point minLoc; Point maxLoc;\tPoint matchLoc;\tminMaxLoc(result, &amp;minVal, &amp;maxVal, &amp;minLoc, &amp;maxLoc, Mat());\tcout &lt;&lt; minVal &lt;&lt; endl &lt;&lt; maxVal &lt;&lt; endl &lt;&lt; minLoc &lt;&lt; endl &lt;&lt; maxLoc &lt;&lt; endl;\trectangle(src, maxLoc, Point(maxLoc.x + temp.cols, maxLoc.y + temp.rows), Scalar(0,0,255), 2, 8);\trectangle(result, Point(maxLoc.x - temp.cols/2, maxLoc.y - temp.rows/2), Point(maxLoc.x + temp.cols/2, maxLoc.y + temp.rows/2), Scalar::all(1), 2, 8, 0);\tnamedWindow(\"src\", WINDOW_AUTOSIZE);\tpyrDown(src, src, Size(src.cols / 2, src.rows / 2));\tpyrDown(src, src, Size(src.cols / 2, src.rows / 2));\timshow(\"src\", src);\tnamedWindow(\"result\", WINDOW_AUTOSIZE);\tpyrDown(result, result, Size(result.cols / 2, result.rows / 2));\tpyrDown(result, result, Size(result.cols / 2, result.rows / 2));\timshow(\"result\", result);\twaitKey(0);\treturn 0;&#125;// 运行程序: Ctrl + F5 或调试 &gt;“开始执行(不调试)”菜单// 调试程序: F5 或调试 &gt;“开始调试”菜单// 入门使用技巧: //   1. 使用解决方案资源管理器窗口添加/管理文件//   2. 使用团队资源管理器窗口连接到源代码管理//   3. 使用输出窗口查看生成输出和其他消息//   4. 使用错误列表窗口查看错误//   5. 转到“项目”&gt;“添加新项”以创建新的代码文件，或转到“项目”&gt;“添加现有项”以将现有代码文件添加到项目//   6. 将来，若要再次打开此项目，请转到“文件”&gt;“打开”&gt;“项目”并选择 .sln 文件\n本文永久链接： http://dynais.xyz/posts/63d72132.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-02-20T00:00:00+08:00","dateModified":"2020-07-23T22:00:26+08:00","datePublished":"2020-02-20T00:00:00+08:00","description":"API12matchTemplate();//模式查找,API比较简单minMaxLoc();//用于在模式查找的输出图像中找到极值点,也就是匹配点\n笔记\n模板匹配(Templet Match)\n相当于上一节说的直方图匹配的实用化,通过现有图像在目标图像上滑行(原文Slide),也就是左到右上到下的以像素为单位进行匹配,找到匹配值最大的点.但也是因为这个原因,对模板图像和在目标图像里的目标的大小进行匹配就非常重要,如果大小差得远,效果就不好,所以使用条件相当苛刻.\n\n\n\n注意输出图像的大小\n在API中需要提供一个储存输出结果的Mat, 他的大小是\n1Size(src.cols-templ.cols+1, src.rows-templ.rows+1)\n\n","headline":"OpenCV学习笔记12-模板匹配","image":["https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png","https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/63d72132.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg","logo":{"@type":"ImageObject","url":"logo.jpg"}},"url":"../http:/dynais.xyz/posts/63d72132.html","keywords":"open-cv, cpp, 数字图像处理","thumbnailUrl":"https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png"}</script>
     <meta name="description" content="API12matchTemplate();&#x2F;&#x2F;模式查找,API比较简单minMaxLoc();&#x2F;&#x2F;用于在模式查找的输出图像中找到极值点,也就是匹配点 笔记 模板匹配(Templet Match) 相当于上一节说的直方图匹配的实用化,通过现有图像在目标图像上滑行(原文Slide),也就是左到右上到下的以像素为单位进行匹配,找到匹配值最大的点.但也是因为这个原因,对模板图像和在目标图像里的目标的大小进">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="OpenCV学习笔记12-模板匹配">
@@ -27,11 +29,9 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723204329.png">
 <meta property="article:published_time" content="2020-02-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-23T13:02:51.651Z">
+<meta property="article:modified_time" content="2020-07-23T14:00:26.743Z">
 <meta property="article:author" content="DynAis">
-<meta property="article:tag" content="open-cv">
-<meta property="article:tag" content="cpp">
-<meta property="article:tag" content="数字图像处理">
+<meta property="article:tag" content="opencv">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723204329.png">
 <meta name="twitter:creator" content="@dyn_ais">
@@ -679,21 +679,5 @@
 
 
 
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
-</body>
+    </body>
 </html>
