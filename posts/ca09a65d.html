@@ -12,7 +12,7 @@
         <meta name="keywords" content="DynAis,Dynais,dynais,">
     
     
-        <link rel="icon" href="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723213945.png">
+        <link rel="icon" href="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725012020.png">
     
     
         
@@ -688,5 +688,21 @@
 
 
 
-    </body>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
 </html>
