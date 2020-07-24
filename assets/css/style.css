@@ -7934,7 +7934,7 @@ h6 {
   margin: 1em 0 0.5em 0; }
 
 h1 {
-  font-size: 4rem; }
+  font-size: 3rem; }
 
 h2 {
   font-size: 2.4rem; }
@@ -8035,7 +8035,7 @@ blockquote {
   code {
     font-size: 1.4rem; }
   h1 {
-    font-size: 3.8rem; }
+    font-size: 2.8rem; }
   h2 {
     font-size: 2.2rem; }
   h3 {
@@ -8049,7 +8049,7 @@ blockquote {
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   h1 {
-    font-size: 3.85rem; }
+    font-size: 2.85rem; }
   h2 {
     font-size: 2.25rem; }
   h3 {
@@ -8068,7 +8068,7 @@ blockquote {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(17, 26, 35, 0);
+  background: rgba(52, 55, 58, 0);
   text-align: center;
   line-height: 100%;
   overflow-y: auto;
@@ -8377,7 +8377,7 @@ blockquote {
 #main {
   display: block;
   min-height: 100%;
-  background: #fff;
+  background: #f5f5f7;
   transition: transform .25s ease-in-out;
   -webkit-transition: -webkit-transform .25s ease-in-out; }
   #main.hasCover.hasCoverCaption, #main.hasCover.hasCoverMetaOut {
@@ -9482,11 +9482,11 @@ figure.highlight,
 .hide {
   display: none; }
 
-@media only screen and (max-width: 399px) {
+@media only screen and (max-width: 349px) {
   .hide-xs {
     display: none; } }
 
-@media only screen and (min-width: 400px) and (max-width: 767px) {
+@media only screen and (min-width: 350px) and (max-width: 767px) {
   .hide-sm {
     display: none; } }
 
@@ -9747,7 +9747,8 @@ a.fancybox {
   position: relative;
   width: 100%;
   display: inline-block;
-  vertical-align: top; }
+  vertical-align: top;
+  background-color: #fff; }
   .post .post-header .post-title {
     margin: 0;
     word-break: initial;
@@ -9790,11 +9791,11 @@ a.fancybox {
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   .post .post-header .post-title {
-    font-size: 4.5rem; } }
+    font-size: 3.5rem; } }
 
 @media only screen and (min-width: 1024px) {
   .post .post-header .post-title {
-    font-size: 4.9rem; } }
+    font-size: 3.9rem; } }
 
 @media only screen and (min-width: 768px) {
   .post-content {
@@ -9835,7 +9836,7 @@ a.fancybox {
   .post-actions-wrap ul.post-action-share {
     width: 75%; } }
 
-@media only screen and (max-width: 399px) {
+@media only screen and (max-width: 349px) {
   .post-actions-wrap ul.post-action-nav {
     width: 35%; }
   .post-actions-wrap ul.post-action-share {
@@ -9912,13 +9913,13 @@ a.fancybox {
 .post-header-cover-caption {
   margin: 5px 0 50px 0; }
 
-@media only screen and (max-width: 399px) {
+@media only screen and (max-width: 349px) {
   .post-header-cover .post-header .post-title {
-    font-size: 4rem; } }
+    font-size: 3rem; } }
 
-@media only screen and (min-width: 400px) and (max-width: 767px) {
+@media only screen and (min-width: 350px) and (max-width: 767px) {
   .post-header-cover .post-header .post-title {
-    font-size: 4.5rem; } }
+    font-size: 3.5rem; } }
 
 @media only screen and (max-width: 767px) {
   .post-header-cover {
@@ -9935,7 +9936,7 @@ a.fancybox {
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   .post-header-cover .post-header .post-title {
-    font-size: 7rem;
+    font-size: 6rem;
     line-height: 1.3em; }
   .post-header-cover[data-behavior="1"], .post-header-cover[data-behavior="2"], .post-header-cover[data-behavior="3"] {
     width: calc(100% - 75px);
@@ -9957,7 +9958,7 @@ a.fancybox {
 
 @media only screen and (min-width: 1024px) and (max-width: 1279px) {
   .post-header-cover .post-header .post-title {
-    font-size: 7.7rem;
+    font-size: 6.7rem;
     line-height: 1.3em; }
   .post-header-cover[data-behavior="1"], .post-header-cover[data-behavior="2"] {
     width: calc(100% - 250px);
@@ -9982,7 +9983,7 @@ a.fancybox {
 
 @media only screen and (min-width: 1280px) {
   .post-header-cover .post-header .post-title {
-    font-size: 7.7rem;
+    font-size: 6.7rem;
     line-height: 1.3em; }
   .post-header-cover[data-behavior="1"] {
     width: calc(100% - 500px);
@@ -10016,14 +10017,17 @@ a.fancybox {
       transform: translate3d(75px, 0, 0); } }
 
 .postShorten-group .postShorten {
-  margin-top: 15px;
-  border-bottom: 1px solid #eef2f8; }
+  margin-top: 30px; }
 
 .postShorten {
   position: relative;
   width: 100%;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 15px;
   display: inline-block;
-  vertical-align: top; }
+  vertical-align: top;
+  background-color: white; }
   .postShorten .postShorten-thumbnailimg {
     overflow: hidden; }
   .postShorten .postShorten-header .postShorten-title {
@@ -10068,13 +10072,15 @@ a.fancybox {
   .postShorten .postShorten-content {
     margin-top: 25px; }
 
-@media only screen and (max-width: 399px) {
+@media only screen and (max-width: 349px) {
+  .postShorten .postShorten-wrap {
+    margin: 10px; }
   .postShorten .postShorten-thumbnailimg {
     display: none; }
     .postShorten .postShorten-thumbnailimg img {
       display: none; } }
 
-@media only screen and (min-width: 400px) {
+@media only screen and (min-width: 350px) {
   .postShorten.postShorten--thumbnailimg-right .postShorten-thumbnailimg {
     float: right;
     margin: 5px 0 30px 15px; }
@@ -10099,11 +10105,19 @@ a.fancybox {
   .postShorten.postShorten--thumbnailimg-left .postShorten-wrap {
     float: right;
     width: calc(100% - 150px - 20px); }
+  .postShorten.postShorten--thumbnailimg-top .postShorten-wrap {
+    margin: 20px; }
   .postShorten.postShorten--thumbnailimg-top .postShorten-thumbnailimg {
     margin-top: 5px; }
+    .postShorten.postShorten--thumbnailimg-top .postShorten-thumbnailimg img {
+      width: 100%;
+      height: auto;
+      max-height: 1000px;
+      object-fit: cover;
+      border-radius: 7px; }
   .postShorten.postShorten--thumbnailimg-bottom .postShorten-wrap {
     display: block;
-    width: 100%; }
+    margin: 20px; }
   .postShorten.postShorten--thumbnailimg-bottom .postShorten-excerpt > p {
     margin-bottom: 0; }
   .postShorten.postShorten--thumbnailimg-bottom .postShorten-thumbnailimg {
@@ -10114,7 +10128,7 @@ a.fancybox {
     .postShorten.postShorten--thumbnailimg-bottom .postShorten-thumbnailimg img {
       width: 100%;
       height: auto;
-      max-height: 250px;
+      max-height: 1000px;
       object-fit: cover; } }
 
 .share-options-bar {

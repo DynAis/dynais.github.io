@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg"},"articleBody":"完成\n统计时间\n色彩空间转换\n线性滤波器使用\n图像读取写入plus\n图像指针\n\n相关函数1234567gettickcount();//获取时钟mat.ptr&lt;uchar&gt;;//获取图像指针saturate_cast&lt;uchar&gt;;//防溢出函数filter2D;//线性滤波器imread();imwrite();cvtColer();//色彩空间转换\n\n实现使用卷积加强图像对比度\n笔记\n关于imread和imwrite的地址传入\n可以使用c++的string或cv自己的String实现,使用cin读入地址\n\n\n源12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697// OpenCV_Template.cpp : 此文件包含 \"main\" 函数。程序执行将在此处开始并结束。//#include &lt;iostream&gt;#include &lt;string&gt;#include&lt;opencv2\\opencv.hpp&gt;using namespace std;using namespace cv;void colChange(Mat &amp;iImg, Mat &amp;oImg) &#123;\t//色彩空间变换\tcvtColor(iImg, oImg, COLOR_BGR2GRAY);\treturn;&#125;void addFilter(Mat &amp;iImg, Mat &amp;oImg,const Mat filter) &#123;\t//添加线性滤波器\tfilter2D(iImg, oImg, -1, filter);\treturn;&#125;int main(int argc, char** argv)\t\t//实现读取摄像头内容输出加强对比度,并统计每帧处理时间&#123;\tVideoCapture cap(0);\tif (!cap.isOpened())\t\treturn -1;    \t//namedWindow(\"frame\", WINDOW_AUTOSIZE);\t//while(1)\t/*&#123;\t\tMat frameIn;\t\tcap &gt;&gt; frameIn;*/\t//\timshow(\"frame\", frameIn);\t//\tif (waitKey(30) &gt;= 0)\t//\t\tbreak;\t//&#125;        \tMat iImg;\tMat oImg;\tMat filter ;\tString path1;\tstring path2;\t\t//cin &gt;&gt; path1;\t//path2 = path1;\t//iImg = imread(path2);\t//if (iImg.empty()) &#123;\t//\tprintf(\"Can not read img...\");\t//\treturn -1;\t//&#125;\twhile (1) &#123;\t\tcap &gt;&gt; iImg;\t\toImg = Mat::zeros(iImg.size(), iImg.type());\t//创建零矩阵\t\tfilter = (Mat_&lt;char&gt;(3, 3) &lt;&lt; 0, -1, 0, -1, 5, -1, 0, -1, 0);\t//定义卷积核\t\tdouble tCount = 0;\t\ttCount = getTickCount();\t\t//colChange(iImg, oImg);\t\taddFilter(iImg, oImg, filter);\t\t//iImg = imread(\"Test.jpg\", IMREAD_GRAYSCALE);\t\t//oImg = iImg;\t\tdouble tSum = 0;\t\ttSum = (getTickCount() - tCount) / getTickFrequency();\t\tprintf(\"Time consume %.4f\", tSum);\t\t//imwrite(\"layout.jpg\", oImg);\t\tnamedWindow(\"imput\", WINDOW_AUTOSIZE);\t\timshow(\"imput\", iImg);\t\tnamedWindow(\"layout\", WINDOW_AUTOSIZE);\t\timshow(\"layout\", oImg);\t\tif (waitKey(30) &gt;= 0) &#123;\t\t\tbreak;\t\t&#125;;\t&#125;\treturn 0;&#125;// 运行程序: Ctrl + F5 或调试 &gt;“开始执行(不调试)”菜单// 调试程序: F5 或调试 &gt;“开始调试”菜单// 入门使用技巧: //   1. 使用解决方案资源管理器窗口添加/管理文件//   2. 使用团队资源管理器窗口连接到源代码管理//   3. 使用输出窗口查看生成输出和其他消息//   4. 使用错误列表窗口查看错误//   5. 转到“项目”&gt;“添加新项”以创建新的代码文件，或转到“项目”&gt;“添加现有项”以将现有代码文件添加到项目//   6. 将来，若要再次打开此项目，请转到“文件”&gt;“打开”&gt;“项目”并选择 .sln 文件\n相关无\n本文永久链接： http://dynais.xyz/posts/a5f2a55c.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-01-21T00:00:00+08:00","dateModified":"2020-07-23T21:55:40+08:00","datePublished":"2020-01-21T00:00:00+08:00","description":"完成\n统计时间\n色彩空间转换\n线性滤波器使用\n图像读取写入plus\n图像指针\n\n相关函数1234567gettickcount();//获取时钟mat.ptr&lt;uchar&gt;;//获取图像指针saturate_cast&lt;uchar&gt;;//防溢出函数filter2D;//线性滤波器imread();imwrite();cvtColer();//色彩空间转换","headline":"OpenCV学习笔记03-线性滤波器-色彩空间转换","image":["https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png","https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/a5f2a55c.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg","logo":{"@type":"ImageObject","url":"logo.jpg"}},"url":"../http:/dynais.xyz/posts/a5f2a55c.html","keywords":"open-cv, cpp, 数字图像处理","thumbnailUrl":"https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg"},"articleBody":"完成\n统计时间\n色彩空间转换\n线性滤波器使用\n图像读取写入plus\n图像指针\n\n相关函数1234567gettickcount();//获取时钟mat.ptr&lt;uchar&gt;;//获取图像指针saturate_cast&lt;uchar&gt;;//防溢出函数filter2D;//线性滤波器imread();imwrite();cvtColer();//色彩空间转换\n\n实现使用卷积加强图像对比度\n笔记\n关于imread和imwrite的地址传入\n可以使用c++的string或cv自己的String实现,使用cin读入地址\n\n\n源12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697// OpenCV_Template.cpp : 此文件包含 \"main\" 函数。程序执行将在此处开始并结束。//#include &lt;iostream&gt;#include &lt;string&gt;#include&lt;opencv2\\opencv.hpp&gt;using namespace std;using namespace cv;void colChange(Mat &amp;iImg, Mat &amp;oImg) &#123;\t//色彩空间变换\tcvtColor(iImg, oImg, COLOR_BGR2GRAY);\treturn;&#125;void addFilter(Mat &amp;iImg, Mat &amp;oImg,const Mat filter) &#123;\t//添加线性滤波器\tfilter2D(iImg, oImg, -1, filter);\treturn;&#125;int main(int argc, char** argv)\t\t//实现读取摄像头内容输出加强对比度,并统计每帧处理时间&#123;\tVideoCapture cap(0);\tif (!cap.isOpened())\t\treturn -1;    \t//namedWindow(\"frame\", WINDOW_AUTOSIZE);\t//while(1)\t/*&#123;\t\tMat frameIn;\t\tcap &gt;&gt; frameIn;*/\t//\timshow(\"frame\", frameIn);\t//\tif (waitKey(30) &gt;= 0)\t//\t\tbreak;\t//&#125;        \tMat iImg;\tMat oImg;\tMat filter ;\tString path1;\tstring path2;\t\t//cin &gt;&gt; path1;\t//path2 = path1;\t//iImg = imread(path2);\t//if (iImg.empty()) &#123;\t//\tprintf(\"Can not read img...\");\t//\treturn -1;\t//&#125;\twhile (1) &#123;\t\tcap &gt;&gt; iImg;\t\toImg = Mat::zeros(iImg.size(), iImg.type());\t//创建零矩阵\t\tfilter = (Mat_&lt;char&gt;(3, 3) &lt;&lt; 0, -1, 0, -1, 5, -1, 0, -1, 0);\t//定义卷积核\t\tdouble tCount = 0;\t\ttCount = getTickCount();\t\t//colChange(iImg, oImg);\t\taddFilter(iImg, oImg, filter);\t\t//iImg = imread(\"Test.jpg\", IMREAD_GRAYSCALE);\t\t//oImg = iImg;\t\tdouble tSum = 0;\t\ttSum = (getTickCount() - tCount) / getTickFrequency();\t\tprintf(\"Time consume %.4f\", tSum);\t\t//imwrite(\"layout.jpg\", oImg);\t\tnamedWindow(\"imput\", WINDOW_AUTOSIZE);\t\timshow(\"imput\", iImg);\t\tnamedWindow(\"layout\", WINDOW_AUTOSIZE);\t\timshow(\"layout\", oImg);\t\tif (waitKey(30) &gt;= 0) &#123;\t\t\tbreak;\t\t&#125;;\t&#125;\treturn 0;&#125;// 运行程序: Ctrl + F5 或调试 &gt;“开始执行(不调试)”菜单// 调试程序: F5 或调试 &gt;“开始调试”菜单// 入门使用技巧: //   1. 使用解决方案资源管理器窗口添加/管理文件//   2. 使用团队资源管理器窗口连接到源代码管理//   3. 使用输出窗口查看生成输出和其他消息//   4. 使用错误列表窗口查看错误//   5. 转到“项目”&gt;“添加新项”以创建新的代码文件，或转到“项目”&gt;“添加现有项”以将现有代码文件添加到项目//   6. 将来，若要再次打开此项目，请转到“文件”&gt;“打开”&gt;“项目”并选择 .sln 文件\n相关无\n本文永久链接： http://dynais.xyz/posts/a5f2a55c.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-01-21T00:00:00+08:00","dateModified":"2020-07-24T17:00:30+08:00","datePublished":"2020-01-21T00:00:00+08:00","description":"完成\n统计时间\n色彩空间转换\n线性滤波器使用\n图像读取写入plus\n图像指针\n\n相关函数1234567gettickcount();//获取时钟mat.ptr&lt;uchar&gt;;//获取图像指针saturate_cast&lt;uchar&gt;;//防溢出函数filter2D;//线性滤波器imread();imwrite();cvtColer();//色彩空间转换","headline":"OpenCV学习笔记03-线性滤波器-色彩空间转换","image":["https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200724165943.png","https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/a5f2a55c.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg","logo":{"@type":"ImageObject","url":"logo.jpg"}},"url":"../http:/dynais.xyz/posts/a5f2a55c.html","keywords":"open-cv, cpp, 数字图像处理","thumbnailUrl":"https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200724165943.png"}</script>
     <meta name="description" content="完成 统计时间 色彩空间转换 线性滤波器使用 图像读取写入plus 图像指针  相关函数1234567gettickcount();&#x2F;&#x2F;获取时钟mat.ptr&lt;uchar&gt;;&#x2F;&#x2F;获取图像指针saturate_cast&lt;uchar&gt;;&#x2F;&#x2F;防溢出函数filter2D;&#x2F;&#x2F;线性滤波器imread();imwrite();cvtColer();&#x2F;&#x2F;色彩空间转换">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="OpenCV学习笔记03-线性滤波器-色彩空间转换">
@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723204329.png">
 <meta property="article:published_time" content="2020-01-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-23T13:55:40.093Z">
+<meta property="article:modified_time" content="2020-07-24T09:00:30.462Z">
 <meta property="article:author" content="DynAis">
 <meta property="article:tag" content="opencv">
 <meta property="article:tag" content="线性滤波器">
@@ -46,8 +46,8 @@
         <meta property="og:image" content="http://dynais.xyz../assets/images/logo.jpg"/>
     
     
-        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723175101.png"/>
+        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200724165943.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200724165943.png"/>
     
     
         <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"/>
@@ -56,7 +56,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="../assets/css/style-brvhrvtflf2wq8qqogs2rpwzwx7o3848ldyamp3mpmrcunv6xf8zlczmssst.min.css">
+<link rel="stylesheet" href="../assets/css/style-ve4tzlvq637981glz0zeaseyjok0hz6y1fmf90lunmxkeaeerhobg3zwffl4.min.css">
 
     <!--STYLES END-->
     
@@ -93,7 +93,7 @@
         
     
 
-<header id="header" data-behavior="6">
+<header id="header" data-behavior="5">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -126,7 +126,7 @@
         
     
 
-<nav id="sidebar" data-behavior="6">
+<nav id="sidebar" data-behavior="5">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -280,7 +280,7 @@
                     text-center
                     post-header-cover--partial"
              style="background-image:url('https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg');"
-             data-behavior="6">
+             data-behavior="5">
             
                 <div class="post-header main-content-wrap text-center">
     
@@ -310,7 +310,7 @@
             
         </div>
 
-            <div id="main" data-behavior="6"
+            <div id="main" data-behavior="5"
                  class="hasCover
                         hasCoverMetaIn
                         ">
@@ -376,9 +376,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="21afdccc.html"
-                    data-tooltip="CMD控制台常用指令"
-                    aria-label="下一篇: CMD控制台常用指令"
+                    href="db26335f.html"
+                    data-tooltip="OpenCV学习笔记02-图像读取"
+                    aria-label="下一篇: OpenCV学习笔记02-图像读取"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
@@ -469,7 +469,7 @@
 
             </div>
             
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="6">
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
                     <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
@@ -492,9 +492,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="21afdccc.html"
-                    data-tooltip="CMD控制台常用指令"
-                    aria-label="下一篇: CMD控制台常用指令"
+                    href="db26335f.html"
+                    data-tooltip="OpenCV学习笔记02-图像读取"
+                    aria-label="下一篇: OpenCV学习笔记02-图像读取"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
@@ -566,7 +566,7 @@
 
                 </div>
                 
-    <div id="share-options-bar" class="share-options-bar" data-behavior="6">
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
         <i id="btn-close-shareoptions" class="fa fa-times"></i>
         <ul class="share-options">
             
@@ -642,10 +642,10 @@
 
         
         
-<div id="cover" style="background-image:url('../assets/images/cover-jk.jpg');"></div>
+<div id="cover" style="background-image:url('../assets/images/cover-gray.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="../assets/js/script-owukbdionlku08hzxxlav2l6x4ywgtw7qdcz95mqyrapq4mwlk90m4xav3n0.min.js"></script>
+<script src="../assets/js/script-y4yimvxnizibpxpohtvnbxkmgy5ye4sd2bppfrzd3mrbdfupb28fdekn1rc1.min.js"></script>
 
 <!--SCRIPTS END-->
 

@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg"},"articleBody":"\n项目进度\n实现了番茄钟最基本的倒计时功能\n实现了按钮交互的功能\n\n\n一. 重要代码模块1. 显示时间与计算时间的转换\n实现倒计时时的一个问题是: 显示的时间格式需要是”XX:XX”, 但是为了方便计算, 需要把这个格式的时间转化为秒数的形式, 这就需要一个显示时间与计算时间互相转换的模块\n12345678910111213141516171819# 显示时间转秒数 \"XX:XX\" -&gt; floutdef tomato2sec(tomato):    sec = int(tomato[3:])    sec = sec + 60 * int(tomato[:2])    return sec# 秒数转显示时间 flout -&gt; \"XX:XX\"def sec2tomato(sec):    t = []    t.append(str(int(sec / 60)))    t.append(str(int(sec % 60)))    for i in range(0, len(t)):        if len(t[i]) &lt; 2:            t[i] = \"0\" + t[i]    tomato = \":\".join(t)    return tomato\n2. 获取系统时间获取系统时间在python里我使用的是time包, 还有一个相似的是datetime.time包, 注意不要搞混了\n1import time\n倒计时的基本思路是点击开始按钮时获取一个开启的系统时间, 然后用户会有一个给定的目标时间, 然后点按钮以后会进入一个循环, 知道计时结束才会退出, 在循环里面一直获取系统时间和其实时间运算就得到了已经过了多久, 再和目标时间判断就行了\n1t_start &#x3D; time.time()\n这个语句是获取以秒数显示的当前系统时间, 用于运算会比较方便\n3. 页面元素的交互简单的页面元素交互可以在Qt里直接实现\n原理基本上是, 按下按钮之类的东西, 会发出一个信号\nui_window.button_start.clicked这个信号就是ui_window这个窗口下button_start按钮发出的点击信号, 使用connect绑定一个slot之后\n1ui_window.button_start.clicked.connect(start_a_tomato)\n在这里的意思就是: 单击这个按钮以后执行start_a_tomato函数, 注意函数名在这里不带括号\n二. 已解决的问题1. 倒计时使用time.sleep()效果不好的问题最开始的思路里, 用户点击开始后进入一个循环, 这个循环每次执行一秒, 然后让页面更新一次, 用到的函数是这个\n12import timetime.sleep(1)\t#控制系统空置一秒\n但是问题就是, 和单片机上不能乱用delay()一样, 使用sleep()会使程序整个无法响应, 导致拖拽手感奇怪, 且拖拽时倒计时直接停止\n然后换了思路, 直接不断读取系统时间实时刷新, 解决了拖拽手感的问题, 但拖拽时倒计时还是会停止, 不过放下窗口后时间并不会出错, 就先不管了\n2. 改变窗口元素但窗口显示不刷新的问题最开始在循环里改变了元素, 但发现直到循环退出窗口才改变了显示, 但使用print输出又没什么问题, 于是想可能是窗口刷新的问题, 最后的解决办法就一条指令\n1QtWidgets.QApplication.processEvents()\n让窗口刷新\n三. 待解决的问题1. 拖动窗口时时间不走动的问题暂时没有思路\n2. Qt里写了中文uic()命令就无法成功执行的问题应该是编码不统一的问题, 但是改了Qt的编码几次还是不行, 暂时先用英文顶着, 看看以后有没有解决办法\n暂时没有思路\n四. 下一阶段的目标\n加入自己指定时间的模块\n加入保存用户设置的文件\n在倒计时结束时尝试发出通知\n\n本文永久链接： http://dynais.xyz/posts/378efd60.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-04-10T00:00:00+08:00","dateModified":"2020-07-23T21:02:51+08:00","datePublished":"2020-04-10T00:00:00+08:00","description":"\n项目进度\n实现了番茄钟最基本的倒计时功能\n实现了按钮交互的功能\n\n\n一. 重要代码模块1. 显示时间与计算时间的转换","headline":"番茄钟倒计时模块的基本实现","image":["https://raw.githubusercontent.com/DynAis/img-hub/master/img/tomato.png","https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/378efd60.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg","logo":{"@type":"ImageObject","url":"logo.jpg"}},"url":"../http:/dynais.xyz/posts/378efd60.html","keywords":"Qt, Python","thumbnailUrl":"https://raw.githubusercontent.com/DynAis/img-hub/master/img/tomato.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg"},"articleBody":"\n项目进度\n实现了番茄钟最基本的倒计时功能\n实现了按钮交互的功能\n\n\n一. 重要代码模块1. 显示时间与计算时间的转换\n实现倒计时时的一个问题是: 显示的时间格式需要是”XX:XX”, 但是为了方便计算, 需要把这个格式的时间转化为秒数的形式, 这就需要一个显示时间与计算时间互相转换的模块\n12345678910111213141516171819# 显示时间转秒数 \"XX:XX\" -&gt; floutdef tomato2sec(tomato):    sec = int(tomato[3:])    sec = sec + 60 * int(tomato[:2])    return sec# 秒数转显示时间 flout -&gt; \"XX:XX\"def sec2tomato(sec):    t = []    t.append(str(int(sec / 60)))    t.append(str(int(sec % 60)))    for i in range(0, len(t)):        if len(t[i]) &lt; 2:            t[i] = \"0\" + t[i]    tomato = \":\".join(t)    return tomato\n2. 获取系统时间获取系统时间在python里我使用的是time包, 还有一个相似的是datetime.time包, 注意不要搞混了\n1import time\n倒计时的基本思路是点击开始按钮时获取一个开启的系统时间, 然后用户会有一个给定的目标时间, 然后点按钮以后会进入一个循环, 知道计时结束才会退出, 在循环里面一直获取系统时间和其实时间运算就得到了已经过了多久, 再和目标时间判断就行了\n1t_start &#x3D; time.time()\n这个语句是获取以秒数显示的当前系统时间, 用于运算会比较方便\n3. 页面元素的交互简单的页面元素交互可以在Qt里直接实现\n原理基本上是, 按下按钮之类的东西, 会发出一个信号\nui_window.button_start.clicked这个信号就是ui_window这个窗口下button_start按钮发出的点击信号, 使用connect绑定一个slot之后\n1ui_window.button_start.clicked.connect(start_a_tomato)\n在这里的意思就是: 单击这个按钮以后执行start_a_tomato函数, 注意函数名在这里不带括号\n二. 已解决的问题1. 倒计时使用time.sleep()效果不好的问题最开始的思路里, 用户点击开始后进入一个循环, 这个循环每次执行一秒, 然后让页面更新一次, 用到的函数是这个\n12import timetime.sleep(1)\t#控制系统空置一秒\n但是问题就是, 和单片机上不能乱用delay()一样, 使用sleep()会使程序整个无法响应, 导致拖拽手感奇怪, 且拖拽时倒计时直接停止\n然后换了思路, 直接不断读取系统时间实时刷新, 解决了拖拽手感的问题, 但拖拽时倒计时还是会停止, 不过放下窗口后时间并不会出错, 就先不管了\n2. 改变窗口元素但窗口显示不刷新的问题最开始在循环里改变了元素, 但发现直到循环退出窗口才改变了显示, 但使用print输出又没什么问题, 于是想可能是窗口刷新的问题, 最后的解决办法就一条指令\n1QtWidgets.QApplication.processEvents()\n让窗口刷新\n三. 待解决的问题1. 拖动窗口时时间不走动的问题暂时没有思路\n2. Qt里写了中文uic()命令就无法成功执行的问题应该是编码不统一的问题, 但是改了Qt的编码几次还是不行, 暂时先用英文顶着, 看看以后有没有解决办法\n暂时没有思路\n四. 下一阶段的目标\n加入自己指定时间的模块\n加入保存用户设置的文件\n在倒计时结束时尝试发出通知\n\n本文永久链接： http://dynais.xyz/posts/378efd60.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-04-10T00:00:00+08:00","dateModified":"2020-07-24T16:45:51+08:00","datePublished":"2020-04-10T00:00:00+08:00","description":"\n项目进度\n实现了番茄钟最基本的倒计时功能\n实现了按钮交互的功能\n\n\n一. 重要代码模块1. 显示时间与计算时间的转换","headline":"番茄钟倒计时模块的基本实现","image":["https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200724164429.png","https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/378efd60.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg","logo":{"@type":"ImageObject","url":"logo.jpg"}},"url":"../http:/dynais.xyz/posts/378efd60.html","keywords":"Qt, Python","thumbnailUrl":"https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200724164429.png"}</script>
     <meta name="description" content="项目进度 实现了番茄钟最基本的倒计时功能 实现了按钮交互的功能   一. 重要代码模块1. 显示时间与计算时间的转换">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="番茄钟倒计时模块的基本实现">
@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/image-20200409231248203.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723204329.png">
 <meta property="article:published_time" content="2020-04-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-23T13:02:51.657Z">
+<meta property="article:modified_time" content="2020-07-24T08:45:51.909Z">
 <meta property="article:author" content="DynAis">
 <meta property="article:tag" content="Qt">
 <meta property="article:tag" content="Python">
@@ -45,8 +45,8 @@
         <meta property="og:image" content="http://dynais.xyz../assets/images/logo.jpg"/>
     
     
-        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/tomato.png"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/tomato.png"/>
+        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200724164429.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200724164429.png"/>
     
     
         <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"/>
@@ -55,7 +55,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="../assets/css/style-brvhrvtflf2wq8qqogs2rpwzwx7o3848ldyamp3mpmrcunv6xf8zlczmssst.min.css">
+<link rel="stylesheet" href="../assets/css/style-ve4tzlvq637981glz0zeaseyjok0hz6y1fmf90lunmxkeaeerhobg3zwffl4.min.css">
 
     <!--STYLES END-->
     
@@ -92,7 +92,7 @@
         
     
 
-<header id="header" data-behavior="6">
+<header id="header" data-behavior="5">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -125,7 +125,7 @@
         
     
 
-<nav id="sidebar" data-behavior="6">
+<nav id="sidebar" data-behavior="5">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -279,7 +279,7 @@
                     text-center
                     post-header-cover--partial"
              style="background-image:url('https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg');"
-             data-behavior="6">
+             data-behavior="5">
             
                 <div class="post-header main-content-wrap text-center">
     
@@ -309,7 +309,7 @@
             
         </div>
 
-            <div id="main" data-behavior="6"
+            <div id="main" data-behavior="5"
                  class="hasCover
                         hasCoverMetaIn
                         ">
@@ -485,7 +485,7 @@
 
             </div>
             
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="6">
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
                     <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
@@ -582,7 +582,7 @@
 
                 </div>
                 
-    <div id="share-options-bar" class="share-options-bar" data-behavior="6">
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
         <i id="btn-close-shareoptions" class="fa fa-times"></i>
         <ul class="share-options">
             
@@ -658,10 +658,10 @@
 
         
         
-<div id="cover" style="background-image:url('../assets/images/cover-jk.jpg');"></div>
+<div id="cover" style="background-image:url('../assets/images/cover-gray.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="../assets/js/script-owukbdionlku08hzxxlav2l6x4ywgtw7qdcz95mqyrapq4mwlk90m4xav3n0.min.js"></script>
+<script src="../assets/js/script-y4yimvxnizibpxpohtvnbxkmgy5ye4sd2bppfrzd3mrbdfupb28fdekn1rc1.min.js"></script>
 
 <!--SCRIPTS END-->
 

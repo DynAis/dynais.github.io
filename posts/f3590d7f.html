@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg"},"articleBody":"\n项目进度\n加入了自己指定时间的模块\n\n\n\n加入保存用户设置的文件config.json\n在倒计时结束时发出铃声通知\n完善了除统计和To Do List外的Menu界面\n\n\n\n修正了部分bug\n\n\n一. 重要代码模块1. 打包程序成exe文件pyInstaller模块pyInstaller是python的一个库, 使用它可以很方便的打包文件成为exe可执行文件\n要使用这个库, 首先在Pycharm里安装相应的环境, 之后新建一个.py文件, 比如我的:\n\n在里面输入代码(以这次工程为例):\n12345import  osif __name__ == '__main__':    from PyInstaller.__main__ import run    opts=['main.py','-w','-F','--icon=image/tomato.ico']    run(opts)\n其中主要注意opts=[&#39;main.py&#39;,&#39;-w&#39;,&#39;-F&#39;,&#39;--icon=image/tomato.ico&#39;]这一句\nmain.py是主文件, 是进程的入口\n-w这个参数使编译出来的文件时exe+文件的形式, 去掉这个参数编译出来是一个整体的exe文件\n-F参数强制编译, 也就是说本次会覆盖上次的文件, 我觉得加上比较好\n最后--icon=image/tomato.ico是我指定的exe文件图标, 需要是一个ico文件\n直接运行.py脚本就可以在/dist里得到编译的文件\n资源文件夹问题本次制作番茄钟使用到的资源文件, 比如配置文件, 或者是.MP3的铃声文件, pyInstaller在编译的时候都是不会编译的, 也就是说需要自己将文件复制到产生出来的目录下, 不然程序会报错无法运行\n2. 读取和写入配置文件使用Json作为配置文件Json是一种常见的语言, 其中一种用法就是作为书写配置文件的语言, 虽然有人说它不适合作为配置文件语言, 但是小项目用用还是没有问题的\nJson配置文件以{开头, 以}结束, 大括号在Json里代表一个对象, 具有一个键与一个值, 用:对应,\n可以理解为Python里的字典(其实就是)\n用Python的语法来看Json没有一点问题\n如\n1&#123;\"tomato\": &#123;\"t_target\": \"00:05\", \"t_break\": \"00:05\"&#125;&#125;\n值得注意的是Json对语法的要求非常严格, 并且不可以有注释\nPython3读取Json文件Python官方内置了Json的使用库\n1234567891011import json#假设config是一个字典# Json读取with open(\"config.json\", \"r\") as c:    config = json.load(c)    # Json写入with open(\"config.json\", \"w\") as c:    json.dump(config, c)\n读取文件以字典形式展现, 写入的变量也需要是一个字典\n3. 在对象方法定义里直接调用具体的实例发现在对象的方法定义里, 可以直接调用看起来还没有定义的实例, 比如\n12345class  BreakWindow(QtWidgets.QDialog):\t...    def start_a_new_tomato(self):        ...        window.start_a_tomato()\n在这里我定义了BreakWindow类, 方法里调用了window.start_a_tomato(), window是另一个类, 并且在后文才定义(当然是在方法调用之前)\n4. 循环不退出? - 使用flag标志的重要性因为循环不退出而产生bug已经不知道多少次了, 以后注意在书写循环的时候一定要提前想好尽可能全的情况, 并且写好flag, 循环不在该退的时候退真的很讨厌\n二. 已解决的问题1. 在Python中播放声音/音乐 - playsound包在环境里加入playsound包\n调用使用\n123from playsound import playsoundplaysound(\"sound/XXXX.mp3\")\n真的是非常简单的API了\n但是缺点也是太简单了, 几乎没有其他的可操作选项了, 可以看的出来作者基本也是没有什么经验的\n还有一个就是响铃的速度好像不是很快\n2. 窗口关闭事件信号 - 重写closeEvent()方法在窗口关闭时, 会执行.closeEvent()方法, 通过重写这个方法, 可以达到检测窗口关闭的效果\n12def closeEvent(self, event):\tevent.accept()\n3. 验证窗口是否在关闭 - isHidden()三. 待解决的问题1. 拖动窗口时时间不走动的问题暂时没有思路\n2. Qt里写了中文uic()命令就无法成功执行的问题暂时没有思路\n3. 进程无法完全退出问题 -&gt; window.close()效果问题 -&gt; 响铃bug4. 占用cpu过高问题猜测是在循环时关闭窗口导致循环还在后台运行, 没有正常退出的问题\n但怎么说这个占用也太夸张了吧就算是我有个循环\n\n你一个循环凭什么吃掉我1/4个CPU啊\n5. 交互逻辑混乱问题完全是我的锅, 因为各种小bug, 以及前期准备不足, 经验不到位, 结果使得各种循环判断, 各种地方交错调用, 命名没规范之类…\n导致出现大问题无从下手, 如果要进一步给软件加入功能, 最起码的, 让他“能用”, 是肯定要重构代码的\n四. 下一阶段的目标 代码重构五. 总结虽然程序交互有很大进步, 但还是可以看出我的经验不足, 前期准备缺乏, 导致结构混乱, 后期出现Bug无从下手\n经过这次教训, 我知道了前期纸上的准备和写代码同样重要, 写代码和我整理电脑一样, 都不可以把东西随意乱放, 不然图一时之快只会给以后的自己带来麻烦\n虽然标题上写着“又不是不能用”, 但CPU占用如此之高, 进程无法干净退出, 无故响铃的软件, 确实就是“不能用”的\n本文永久链接： http://dynais.xyz/posts/f3590d7f.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-04-12T00:00:00+08:00","dateModified":"2020-07-23T21:02:51+08:00","datePublished":"2020-04-12T00:00:00+08:00","description":"\n项目进度\n加入了自己指定时间的模块\n\n\n\n加入保存用户设置的文件config.json\n在倒计时结束时发出铃声通知\n完善了除统计和To Do List外的Menu界面\n\n\n\n修正了部分bug\n","headline":"又不是不能用, 番茄钟基本功能建设完毕","image":["https://raw.githubusercontent.com/DynAis/img-hub/master/img/tomato.png","https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/f3590d7f.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg","logo":{"@type":"ImageObject","url":"logo.jpg"}},"url":"../http:/dynais.xyz/posts/f3590d7f.html","keywords":"Qt, Python","thumbnailUrl":"https://raw.githubusercontent.com/DynAis/img-hub/master/img/tomato.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg"},"articleBody":"\n项目进度\n加入了自己指定时间的模块\n\n\n\n加入保存用户设置的文件config.json\n在倒计时结束时发出铃声通知\n完善了除统计和To Do List外的Menu界面\n\n\n\n修正了部分bug\n\n\n一. 重要代码模块1. 打包程序成exe文件pyInstaller模块pyInstaller是python的一个库, 使用它可以很方便的打包文件成为exe可执行文件\n要使用这个库, 首先在Pycharm里安装相应的环境, 之后新建一个.py文件, 比如我的:\n\n在里面输入代码(以这次工程为例):\n12345import  osif __name__ == '__main__':    from PyInstaller.__main__ import run    opts=['main.py','-w','-F','--icon=image/tomato.ico']    run(opts)\n其中主要注意opts=[&#39;main.py&#39;,&#39;-w&#39;,&#39;-F&#39;,&#39;--icon=image/tomato.ico&#39;]这一句\nmain.py是主文件, 是进程的入口\n-w这个参数使编译出来的文件时exe+文件的形式, 去掉这个参数编译出来是一个整体的exe文件\n-F参数强制编译, 也就是说本次会覆盖上次的文件, 我觉得加上比较好\n最后--icon=image/tomato.ico是我指定的exe文件图标, 需要是一个ico文件\n直接运行.py脚本就可以在/dist里得到编译的文件\n资源文件夹问题本次制作番茄钟使用到的资源文件, 比如配置文件, 或者是.MP3的铃声文件, pyInstaller在编译的时候都是不会编译的, 也就是说需要自己将文件复制到产生出来的目录下, 不然程序会报错无法运行\n2. 读取和写入配置文件使用Json作为配置文件Json是一种常见的语言, 其中一种用法就是作为书写配置文件的语言, 虽然有人说它不适合作为配置文件语言, 但是小项目用用还是没有问题的\nJson配置文件以{开头, 以}结束, 大括号在Json里代表一个对象, 具有一个键与一个值, 用:对应,\n可以理解为Python里的字典(其实就是)\n用Python的语法来看Json没有一点问题\n如\n1&#123;\"tomato\": &#123;\"t_target\": \"00:05\", \"t_break\": \"00:05\"&#125;&#125;\n值得注意的是Json对语法的要求非常严格, 并且不可以有注释\nPython3读取Json文件Python官方内置了Json的使用库\n1234567891011import json#假设config是一个字典# Json读取with open(\"config.json\", \"r\") as c:    config = json.load(c)    # Json写入with open(\"config.json\", \"w\") as c:    json.dump(config, c)\n读取文件以字典形式展现, 写入的变量也需要是一个字典\n3. 在对象方法定义里直接调用具体的实例发现在对象的方法定义里, 可以直接调用看起来还没有定义的实例, 比如\n12345class  BreakWindow(QtWidgets.QDialog):\t...    def start_a_new_tomato(self):        ...        window.start_a_tomato()\n在这里我定义了BreakWindow类, 方法里调用了window.start_a_tomato(), window是另一个类, 并且在后文才定义(当然是在方法调用之前)\n4. 循环不退出? - 使用flag标志的重要性因为循环不退出而产生bug已经不知道多少次了, 以后注意在书写循环的时候一定要提前想好尽可能全的情况, 并且写好flag, 循环不在该退的时候退真的很讨厌\n二. 已解决的问题1. 在Python中播放声音/音乐 - playsound包在环境里加入playsound包\n调用使用\n123from playsound import playsoundplaysound(\"sound/XXXX.mp3\")\n真的是非常简单的API了\n但是缺点也是太简单了, 几乎没有其他的可操作选项了, 可以看的出来作者基本也是没有什么经验的\n还有一个就是响铃的速度好像不是很快\n2. 窗口关闭事件信号 - 重写closeEvent()方法在窗口关闭时, 会执行.closeEvent()方法, 通过重写这个方法, 可以达到检测窗口关闭的效果\n12def closeEvent(self, event):\tevent.accept()\n3. 验证窗口是否在关闭 - isHidden()三. 待解决的问题1. 拖动窗口时时间不走动的问题暂时没有思路\n2. Qt里写了中文uic()命令就无法成功执行的问题暂时没有思路\n3. 进程无法完全退出问题 -&gt; window.close()效果问题 -&gt; 响铃bug4. 占用cpu过高问题猜测是在循环时关闭窗口导致循环还在后台运行, 没有正常退出的问题\n但怎么说这个占用也太夸张了吧就算是我有个循环\n\n你一个循环凭什么吃掉我1/4个CPU啊\n5. 交互逻辑混乱问题完全是我的锅, 因为各种小bug, 以及前期准备不足, 经验不到位, 结果使得各种循环判断, 各种地方交错调用, 命名没规范之类…\n导致出现大问题无从下手, 如果要进一步给软件加入功能, 最起码的, 让他“能用”, 是肯定要重构代码的\n四. 下一阶段的目标 代码重构五. 总结虽然程序交互有很大进步, 但还是可以看出我的经验不足, 前期准备缺乏, 导致结构混乱, 后期出现Bug无从下手\n经过这次教训, 我知道了前期纸上的准备和写代码同样重要, 写代码和我整理电脑一样, 都不可以把东西随意乱放, 不然图一时之快只会给以后的自己带来麻烦\n虽然标题上写着“又不是不能用”, 但CPU占用如此之高, 进程无法干净退出, 无故响铃的软件, 确实就是“不能用”的\n本文永久链接： http://dynais.xyz/posts/f3590d7f.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-04-12T00:00:00+08:00","dateModified":"2020-07-24T16:47:23+08:00","datePublished":"2020-04-12T00:00:00+08:00","description":"\n项目进度\n加入了自己指定时间的模块\n\n\n\n加入保存用户设置的文件config.json\n在倒计时结束时发出铃声通知\n完善了除统计和To Do List外的Menu界面\n\n\n\n修正了部分bug\n","headline":"又不是不能用, 番茄钟基本功能建设完毕","image":["https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200724164429.png","https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpghub/master/img/20200724164133.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/f3590d7f.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"logo.jpg","logo":{"@type":"ImageObject","url":"logo.jpg"}},"url":"../http:/dynais.xyz/posts/f3590d7f.html","keywords":"Qt, Python","thumbnailUrl":"https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200724164429.png"}</script>
     <meta name="description" content="项目进度 加入了自己指定时间的模块    加入保存用户设置的文件config.json 在倒计时结束时发出铃声通知 完善了除统计和To Do List外的Menu界面    修正了部分bug">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="又不是不能用, 番茄钟基本功能建设完毕">
@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/image-20200412164033369.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723204329.png">
 <meta property="article:published_time" content="2020-04-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-23T13:02:51.659Z">
+<meta property="article:modified_time" content="2020-07-24T08:47:23.465Z">
 <meta property="article:author" content="DynAis">
 <meta property="article:tag" content="Qt">
 <meta property="article:tag" content="Python">
@@ -48,17 +48,17 @@
         <meta property="og:image" content="http://dynais.xyz../assets/images/logo.jpg"/>
     
     
-        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/tomato.png"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/tomato.png"/>
+        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200724164429.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200724164429.png"/>
     
     
-        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg"/>
+        <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpghub/master/img/20200724164133.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpghub/master/img/20200724164133.png"/>
     
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="../assets/css/style-brvhrvtflf2wq8qqogs2rpwzwx7o3848ldyamp3mpmrcunv6xf8zlczmssst.min.css">
+<link rel="stylesheet" href="../assets/css/style-ve4tzlvq637981glz0zeaseyjok0hz6y1fmf90lunmxkeaeerhobg3zwffl4.min.css">
 
     <!--STYLES END-->
     
@@ -95,7 +95,7 @@
         
     
 
-<header id="header" data-behavior="6">
+<header id="header" data-behavior="5">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -128,7 +128,7 @@
         
     
 
-<nav id="sidebar" data-behavior="6">
+<nav id="sidebar" data-behavior="5">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -281,8 +281,8 @@
         <div class="post-header-cover
                     text-center
                     post-header-cover--partial"
-             style="background-image:url('https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpg');"
-             data-behavior="6">
+             style="background-image:url('https://raw.githubusercontent.com/DynAis/img-hub/master/img/title-cover-ver.1.jpghub/master/img/20200724164133.png');"
+             data-behavior="5">
             
                 <div class="post-header main-content-wrap text-center">
     
@@ -312,7 +312,7 @@
             
         </div>
 
-            <div id="main" data-behavior="6"
+            <div id="main" data-behavior="5"
                  class="hasCover
                         hasCoverMetaIn
                         ">
@@ -514,7 +514,7 @@
 
             </div>
             
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="6">
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
                     <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
@@ -611,7 +611,7 @@
 
                 </div>
                 
-    <div id="share-options-bar" class="share-options-bar" data-behavior="6">
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
         <i id="btn-close-shareoptions" class="fa fa-times"></i>
         <ul class="share-options">
             
@@ -687,10 +687,10 @@
 
         
         
-<div id="cover" style="background-image:url('../assets/images/cover-jk.jpg');"></div>
+<div id="cover" style="background-image:url('../assets/images/cover-gray.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="../assets/js/script-owukbdionlku08hzxxlav2l6x4ywgtw7qdcz95mqyrapq4mwlk90m4xav3n0.min.js"></script>
+<script src="../assets/js/script-y4yimvxnizibpxpohtvnbxkmgy5ye4sd2bppfrzd3mrbdfupb28fdekn1rc1.min.js"></script>
 
 <!--SCRIPTS END-->
 
