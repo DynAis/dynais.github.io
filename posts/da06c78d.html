@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="想成为魔法师的D·y·n·A·i·s">
-    <title>利用泛洪填充（Flood Fill）的优化方式完成对特定图像的主要信息的提取 - 想成为魔法师的D·y·n·A·i·s</title>
+    <meta name="generator" content="DynAis想学会魔法">
+    <title>利用泛洪填充（Flood Fill）的优化方式完成对特定图像的主要信息的提取 - DynAis想学会魔法</title>
     <meta name="author" content="DynAis">
     
         <meta name="keywords" content="DynAis,Dynais,dynais,">
@@ -24,7 +24,7 @@
 <meta property="og:type" content="blog">
 <meta property="og:title" content="利用泛洪填充（Flood Fill）的优化方式完成对特定图像的主要信息的提取">
 <meta property="og:url" content="http://dynais.xyz/posts/da06c78d.html">
-<meta property="og:site_name" content="想成为魔法师的D·y·n·A·i·s">
+<meta property="og:site_name" content="DynAis想学会魔法">
 <meta property="og:description" content="小车已经全部搭好了，虽然不确定硬件是否哪里还有些问题，但是好歹摄像头和图像处理模块是已经可以正常使用没有问题的。 已经写好的二值化算法已经够用了，但是仍然存在不可以过滤背景中无效信息的问题，多多少少会给之后的计算带来麻烦，于是写了一个提取图像主要信息的算法。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/DynAis/img-hub/master/img/20200723204329.png">
@@ -60,16 +60,6 @@
     
 
     
-    <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?Tc22eOwijt3imQUU";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-    </script>
-
 
     
         
@@ -99,7 +89,7 @@
             href="http://dynais.xyz/"
             aria-label=""
         >
-            想成为魔法师的D·y·n·A·i·s
+            DynAis想学会魔法
         </a>
     </div>
     
@@ -390,24 +380,11 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/posts/da06c78d.html"
-                    title="分享到 Facebook"
-                    aria-label="分享到 Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
         
             
             
@@ -428,7 +405,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#gitalk"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -437,7 +414,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -449,9 +426,8 @@
         
         
             
-                <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
-</div>
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -506,24 +482,11 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/posts/da06c78d.html"
-                    title="分享到 Facebook"
-                    aria-label="分享到 Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
         
             
             
@@ -544,7 +507,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#gitalk"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -553,7 +516,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -567,19 +530,6 @@
     <div id="share-options-bar" class="share-options-bar" data-behavior="5">
         <i id="btn-close-shareoptions" class="fa fa-times"></i>
         <ul class="share-options">
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://dynais.xyz/posts/da06c78d.html"
-                        aria-label="分享到 Facebook"
-                    >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
-                    </a>
-                </li>
             
                 
                 
@@ -640,7 +590,7 @@
 
         
         
-<div id="cover" style="background-image:url('../assets/images/cover-gray.jpg');"></div>
+<div id="cover" style="background-image:url('../assets/images/cover-slasch.jpg');"></div>
         <!--SCRIPTS-->
 
 <script src="../assets/js/script-y4yimvxnizibpxpohtvnbxkmgy5ye4sd2bppfrzd3mrbdfupb28fdekn1rc1.min.js"></script>
@@ -649,26 +599,42 @@
 
 
     
-        <script>
-          var disqus_config = function() {
-            this.page.url = 'http://dynais.xyz/posts/da06c78d.html';
-              
-            this.page.identifier = 'posts/da06c78d.html';
-              
-          };
-          (function() {
-            var d = document, s = d.createElement('script');
-            var disqus_shortname = 'http-dynais-xyz';
-            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        
+<script src="../assets/js/gitalk.js"></script>
 
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-          })();
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '644eebe2f40d9a8582c4',
+              clientSecret: '2f696b692dceaf847add9a6a459e904a953f3e3b',
+              repo: 'dynais.github.io',
+              owner: 'DynAis',
+              admin: ['DynAis'],
+              id: 'posts/da06c78d.html',
+              ...{"language":"zh-cn","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
         </script>
     
 
 
 
 
-    </body>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
 </html>
