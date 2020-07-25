@@ -5,14 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="DynAis想学会魔法">
-    <title>使用差分散列的重复图片检测 - DynAis想学会魔法</title>
+    <meta name="generator" content="DynAis的个人站">
+    <title>使用差分散列的重复图片检测 - DynAis的个人站</title>
     <meta name="author" content="DynAis">
     
         <meta name="keywords" content="DynAis,Dynais,dynais,opencv,散列,difference hashing,hash">
     
     
-        <link rel="icon" href="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725012020.png">
+        <link rel="icon" href="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161223.png">
     
     
         
@@ -24,11 +24,11 @@
 <meta property="og:type" content="blog">
 <meta property="og:title" content="使用差分散列的重复图片检测">
 <meta property="og:url" content="http://dynais.xyz/posts/a33aff37.html">
-<meta property="og:site_name" content="DynAis想学会魔法">
+<meta property="og:site_name" content="DynAis的个人站">
 <meta property="og:description" content="Detect and remove duplicate images from a dataset for deep learning  文章链接: https:&#x2F;&#x2F;www.pyimagesearch.com&#x2F;2017&#x2F;11&#x2F;27&#x2F;image-hashing-opencv-python&#x2F; https:&#x2F;&#x2F;www.pyimagesearch.com&#x2F;2020&#x2F;04&#x2F;20&#x2F;detect-and-rem">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725010512.png">
-<meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725011908.png">
+<meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png">
 <meta property="article:published_time" content="2020-04-21T16:00:00.000Z">
 <meta property="article:modified_time" content="2020-07-24T17:05:23.439Z">
 <meta property="article:author" content="DynAis">
@@ -92,7 +92,7 @@
             href="http://dynais.xyz/"
             aria-label=""
         >
-            DynAis想学会魔法
+            DynAis的个人站
         </a>
     </div>
     
@@ -356,7 +356,7 @@
 <h3 id="4-Build-the-hash-计算散列值"><a href="#4-Build-the-hash-计算散列值" class="headerlink" title="4. Build the hash 计算散列值"></a>4. Build the hash 计算散列值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dhash</span><span class="params">(image, hashSize=<span class="number">8</span>)</span>:</span></span><br><span class="line">	<span class="comment"># convert the image to grayscale and resize the grayscale image,</span></span><br><span class="line">	<span class="comment"># adding a single column (width) so we can compute the horizontal</span></span><br><span class="line">	<span class="comment"># gradient</span></span><br><span class="line">	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line">	resized = cv2.resize(gray, (hashSize + <span class="number">1</span>, hashSize))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># compute the (relative) horizontal gradient between adjacent</span></span><br><span class="line">	<span class="comment"># column pixels</span></span><br><span class="line">	diff = resized[:, <span class="number">1</span>:] &gt; resized[:, :<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line">	<span class="comment"># convert the difference image to a hash and return it</span></span><br><span class="line">	<span class="keyword">return</span> sum([<span class="number">2</span> ** i <span class="keyword">for</span> (i, v) <span class="keyword">in</span> enumerate(diff.flatten()) <span class="keyword">if</span> v])</span><br></pre></td></tr></table></figure>
 <p>我看不懂</p>
 <h3 id="5-初始化字典-寻找重复并输出"><a href="#5-初始化字典-寻找重复并输出" class="headerlink" title="5. 初始化字典, 寻找重复并输出"></a>5. 初始化字典, 寻找重复并输出</h3><p>略</p>
-<p><br /><br /><br /><strong>本文永久链接</strong>： <a href="http://dynais.xyz/posts/a33aff37.html">http://dynais.xyz/posts/a33aff37.html</a> <br /><strong>版权声明</strong><br /><img src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725011908.png" alt=""><br />This site by DynAis is licensed under a Creative Commons <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC-BY-NC-SA 4.0 International License</a>.<br />由Dynais创作并维护的博客采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">创作共用-署名-非商业性-相同方式共享4.0国际许可证</a>。</p>
+<p><br /><br /><br /><strong>本文永久链接</strong>： <a href="http://dynais.xyz/posts/a33aff37.html">http://dynais.xyz/posts/a33aff37.html</a> <br /><strong>版权声明</strong><br /><img src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png" alt=""><br />This site by DynAis is licensed under a Creative Commons <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC-BY-NC-SA 4.0 International License</a>.<br />由Dynais创作并维护的博客采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">创作共用-署名-非商业性-相同方式共享4.0国际许可证</a>。</p>
 
             
 
@@ -621,7 +621,7 @@
 
         
         
-<div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005417.jpg');"></div>
+<div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161511.jpg');"></div>
         <!--SCRIPTS-->
 
 <script src="../assets/js/script-y4yimvxnizibpxpohtvnbxkmgy5ye4sd2bppfrzd3mrbdfupb28fdekn1rc1.min.js"></script>

@@ -5,14 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="DynAis想学会魔法">
-    <title>OpenCV学习笔记12-模板匹配 - DynAis想学会魔法</title>
+    <meta name="generator" content="DynAis的个人站">
+    <title>OpenCV学习笔记12-模板匹配 - DynAis的个人站</title>
     <meta name="author" content="DynAis">
     
         <meta name="keywords" content="DynAis,Dynais,dynais,opencv">
     
     
-        <link rel="icon" href="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725012020.png">
+        <link rel="icon" href="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161223.png">
     
     
         
@@ -24,16 +24,16 @@
 <meta property="og:type" content="blog">
 <meta property="og:title" content="OpenCV学习笔记12-模板匹配">
 <meta property="og:url" content="http://dynais.xyz/posts/63d72132.html">
-<meta property="og:site_name" content="DynAis想学会魔法">
+<meta property="og:site_name" content="DynAis的个人站">
 <meta property="og:description" content="API12matchTemplate();&#x2F;&#x2F;模式查找,API比较简单minMaxLoc();&#x2F;&#x2F;用于在模式查找的输出图像中找到极值点,也就是匹配点 笔记 模板匹配(Templet Match) 相当于上一节说的直方图匹配的实用化,通过现有图像在目标图像上滑行(原文Slide),也就是左到右上到下的以像素为单位进行匹配,找到匹配值最大的点.但也是因为这个原因,对模板图像和在目标图像里的目标的大小进">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725011908.png">
+<meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png">
 <meta property="article:published_time" content="2020-02-19T16:00:00.000Z">
 <meta property="article:modified_time" content="2020-07-24T16:49:26.153Z">
 <meta property="article:author" content="DynAis">
 <meta property="article:tag" content="opencv">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725011908.png">
+<meta name="twitter:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png">
 <meta name="twitter:creator" content="@dyn_ais">
     
     
@@ -88,7 +88,7 @@
             href="http://dynais.xyz/"
             aria-label=""
         >
-            DynAis想学会魔法
+            DynAis的个人站
         </a>
     </div>
     
@@ -334,7 +334,7 @@
 </ul>
 <hr>
 <h3 id="源-API实现模式查找"><a href="#源-API实现模式查找" class="headerlink" title="源//API实现模式查找"></a>源//API实现模式查找</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// OpenCV_Template.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;opencv2\opencv.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line">Mat src, dst, temp;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">char</span>**)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	temp = imread(<span class="string">"D:/WorkSpace/Projects/OpenCV Learning/ImageHub/Lena.jpg"</span>);</span><br><span class="line">	src = imread(<span class="string">"D:/WorkSpace/Projects/OpenCV Learning/ImageHub/Day1.png"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//测试尺度不变性</span></span><br><span class="line">	<span class="comment">//pyrDown(temp, temp, Size(temp.cols / 2, temp.rows / 2));</span></span><br><span class="line">	pyrUp(temp, temp, Size(temp.cols * <span class="number">2</span>, temp.rows * <span class="number">2</span>));</span><br><span class="line">	<span class="comment">//pyrUp(temp, temp, Size(temp.cols * 2, temp.rows * 2));</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (temp.empty() || src.empty()) &#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"Can not open this IMG... Check again!"</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	Mat result = Mat_&lt;<span class="keyword">float</span>&gt;::zeros(src.cols - temp.cols + <span class="number">1</span>, src.rows - temp.rows + <span class="number">1</span> );</span><br><span class="line"></span><br><span class="line">	matchTemplate(src, temp, result, TM_CCOEFF_NORMED);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//cout &lt;&lt; result;</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">double</span> minVal; <span class="keyword">double</span> maxVal; Point minLoc; Point maxLoc;</span><br><span class="line">	Point matchLoc;</span><br><span class="line">	minMaxLoc(result, &amp;minVal, &amp;maxVal, &amp;minLoc, &amp;maxLoc, Mat());</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; minVal &lt;&lt; <span class="built_in">endl</span> &lt;&lt; maxVal &lt;&lt; <span class="built_in">endl</span> &lt;&lt; minLoc &lt;&lt; <span class="built_in">endl</span> &lt;&lt; maxLoc &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	rectangle(src, maxLoc, Point(maxLoc.x + temp.cols, maxLoc.y + temp.rows), Scalar(<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>), <span class="number">2</span>, <span class="number">8</span>);</span><br><span class="line">	rectangle(result, Point(maxLoc.x - temp.cols/<span class="number">2</span>, maxLoc.y - temp.rows/<span class="number">2</span>), Point(maxLoc.x + temp.cols/<span class="number">2</span>, maxLoc.y + temp.rows/<span class="number">2</span>), Scalar::all(<span class="number">1</span>), <span class="number">2</span>, <span class="number">8</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	namedWindow(<span class="string">"src"</span>, WINDOW_AUTOSIZE);</span><br><span class="line">	pyrDown(src, src, Size(src.cols / <span class="number">2</span>, src.rows / <span class="number">2</span>));</span><br><span class="line">	pyrDown(src, src, Size(src.cols / <span class="number">2</span>, src.rows / <span class="number">2</span>));</span><br><span class="line">	imshow(<span class="string">"src"</span>, src);</span><br><span class="line">	namedWindow(<span class="string">"result"</span>, WINDOW_AUTOSIZE);</span><br><span class="line">	pyrDown(result, result, Size(result.cols / <span class="number">2</span>, result.rows / <span class="number">2</span>));</span><br><span class="line">	pyrDown(result, result, Size(result.cols / <span class="number">2</span>, result.rows / <span class="number">2</span>));</span><br><span class="line">	imshow(<span class="string">"result"</span>, result);</span><br><span class="line"></span><br><span class="line">	waitKey(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 运行程序: Ctrl + F5 或调试 &gt;“开始执行(不调试)”菜单</span></span><br><span class="line"><span class="comment">// 调试程序: F5 或调试 &gt;“开始调试”菜单</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 入门使用技巧: </span></span><br><span class="line"><span class="comment">//   1. 使用解决方案资源管理器窗口添加/管理文件</span></span><br><span class="line"><span class="comment">//   2. 使用团队资源管理器窗口连接到源代码管理</span></span><br><span class="line"><span class="comment">//   3. 使用输出窗口查看生成输出和其他消息</span></span><br><span class="line"><span class="comment">//   4. 使用错误列表窗口查看错误</span></span><br><span class="line"><span class="comment">//   5. 转到“项目”&gt;“添加新项”以创建新的代码文件，或转到“项目”&gt;“添加现有项”以将现有代码文件添加到项目</span></span><br><span class="line"><span class="comment">//   6. 将来，若要再次打开此项目，请转到“文件”&gt;“打开”&gt;“项目”并选择 .sln 文件</span></span><br></pre></td></tr></table></figure>
-<p><br /><br /><br /><strong>本文永久链接</strong>： <a href="http://dynais.xyz/posts/63d72132.html">http://dynais.xyz/posts/63d72132.html</a> <br /><strong>版权声明</strong><br /><img src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725011908.png" alt=""><br />This site by DynAis is licensed under a Creative Commons <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC-BY-NC-SA 4.0 International License</a>.<br />由Dynais创作并维护的博客采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">创作共用-署名-非商业性-相同方式共享4.0国际许可证</a>。</p>
+<p><br /><br /><br /><strong>本文永久链接</strong>： <a href="http://dynais.xyz/posts/63d72132.html">http://dynais.xyz/posts/63d72132.html</a> <br /><strong>版权声明</strong><br /><img src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png" alt=""><br />This site by DynAis is licensed under a Creative Commons <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC-BY-NC-SA 4.0 International License</a>.<br />由Dynais创作并维护的博客采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">创作共用-署名-非商业性-相同方式共享4.0国际许可证</a>。</p>
 
             
 
@@ -599,7 +599,7 @@
 
         
         
-<div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005417.jpg');"></div>
+<div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161511.jpg');"></div>
         <!--SCRIPTS-->
 
 <script src="../assets/js/script-y4yimvxnizibpxpohtvnbxkmgy5ye4sd2bppfrzd3mrbdfupb28fdekn1rc1.min.js"></script>

@@ -5,14 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="DynAis想学会魔法">
-    <title>利用泛洪填充（Flood Fill）的优化方式完成对特定图像的主要信息的提取 - DynAis想学会魔法</title>
+    <meta name="generator" content="DynAis的个人站">
+    <title>利用泛洪填充（Flood Fill）的优化方式完成对特定图像的主要信息的提取 - DynAis的个人站</title>
     <meta name="author" content="DynAis">
     
         <meta name="keywords" content="DynAis,Dynais,dynais,">
     
     
-        <link rel="icon" href="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725012020.png">
+        <link rel="icon" href="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161223.png">
     
     
         
@@ -24,17 +24,17 @@
 <meta property="og:type" content="blog">
 <meta property="og:title" content="利用泛洪填充（Flood Fill）的优化方式完成对特定图像的主要信息的提取">
 <meta property="og:url" content="http://dynais.xyz/posts/da06c78d.html">
-<meta property="og:site_name" content="DynAis想学会魔法">
+<meta property="og:site_name" content="DynAis的个人站">
 <meta property="og:description" content="小车已经全部搭好了，虽然不确定硬件是否哪里还有些问题，但是好歹摄像头和图像处理模块是已经可以正常使用没有问题的。 已经写好的二值化算法已经够用了，但是仍然存在不可以过滤背景中无效信息的问题，多多少少会给之后的计算带来麻烦，于是写了一个提取图像主要信息的算法。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725011908.png">
+<meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png">
 <meta property="article:published_time" content="2019-12-08T16:00:00.000Z">
 <meta property="article:modified_time" content="2020-07-24T16:50:18.788Z">
 <meta property="article:author" content="DynAis">
 <meta property="article:tag" content="单片机">
 <meta property="article:tag" content="计算机视觉">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725011908.png">
+<meta name="twitter:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png">
 <meta name="twitter:creator" content="@dyn_ais">
     
     
@@ -89,7 +89,7 @@
             href="http://dynais.xyz/"
             aria-label=""
         >
-            DynAis想学会魔法
+            DynAis的个人站
         </a>
     </div>
     
@@ -326,7 +326,7 @@
 <h3 id="2-数据类型使用错误-不匹配"><a href="#2-数据类型使用错误-不匹配" class="headerlink" title="2.数据类型使用错误/不匹配"></a>2.数据类型使用错误/不匹配</h3><p>转移算法的时候出现好几处警告，提示数据类型与逻辑判断可能出现问题，比如 uint8 和 0 比大小，这个运算的结果一定是 uint8 大于 0 的，当 uint类型 “小于” 0 时，他会变为一个很大的数字。并且 uint 与传统 int 进行数学运算的时候也一定要小心，最好避免这种情况，提前转化为相同类型数据再运算。</p>
 <hr>
 <p><strong>参考文献:</strong></p>
-<p><br /><br /><br /><strong>本文永久链接</strong>： <a href="http://dynais.xyz/posts/da06c78d.html">http://dynais.xyz/posts/da06c78d.html</a> <br /><strong>版权声明</strong><br /><img src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725011908.png" alt=""><br />This site by DynAis is licensed under a Creative Commons <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC-BY-NC-SA 4.0 International License</a>.<br />由Dynais创作并维护的博客采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">创作共用-署名-非商业性-相同方式共享4.0国际许可证</a>。</p>
+<p><br /><br /><br /><strong>本文永久链接</strong>： <a href="http://dynais.xyz/posts/da06c78d.html">http://dynais.xyz/posts/da06c78d.html</a> <br /><strong>版权声明</strong><br /><img src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png" alt=""><br />This site by DynAis is licensed under a Creative Commons <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC-BY-NC-SA 4.0 International License</a>.<br />由Dynais创作并维护的博客采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">创作共用-署名-非商业性-相同方式共享4.0国际许可证</a>。</p>
             
 
 
@@ -590,7 +590,7 @@
 
         
         
-<div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005417.jpg');"></div>
+<div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161511.jpg');"></div>
         <!--SCRIPTS-->
 
 <script src="../assets/js/script-y4yimvxnizibpxpohtvnbxkmgy5ye4sd2bppfrzd3mrbdfupb28fdekn1rc1.min.js"></script>
