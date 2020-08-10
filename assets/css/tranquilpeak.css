@@ -41,6 +41,36 @@
   font-weight: 700;
   src: local("Merriweather Bold Italic"), local("Merriweather-BoldItalic"), url(../fonts/merriweather-bold-italic.ttf) format("truetype"); }
 
+@font-face {
+  font-family: 'PingFang';
+  font-style: normal;
+  font-weight: 300;
+  src: local("PingFang Light"), local("PingFang-Light"), url(../fonts/PingFang-Light.ttf) format("truetype"); }
+
+@font-face {
+  font-family: 'PingFang';
+  font-style: normal;
+  font-weight: 400;
+  src: local("PingFang-Regular"), url(../fonts/PingFang-Regular.ttf) format("truetype"); }
+
+@font-face {
+  font-family: 'PingFang';
+  font-style: normal;
+  font-weight: 700;
+  src: local("PingFang Bold"), local("PingFang-Bold"), url(../fonts/PingFang-Bold.ttf) format("truetype"); }
+
+@font-face {
+  font-family: 'PingFang';
+  font-style: italic;
+  font-weight: 300;
+  src: local("Merriweather Light Italic"), local("Merriweather-LightItalic"), url(../fonts/merriweather-light-italic.ttf) format("truetype"); }
+
+@font-face {
+  font-family: 'PingFang';
+  font-style: italic;
+  font-weight: 700;
+  src: local("Merriweather Bold Italic"), local("Merriweather-BoldItalic"), url(../fonts/merriweather-bold-italic.ttf) format("truetype"); }
+
 html {
   font-family: "Open Sans", sans-serif;
   font-size: 10px;
@@ -640,7 +670,7 @@ blockquote {
       transform: translate3d(75px, 0, 0); } }
 
 #sidebar {
-  font-family: "Open Sans", sans-serif;
+  font-family: "PingFang";
   height: 100%;
   position: fixed;
   top: 0;
@@ -1448,7 +1478,7 @@ blockquote {
 
 .caption {
   display: block;
-  font-family: "Merriweather", serif;
+  font-family: "PingFang";
   font-size: 1.3rem;
   color: #81929d;
   text-align: center;
@@ -1920,7 +1950,7 @@ a.fancybox {
   .post .post-content {
     text-rendering: optimizelegibility;
     letter-spacing: -0.3px;
-    font-family: "Merriweather", serif;
+    font-family: "PingFang";
     color: #5d686f;
     margin-top: 20px;
     font-weight: 400;
@@ -2209,7 +2239,7 @@ a.fancybox {
   .postShorten .postShorten-content {
     text-rendering: optimizelegibility;
     letter-spacing: -0.3px;
-    font-family: "Merriweather", serif;
+    font-family: "PingFang";
     color: #5d686f;
     font-weight: 400;
     overflow: hidden;
