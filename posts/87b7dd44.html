@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="知识高塔">
-    <title>OpenCV学习笔记08-Sobel算子 - 知识高塔</title>
+    <meta name="generator" content="DynAis的个人站">
+    <title>OpenCV学习笔记08-Sobel算子 - DynAis的个人站</title>
     <meta name="author" content="DynAis">
     
         <meta name="keywords" content="DynAis,Dynais,dynais,opencv,sobel">
@@ -19,12 +19,12 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"相关API12Sobel();//索贝尔算子Scharr();//Sobel的加强\n笔记\nSobel: 边缘检测算法及各自的优缺点\nSobel是离散的一阶微分算子,可以用来计算图像的梯度(一阶), 常用于得到图像的边缘特征, 除了Sobel之外还有其他的算子, Sobel的优势是速度比较快, 但是在准确度上有欠缺\n\n\n\n使用加减来简化计算机的负担: sobel算子的原理与实现\n乘除对计算机很费力, 对计算机应该采用近似计算, 在Sobel求边缘的合成阶段使用到了这种思想\n\n\n\n整个流程:\n 高斯-&gt;转灰度-&gt;求梯度x与y-&gt;混合\n \n\n\n源1无\n本文永久链接： http://dynais.xyz/posts/87b7dd44.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-02-15T20:48:00+08:00","dateModified":"2020-07-25T00:49:03+08:00","datePublished":"2020-02-15T20:48:00+08:00","description":"相关API12Sobel();//索贝尔算子Scharr();//Sobel的加强\n笔记\nSobel: 边缘检测算法及各自的优缺点\nSobel是离散的一阶微分算子,可以用来计算图像的梯度(一阶), 常用于得到图像的边缘特征, 除了Sobel之外还有其他的算子, Sobel的优势是速度比较快, 但是在准确度上有欠缺\n\n\n\n使用加减来简化计算机的负担: sobel算子的原理与实现\n乘除对计算机很费力, 对计算机应该采用近似计算, 在Sobel求边缘的合成阶段使用到了这种思想\n\n\n\n整个流程:\n 高斯-&gt;转灰度-&gt;求梯度x与y-&gt;混合","headline":"OpenCV学习笔记08-Sobel算子","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212717.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/87b7dd44.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/87b7dd44.html","keywords":"open-cv, cpp, 数字图像处理","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212717.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"相关API12Sobel();//索贝尔算子Scharr();//Sobel的加强\n笔记\nSobel: 边缘检测算法及各自的优缺点\nSobel是离散的一阶微分算子,可以用来计算图像的梯度(一阶), 常用于得到图像的边缘特征, 除了Sobel之外还有其他的算子, Sobel的优势是速度比较快, 但是在准确度上有欠缺\n\n\n\n使用加减来简化计算机的负担: sobel算子的原理与实现\n乘除对计算机很费力, 对计算机应该采用近似计算, 在Sobel求边缘的合成阶段使用到了这种思想\n\n\n\n整个流程:\n 高斯-&gt;转灰度-&gt;求梯度x与y-&gt;混合\n \n\n\n源1无\n本文永久链接： http://dynais.xyz/posts/87b7dd44.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-02-15T20:48:00+08:00","dateModified":"2020-07-25T00:49:03+08:00","datePublished":"2020-02-15T20:48:00+08:00","description":"相关API12Sobel();//索贝尔算子Scharr();//Sobel的加强\n笔记\nSobel: 边缘检测算法及各自的优缺点\nSobel是离散的一阶微分算子,可以用来计算图像的梯度(一阶), 常用于得到图像的边缘特征, 除了Sobel之外还有其他的算子, Sobel的优势是速度比较快, 但是在准确度上有欠缺\n\n\n\n使用加减来简化计算机的负担: sobel算子的原理与实现\n乘除对计算机很费力, 对计算机应该采用近似计算, 在Sobel求边缘的合成阶段使用到了这种思想\n\n\n\n整个流程:\n 高斯-&gt;转灰度-&gt;求梯度x与y-&gt;混合","headline":"OpenCV学习笔记08-Sobel算子","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212717.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/87b7dd44.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/87b7dd44.html","keywords":"open-cv, cpp, 数字图像处理","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212717.png"}</script>
     <meta name="description" content="相关API12Sobel();&#x2F;&#x2F;索贝尔算子Scharr();&#x2F;&#x2F;Sobel的加强 笔记 Sobel: 边缘检测算法及各自的优缺点 Sobel是离散的一阶微分算子,可以用来计算图像的梯度(一阶), 常用于得到图像的边缘特征, 除了Sobel之外还有其他的算子, Sobel的优势是速度比较快, 但是在准确度上有欠缺    使用加减来简化计算机的负担: sobel算子的原理与实现 乘除对计算机很费力,">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="OpenCV学习笔记08-Sobel算子">
 <meta property="og:url" content="http://dynais.xyz/posts/87b7dd44.html">
-<meta property="og:site_name" content="知识高塔">
+<meta property="og:site_name" content="DynAis的个人站">
 <meta property="og:description" content="相关API12Sobel();&#x2F;&#x2F;索贝尔算子Scharr();&#x2F;&#x2F;Sobel的加强 笔记 Sobel: 边缘检测算法及各自的优缺点 Sobel是离散的一阶微分算子,可以用来计算图像的梯度(一阶), 常用于得到图像的边缘特征, 除了Sobel之外还有其他的算子, Sobel的优势是速度比较快, 但是在准确度上有欠缺    使用加减来简化计算机的负担: sobel算子的原理与实现 乘除对计算机很费力,">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png">
@@ -54,7 +54,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="../assets/css/style-nbyxkjobv8xiw99w0oroobncekqwhnww4s3wbisvj2kkabcm1ecmcoe6w1vb.min.css">
+<link rel="stylesheet" href="../assets/css/style-uc5lrdohep8fiuwzi6puefeshfcv7eacouiyobpc9vu62rsebwcs6wed245a.min.css">
 
     <!--STYLES END-->
     
@@ -89,7 +89,7 @@
             href="http://dynais.xyz/"
             aria-label=""
         >
-            知识高塔
+            DynAis的个人站
         </a>
     </div>
     
@@ -240,6 +240,22 @@
                     </a>
             </li>
             
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/dynais.artstation.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Artstation"
+                        >
+                        <i class="sidebar-button-icon fab fa-artstation" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Artstation</span>
+                    </a>
+            </li>
+            
         </ul>
         
             <ul class="sidebar-buttons">
@@ -381,7 +397,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -406,7 +422,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#gitalk"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -415,7 +431,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -483,7 +499,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -508,7 +524,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#gitalk"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -517,7 +533,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -575,7 +591,7 @@
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>author.job</p>
+                <p>学生</p>
 
             </div>
         
@@ -583,7 +599,7 @@
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
                 <br/>
-                Zhejiang, China Ostfalia, Deutsch
+                Wolfenbüttel, Germany
             </div>
         
     </div>
@@ -594,7 +610,7 @@
 <div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161511.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="../assets/js/script-upvrdkh5go8fn80dvgfkyqqe7ndzale5j7tspitfrzrapnsu5madahzz7cw3.min.js"></script>
+<script src="../assets/js/script-ueej2dtheo2ewchzog44shglnkyezeutobc6ies0hlhptc5rbenp3bzywp0r.min.js"></script>
 
 <!--SCRIPTS END-->
 

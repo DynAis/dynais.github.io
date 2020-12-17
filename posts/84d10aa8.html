@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="知识高塔">
-    <title>OpenCV学习笔记05-各类模糊 - 知识高塔</title>
+    <meta name="generator" content="DynAis的个人站">
+    <title>OpenCV学习笔记05-各类模糊 - DynAis的个人站</title>
     <meta name="author" content="DynAis">
     
         <meta name="keywords" content="DynAis,Dynais,dynais,opencv,blur">
@@ -19,12 +19,12 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"相关函数1234blur();\t\t//均值模糊GaussianBlur();\t\t//高斯模糊medianBlur();\t\t//中值滤波bilateralFilter()\t\t//双边滤波\n实现\n模糊\n\n均值滤波\n高斯滤波\n中值滤波\n双边滤波\n\n\n\n笔记\n高斯滤波是通过高斯函数也就是正态分布来给mask权重\nsigma越大正态分布上表现就是越平滑\n\n\n\n中值滤波是统计排序滤波器,对椒盐噪声有很好的抑制作用\n注意区分中值和均值\n\n\n高斯模糊没有考虑像素值的差异,会导致边缘还是不那么清晰\n引入空间域核与值域核考虑,空间域就相当于普通的高斯滤波,根据相邻距离决定权重,而值域核是由目标像素值与中心像素值差来给定权重\n简单来说就是双边模糊对高斯模糊来说多了一层mask,这层mask不是根据像素空间位置来给定权重的,而是根据像素与中心像素值之差得出\n双边滤波可以磨皮(\n\n\n剩下的看注释\n\n相关无\n源123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150151152153154155156157158159160161162163164165166167168169170171172173174// OpenCV_Template.cpp : 此文件包含 \"main\" 函数。程序执行将在此处开始并结束。//#include &lt;iostream&gt;#include &lt;string&gt;#include&lt;opencv2\\opencv.hpp&gt;using namespace std;using namespace cv;int main(int argc, char** argv)&#123;\t/****************************************\t初始化\t****************************************************/\tMat imgIn, imgOut;\tMat mask;\timgIn = imread(\"Test.jpg\");\tif (imgIn.empty()) &#123;\t\tcout &lt;&lt; \"Can not open this IMG...\" &lt;&lt; endl;\t\treturn -1;\t&#125;\timgOut = imgIn.clone();\t/****************************************\t初始化\t****************************************************/\t/****************************************\t图像操作\t****************************************************/\t//blur(imgIn, imgOut, Size(9, 9), Point(-1, -1));\t\t//均值模糊\tMat imgOut2;\t//double sigma = 3;\t//GaussianBlur(imgIn, imgOut2, Size(9,9), sigma, sigma);\t\t//高斯模糊\tMat imgOut3;\t//medianBlur(imgIn, imgOut3, 9);\t\t//中值滤波\tMat imgOut4;\tbilateralFilter(imgIn, imgOut, 15, 30.0, 30.0);\tbilateralFilter(imgIn, imgOut2, 30, 30.0, 30.0);\t\t//在sigmaColor很大的情况下,修改sigmaSpace效果很小\tbilateralFilter(imgIn, imgOut3, 50, 30.0, 30.0);\t\t//sigmaColor越大,色块化越严重\tbilateralFilter(imgIn, imgOut4, 100, 30.0, 30.0);\t\t//范围d越大,柔化越明显\t/****************************************\t图像操作\t****************************************************/\t/****************************************\t图像输出\t****************************************************/\tnamedWindow(\"input\", WINDOW_NORMAL);\timshow(\"input\", imgIn);\tnamedWindow(\"output\", WINDOW_NORMAL);\timshow(\"output\", imgOut);\tnamedWindow(\"output2\", WINDOW_AUTOSIZE);\timshow(\"output2\", imgOut2);\tnamedWindow(\"output3\", WINDOW_AUTOSIZE);\timshow(\"output3\", imgOut3);\tnamedWindow(\"output4\", WINDOW_AUTOSIZE);\timshow(\"output4\", imgOut4);\t//imwrite(\"D:/Download/Family2020_Final.jpg\", imgOut);\t//cout &lt;&lt; \"Mat=\" &lt;&lt; endl &lt;&lt; imgOut &lt;&lt; endl;\t/****************************************\t图像输出\t****************************************************/\twaitKey(0);\treturn 0;&#125;// 运行程序: Ctrl + F5 或调试 &gt;“开始执行(不调试)”菜单// 调试程序: F5 或调试 &gt;“开始调试”菜单// 入门使用技巧: //   1. 使用解决方案资源管理器窗口添加/管理文件//   2. 使用团队资源管理器窗口连接到源代码管理//   3. 使用输出窗口查看生成输出和其他消息//   4. 使用错误列表窗口查看错误//   5. 转到“项目”&gt;“添加新项”以创建新的代码文件，或转到“项目”&gt;“添加现有项”以将现有代码文件添加到项目//   6. 将来，若要再次打开此项目，请转到“文件”&gt;“打开”&gt;“项目”并选择 .sln 文件// OpenCV_Template.cpp : 此文件包含 \"main\" 函数。程序执行将在此处开始并结束。//#include &lt;iostream&gt;#include &lt;string&gt;#include&lt;opencv2\\opencv.hpp&gt;using namespace std;using namespace cv;int main(int argc, char** argv)&#123;\t/****************************************\t初始化\t****************************************************/\tMat imgIn, imgOut;\tMat mask;\timgIn = imread(\"Test.jpg\");\tif (imgIn.empty()) &#123;\t\tcout &lt;&lt; \"Can not open this IMG...\" &lt;&lt; endl;\t\treturn -1;\t&#125;\timgOut = imgIn.clone();\t/****************************************\t初始化\t****************************************************/\t/****************************************\t图像操作\t****************************************************/\t//blur(imgIn, imgOut, Size(9, 9), Point(-1, -1));\t\t//均值模糊\tMat imgOut2;\t//double sigma = 3;\t//GaussianBlur(imgIn, imgOut2, Size(9,9), sigma, sigma);\t\t//高斯模糊\tMat imgOut3;\t//medianBlur(imgIn, imgOut3, 9);\t\t//中值滤波\tMat imgOut4;\tbilateralFilter(imgIn, imgOut, 15, 30.0, 30.0);\tbilateralFilter(imgIn, imgOut2, 30, 30.0, 30.0);\t\t//在sigmaColor很大的情况下,修改sigmaSpace效果很小\tbilateralFilter(imgIn, imgOut3, 50, 30.0, 30.0);\t\t//sigmaColor越大,色块化越严重\tbilateralFilter(imgIn, imgOut4, 100, 30.0, 30.0);\t\t//范围d越大,柔化越明显\t/****************************************\t图像操作\t****************************************************/\t/****************************************\t图像输出\t****************************************************/\tnamedWindow(\"input\", WINDOW_NORMAL);\timshow(\"input\", imgIn);\tnamedWindow(\"output\", WINDOW_NORMAL);\timshow(\"output\", imgOut);\tnamedWindow(\"output2\", WINDOW_AUTOSIZE);\timshow(\"output2\", imgOut2);\tnamedWindow(\"output3\", WINDOW_AUTOSIZE);\timshow(\"output3\", imgOut3);\tnamedWindow(\"output4\", WINDOW_AUTOSIZE);\timshow(\"output4\", imgOut4);\t//imwrite(\"D:/Download/Family2020_Final.jpg\", imgOut);\t//cout &lt;&lt; \"Mat=\" &lt;&lt; endl &lt;&lt; imgOut &lt;&lt; endl;\t/****************************************\t图像输出\t****************************************************/\twaitKey(0);\treturn 0;&#125;// 运行程序: Ctrl + F5 或调试 &gt;“开始执行(不调试)”菜单// 调试程序: F5 或调试 &gt;“开始调试”菜单// 入门使用技巧: //   1. 使用解决方案资源管理器窗口添加/管理文件//   2. 使用团队资源管理器窗口连接到源代码管理//   3. 使用输出窗口查看生成输出和其他消息//   4. 使用错误列表窗口查看错误//   5. 转到“项目”&gt;“添加新项”以创建新的代码文件，或转到“项目”&gt;“添加现有项”以将现有代码文件添加到项目//   6. 将来，若要再次打开此项目，请转到“文件”&gt;“打开”&gt;“项目”并选择 .sln 文件\n本文永久链接： http://dynais.xyz/posts/84d10aa8.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-01-29T00:00:00+08:00","dateModified":"2020-07-25T00:48:46+08:00","datePublished":"2020-01-29T00:00:00+08:00","description":"相关函数1234blur();\t\t//均值模糊GaussianBlur();\t\t//高斯模糊medianBlur();\t\t//中值滤波bilateralFilter()\t\t//双边滤波\n实现\n模糊\n\n均值滤波\n高斯滤波\n中值滤波\n双边滤波\n\n\n\n笔记\n高斯滤波是通过高斯函数也就是正态分布来给mask权重\nsigma越大正态分布上表现就是越平滑\n","headline":"OpenCV学习笔记05-各类模糊","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212717.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/84d10aa8.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/84d10aa8.html","keywords":"open-cv, cpp, 数字图像处理","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212717.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"相关函数1234blur();\t\t//均值模糊GaussianBlur();\t\t//高斯模糊medianBlur();\t\t//中值滤波bilateralFilter()\t\t//双边滤波\n实现\n模糊\n\n均值滤波\n高斯滤波\n中值滤波\n双边滤波\n\n\n\n笔记\n高斯滤波是通过高斯函数也就是正态分布来给mask权重\nsigma越大正态分布上表现就是越平滑\n\n\n\n中值滤波是统计排序滤波器,对椒盐噪声有很好的抑制作用\n注意区分中值和均值\n\n\n高斯模糊没有考虑像素值的差异,会导致边缘还是不那么清晰\n引入空间域核与值域核考虑,空间域就相当于普通的高斯滤波,根据相邻距离决定权重,而值域核是由目标像素值与中心像素值差来给定权重\n简单来说就是双边模糊对高斯模糊来说多了一层mask,这层mask不是根据像素空间位置来给定权重的,而是根据像素与中心像素值之差得出\n双边滤波可以磨皮(\n\n\n剩下的看注释\n\n相关无\n源123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150151152153154155156157158159160161162163164165166167168169170171172173174// OpenCV_Template.cpp : 此文件包含 \"main\" 函数。程序执行将在此处开始并结束。//#include &lt;iostream&gt;#include &lt;string&gt;#include&lt;opencv2\\opencv.hpp&gt;using namespace std;using namespace cv;int main(int argc, char** argv)&#123;\t/****************************************\t初始化\t****************************************************/\tMat imgIn, imgOut;\tMat mask;\timgIn = imread(\"Test.jpg\");\tif (imgIn.empty()) &#123;\t\tcout &lt;&lt; \"Can not open this IMG...\" &lt;&lt; endl;\t\treturn -1;\t&#125;\timgOut = imgIn.clone();\t/****************************************\t初始化\t****************************************************/\t/****************************************\t图像操作\t****************************************************/\t//blur(imgIn, imgOut, Size(9, 9), Point(-1, -1));\t\t//均值模糊\tMat imgOut2;\t//double sigma = 3;\t//GaussianBlur(imgIn, imgOut2, Size(9,9), sigma, sigma);\t\t//高斯模糊\tMat imgOut3;\t//medianBlur(imgIn, imgOut3, 9);\t\t//中值滤波\tMat imgOut4;\tbilateralFilter(imgIn, imgOut, 15, 30.0, 30.0);\tbilateralFilter(imgIn, imgOut2, 30, 30.0, 30.0);\t\t//在sigmaColor很大的情况下,修改sigmaSpace效果很小\tbilateralFilter(imgIn, imgOut3, 50, 30.0, 30.0);\t\t//sigmaColor越大,色块化越严重\tbilateralFilter(imgIn, imgOut4, 100, 30.0, 30.0);\t\t//范围d越大,柔化越明显\t/****************************************\t图像操作\t****************************************************/\t/****************************************\t图像输出\t****************************************************/\tnamedWindow(\"input\", WINDOW_NORMAL);\timshow(\"input\", imgIn);\tnamedWindow(\"output\", WINDOW_NORMAL);\timshow(\"output\", imgOut);\tnamedWindow(\"output2\", WINDOW_AUTOSIZE);\timshow(\"output2\", imgOut2);\tnamedWindow(\"output3\", WINDOW_AUTOSIZE);\timshow(\"output3\", imgOut3);\tnamedWindow(\"output4\", WINDOW_AUTOSIZE);\timshow(\"output4\", imgOut4);\t//imwrite(\"D:/Download/Family2020_Final.jpg\", imgOut);\t//cout &lt;&lt; \"Mat=\" &lt;&lt; endl &lt;&lt; imgOut &lt;&lt; endl;\t/****************************************\t图像输出\t****************************************************/\twaitKey(0);\treturn 0;&#125;// 运行程序: Ctrl + F5 或调试 &gt;“开始执行(不调试)”菜单// 调试程序: F5 或调试 &gt;“开始调试”菜单// 入门使用技巧: //   1. 使用解决方案资源管理器窗口添加/管理文件//   2. 使用团队资源管理器窗口连接到源代码管理//   3. 使用输出窗口查看生成输出和其他消息//   4. 使用错误列表窗口查看错误//   5. 转到“项目”&gt;“添加新项”以创建新的代码文件，或转到“项目”&gt;“添加现有项”以将现有代码文件添加到项目//   6. 将来，若要再次打开此项目，请转到“文件”&gt;“打开”&gt;“项目”并选择 .sln 文件// OpenCV_Template.cpp : 此文件包含 \"main\" 函数。程序执行将在此处开始并结束。//#include &lt;iostream&gt;#include &lt;string&gt;#include&lt;opencv2\\opencv.hpp&gt;using namespace std;using namespace cv;int main(int argc, char** argv)&#123;\t/****************************************\t初始化\t****************************************************/\tMat imgIn, imgOut;\tMat mask;\timgIn = imread(\"Test.jpg\");\tif (imgIn.empty()) &#123;\t\tcout &lt;&lt; \"Can not open this IMG...\" &lt;&lt; endl;\t\treturn -1;\t&#125;\timgOut = imgIn.clone();\t/****************************************\t初始化\t****************************************************/\t/****************************************\t图像操作\t****************************************************/\t//blur(imgIn, imgOut, Size(9, 9), Point(-1, -1));\t\t//均值模糊\tMat imgOut2;\t//double sigma = 3;\t//GaussianBlur(imgIn, imgOut2, Size(9,9), sigma, sigma);\t\t//高斯模糊\tMat imgOut3;\t//medianBlur(imgIn, imgOut3, 9);\t\t//中值滤波\tMat imgOut4;\tbilateralFilter(imgIn, imgOut, 15, 30.0, 30.0);\tbilateralFilter(imgIn, imgOut2, 30, 30.0, 30.0);\t\t//在sigmaColor很大的情况下,修改sigmaSpace效果很小\tbilateralFilter(imgIn, imgOut3, 50, 30.0, 30.0);\t\t//sigmaColor越大,色块化越严重\tbilateralFilter(imgIn, imgOut4, 100, 30.0, 30.0);\t\t//范围d越大,柔化越明显\t/****************************************\t图像操作\t****************************************************/\t/****************************************\t图像输出\t****************************************************/\tnamedWindow(\"input\", WINDOW_NORMAL);\timshow(\"input\", imgIn);\tnamedWindow(\"output\", WINDOW_NORMAL);\timshow(\"output\", imgOut);\tnamedWindow(\"output2\", WINDOW_AUTOSIZE);\timshow(\"output2\", imgOut2);\tnamedWindow(\"output3\", WINDOW_AUTOSIZE);\timshow(\"output3\", imgOut3);\tnamedWindow(\"output4\", WINDOW_AUTOSIZE);\timshow(\"output4\", imgOut4);\t//imwrite(\"D:/Download/Family2020_Final.jpg\", imgOut);\t//cout &lt;&lt; \"Mat=\" &lt;&lt; endl &lt;&lt; imgOut &lt;&lt; endl;\t/****************************************\t图像输出\t****************************************************/\twaitKey(0);\treturn 0;&#125;// 运行程序: Ctrl + F5 或调试 &gt;“开始执行(不调试)”菜单// 调试程序: F5 或调试 &gt;“开始调试”菜单// 入门使用技巧: //   1. 使用解决方案资源管理器窗口添加/管理文件//   2. 使用团队资源管理器窗口连接到源代码管理//   3. 使用输出窗口查看生成输出和其他消息//   4. 使用错误列表窗口查看错误//   5. 转到“项目”&gt;“添加新项”以创建新的代码文件，或转到“项目”&gt;“添加现有项”以将现有代码文件添加到项目//   6. 将来，若要再次打开此项目，请转到“文件”&gt;“打开”&gt;“项目”并选择 .sln 文件\n本文永久链接： http://dynais.xyz/posts/84d10aa8.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-01-29T00:00:00+08:00","dateModified":"2020-07-25T00:48:46+08:00","datePublished":"2020-01-29T00:00:00+08:00","description":"相关函数1234blur();\t\t//均值模糊GaussianBlur();\t\t//高斯模糊medianBlur();\t\t//中值滤波bilateralFilter()\t\t//双边滤波\n实现\n模糊\n\n均值滤波\n高斯滤波\n中值滤波\n双边滤波\n\n\n\n笔记\n高斯滤波是通过高斯函数也就是正态分布来给mask权重\nsigma越大正态分布上表现就是越平滑\n","headline":"OpenCV学习笔记05-各类模糊","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212717.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/84d10aa8.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/84d10aa8.html","keywords":"open-cv, cpp, 数字图像处理","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212717.png"}</script>
     <meta name="description" content="相关函数1234blur();		&#x2F;&#x2F;均值模糊GaussianBlur();		&#x2F;&#x2F;高斯模糊medianBlur();		&#x2F;&#x2F;中值滤波bilateralFilter()		&#x2F;&#x2F;双边滤波 实现 模糊  均值滤波 高斯滤波 中值滤波 双边滤波    笔记 高斯滤波是通过高斯函数也就是正态分布来给mask权重 sigma越大正态分布上表现就是越平滑">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="OpenCV学习笔记05-各类模糊">
 <meta property="og:url" content="http://dynais.xyz/posts/84d10aa8.html">
-<meta property="og:site_name" content="知识高塔">
+<meta property="og:site_name" content="DynAis的个人站">
 <meta property="og:description" content="相关函数1234blur();		&#x2F;&#x2F;均值模糊GaussianBlur();		&#x2F;&#x2F;高斯模糊medianBlur();		&#x2F;&#x2F;中值滤波bilateralFilter()		&#x2F;&#x2F;双边滤波 实现 模糊  均值滤波 高斯滤波 中值滤波 双边滤波    笔记 高斯滤波是通过高斯函数也就是正态分布来给mask权重 sigma越大正态分布上表现就是越平滑">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png">
@@ -54,7 +54,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="../assets/css/style-nbyxkjobv8xiw99w0oroobncekqwhnww4s3wbisvj2kkabcm1ecmcoe6w1vb.min.css">
+<link rel="stylesheet" href="../assets/css/style-uc5lrdohep8fiuwzi6puefeshfcv7eacouiyobpc9vu62rsebwcs6wed245a.min.css">
 
     <!--STYLES END-->
     
@@ -89,7 +89,7 @@
             href="http://dynais.xyz/"
             aria-label=""
         >
-            知识高塔
+            DynAis的个人站
         </a>
     </div>
     
@@ -237,6 +237,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/dynais.artstation.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Artstation"
+                        >
+                        <i class="sidebar-button-icon fab fa-artstation" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Artstation</span>
                     </a>
             </li>
             
@@ -394,7 +410,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -419,7 +435,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#gitalk"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -428,7 +444,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -496,7 +512,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -521,7 +537,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#gitalk"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -530,7 +546,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -588,7 +604,7 @@
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>author.job</p>
+                <p>学生</p>
 
             </div>
         
@@ -596,7 +612,7 @@
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
                 <br/>
-                Zhejiang, China Ostfalia, Deutsch
+                Wolfenbüttel, Germany
             </div>
         
     </div>
@@ -607,7 +623,7 @@
 <div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161511.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="../assets/js/script-upvrdkh5go8fn80dvgfkyqqe7ndzale5j7tspitfrzrapnsu5madahzz7cw3.min.js"></script>
+<script src="../assets/js/script-ueej2dtheo2ewchzog44shglnkyezeutobc6ies0hlhptc5rbenp3bzywp0r.min.js"></script>
 
 <!--SCRIPTS END-->
 

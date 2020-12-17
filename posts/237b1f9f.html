@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="知识高塔">
-    <title>重构完成, 焕发新生 - 知识高塔</title>
+    <meta name="generator" content="DynAis的个人站">
+    <title>重构完成, 焕发新生 - DynAis的个人站</title>
     <meta name="author" content="DynAis">
     
         <meta name="keywords" content="DynAis,Dynais,dynais,">
@@ -19,12 +19,12 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"\n项目进度\n重构了代码\n\n修正了大部分bug\n\n\n一. 重要代码模块1. Qtimer\nhttps://blog.csdn.net/jia666666/article/details/81672344\n\nQtimer是Qt自带的定时器类, 位于PyQt5.Qcore下, 和单片机的中断函数非常像, 并且提供单次触发和多次触发两种触发方式\n多次触发1234timer.timeout.connect(function)...timer = Qtimer()timer.start(1000)\n这里timeout是Qtimer的中断信号, 这里设定timer.start(1000)代表每一秒执行一次中断, 在番茄钟里, 我使用这个中断来进行时间的更新, 时间的更新仍然使用的是原生的time模块\n\n如果要停止Qtimer,使用\n1timer.stop()\n2. 自定义信号\n https://blog.csdn.net/foreveronly/article/details/82453697\n\n二. 已解决的问题1. 拖动窗口时时间不走动的问题加完Qtimer中断完全没有问题\n3. 进程无法完全退出问题 -&gt; window.close()效果问题 -&gt; 响铃bug通过将子窗口变为主窗口类的成员, 并使用以下语句初始化\n123456789class MainWindow(QMainWindow):    def __init__(self):        super().__init__()        #子窗口建立        self.subBreak = BreakWindow(self)# 注意这里        class BreakWindow(QDialog):    def __init__(self,parent=None):        super().__init__(parent)\n关键也就是加入def __init__(self,parent=None), 使主从窗口关联起来(具体实现逻辑尚不清晰), 再加上合理的退出判断, 就可以实现干净的退出了\n响铃bug加完Qtimer中断完后全没有问题\n4. 占用cpu过高问题加完Qtimer中断完全没有问题\n5. 交互逻辑混乱问题通过重构代码逻辑解决了, 现在所有的子窗口都是主窗口的成员了\n三. 待解决的问题1. Qt里写了中文uic()命令就无法成功执行的问题暂时没有思路\n四. 下一阶段的目标1. 实现使用时间的统计模块, 尝试使用Mysql来储存数据?五. 总结再此理解了那句话, 不能让程序假死, 比如之前我想要time.sleep()来实现…\n正确使用中断是很重要的, 这方面还要多加练习\n并且另外很重要的一点就是, 使用一个库里现成的东西往往整个的整合度会更好\n本来甚至都准备上多线程了…\n本文永久链接： http://dynais.xyz/posts/237b1f9f.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-04-19T00:00:00+08:00","dateModified":"2020-07-25T00:50:57+08:00","datePublished":"2020-04-19T00:00:00+08:00","description":"\n项目进度\n重构了代码\n\n修正了大部分bug\n\n\n一. 重要代码模块1. Qtimer\nhttps://blog.csdn.net/jia666666/article/details/81672344\n\nQtimer是Qt自带的定时器类, 位于PyQt5.Qcore下, 和单片机的中断函数非常像, 并且提供单次触发和多次触发两种触发方式\n多次触发1234timer.timeout.connect(function)...timer = Qtimer()timer.start(1000)\n这里timeout是Qtimer的中断信号, 这里设定timer.start(1000)代表每一秒执行一次中断, 在番茄钟里, 我使用这个中断来进行时间的更新, 时间的更新仍然使用的是原生的time模块","headline":"重构完成, 焕发新生","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212241.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/237b1f9f.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/237b1f9f.html","keywords":"Qt, Python","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212241.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"\n项目进度\n重构了代码\n\n修正了大部分bug\n\n\n一. 重要代码模块1. Qtimer\nhttps://blog.csdn.net/jia666666/article/details/81672344\n\nQtimer是Qt自带的定时器类, 位于PyQt5.Qcore下, 和单片机的中断函数非常像, 并且提供单次触发和多次触发两种触发方式\n多次触发1234timer.timeout.connect(function)...timer = Qtimer()timer.start(1000)\n这里timeout是Qtimer的中断信号, 这里设定timer.start(1000)代表每一秒执行一次中断, 在番茄钟里, 我使用这个中断来进行时间的更新, 时间的更新仍然使用的是原生的time模块\n\n如果要停止Qtimer,使用\n1timer.stop()\n2. 自定义信号\n https://blog.csdn.net/foreveronly/article/details/82453697\n\n二. 已解决的问题1. 拖动窗口时时间不走动的问题加完Qtimer中断完全没有问题\n3. 进程无法完全退出问题 -&gt; window.close()效果问题 -&gt; 响铃bug通过将子窗口变为主窗口类的成员, 并使用以下语句初始化\n123456789class MainWindow(QMainWindow):    def __init__(self):        super().__init__()        #子窗口建立        self.subBreak = BreakWindow(self)# 注意这里        class BreakWindow(QDialog):    def __init__(self,parent=None):        super().__init__(parent)\n关键也就是加入def __init__(self,parent=None), 使主从窗口关联起来(具体实现逻辑尚不清晰), 再加上合理的退出判断, 就可以实现干净的退出了\n响铃bug加完Qtimer中断完后全没有问题\n4. 占用cpu过高问题加完Qtimer中断完全没有问题\n5. 交互逻辑混乱问题通过重构代码逻辑解决了, 现在所有的子窗口都是主窗口的成员了\n三. 待解决的问题1. Qt里写了中文uic()命令就无法成功执行的问题暂时没有思路\n四. 下一阶段的目标1. 实现使用时间的统计模块, 尝试使用Mysql来储存数据?五. 总结再此理解了那句话, 不能让程序假死, 比如之前我想要time.sleep()来实现…\n正确使用中断是很重要的, 这方面还要多加练习\n并且另外很重要的一点就是, 使用一个库里现成的东西往往整个的整合度会更好\n本来甚至都准备上多线程了…\n本文永久链接： http://dynais.xyz/posts/237b1f9f.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-04-19T00:00:00+08:00","dateModified":"2020-07-25T00:50:57+08:00","datePublished":"2020-04-19T00:00:00+08:00","description":"\n项目进度\n重构了代码\n\n修正了大部分bug\n\n\n一. 重要代码模块1. Qtimer\nhttps://blog.csdn.net/jia666666/article/details/81672344\n\nQtimer是Qt自带的定时器类, 位于PyQt5.Qcore下, 和单片机的中断函数非常像, 并且提供单次触发和多次触发两种触发方式\n多次触发1234timer.timeout.connect(function)...timer = Qtimer()timer.start(1000)\n这里timeout是Qtimer的中断信号, 这里设定timer.start(1000)代表每一秒执行一次中断, 在番茄钟里, 我使用这个中断来进行时间的更新, 时间的更新仍然使用的是原生的time模块","headline":"重构完成, 焕发新生","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212241.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/237b1f9f.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/237b1f9f.html","keywords":"Qt, Python","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212241.png"}</script>
     <meta name="description" content="项目进度 重构了代码  修正了大部分bug   一. 重要代码模块1. Qtimer https:&#x2F;&#x2F;blog.csdn.net&#x2F;jia666666&#x2F;article&#x2F;details&#x2F;81672344  Qtimer是Qt自带的定时器类, 位于PyQt5.Qcore下, 和单片机的中断函数非常像, 并且提供单次触发和多次触发两种触发方式 多次触发1234timer.timeout.connect(">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="重构完成, 焕发新生">
 <meta property="og:url" content="http://dynais.xyz/posts/237b1f9f.html">
-<meta property="og:site_name" content="知识高塔">
+<meta property="og:site_name" content="DynAis的个人站">
 <meta property="og:description" content="项目进度 重构了代码  修正了大部分bug   一. 重要代码模块1. Qtimer https:&#x2F;&#x2F;blog.csdn.net&#x2F;jia666666&#x2F;article&#x2F;details&#x2F;81672344  Qtimer是Qt自带的定时器类, 位于PyQt5.Qcore下, 和单片机的中断函数非常像, 并且提供单次触发和多次触发两种触发方式 多次触发1234timer.timeout.connect(">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png">
@@ -54,7 +54,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="../assets/css/style-nbyxkjobv8xiw99w0oroobncekqwhnww4s3wbisvj2kkabcm1ecmcoe6w1vb.min.css">
+<link rel="stylesheet" href="../assets/css/style-uc5lrdohep8fiuwzi6puefeshfcv7eacouiyobpc9vu62rsebwcs6wed245a.min.css">
 
     <!--STYLES END-->
     
@@ -89,7 +89,7 @@
             href="http://dynais.xyz/"
             aria-label=""
         >
-            知识高塔
+            DynAis的个人站
         </a>
     </div>
     
@@ -237,6 +237,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/dynais.artstation.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Artstation"
+                        >
+                        <i class="sidebar-button-icon fab fa-artstation" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Artstation</span>
                     </a>
             </li>
             
@@ -394,7 +410,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -419,7 +435,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#gitalk"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -496,7 +512,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -521,7 +537,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#gitalk"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -588,7 +604,7 @@
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>author.job</p>
+                <p>学生</p>
 
             </div>
         
@@ -596,7 +612,7 @@
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
                 <br/>
-                Zhejiang, China Ostfalia, Deutsch
+                Wolfenbüttel, Germany
             </div>
         
     </div>
@@ -607,7 +623,7 @@
 <div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161511.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="../assets/js/script-upvrdkh5go8fn80dvgfkyqqe7ndzale5j7tspitfrzrapnsu5madahzz7cw3.min.js"></script>
+<script src="../assets/js/script-ueej2dtheo2ewchzog44shglnkyezeutobc6ies0hlhptc5rbenp3bzywp0r.min.js"></script>
 
 <!--SCRIPTS END-->
 

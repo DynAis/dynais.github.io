@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="知识高塔">
-    <title>番茄钟倒计时模块的基本实现 - 知识高塔</title>
+    <meta name="generator" content="DynAis的个人站">
+    <title>番茄钟倒计时模块的基本实现 - DynAis的个人站</title>
     <meta name="author" content="DynAis">
     
         <meta name="keywords" content="DynAis,Dynais,dynais,">
@@ -19,12 +19,12 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"\n项目进度\n实现了番茄钟最基本的倒计时功能\n实现了按钮交互的功能\n\n\n一. 重要代码模块1. 显示时间与计算时间的转换\n实现倒计时时的一个问题是: 显示的时间格式需要是”XX:XX”, 但是为了方便计算, 需要把这个格式的时间转化为秒数的形式, 这就需要一个显示时间与计算时间互相转换的模块\n12345678910111213141516171819# 显示时间转秒数 \"XX:XX\" -&gt; floutdef tomato2sec(tomato):    sec = int(tomato[3:])    sec = sec + 60 * int(tomato[:2])    return sec# 秒数转显示时间 flout -&gt; \"XX:XX\"def sec2tomato(sec):    t = []    t.append(str(int(sec / 60)))    t.append(str(int(sec % 60)))    for i in range(0, len(t)):        if len(t[i]) &lt; 2:            t[i] = \"0\" + t[i]    tomato = \":\".join(t)    return tomato\n2. 获取系统时间获取系统时间在python里我使用的是time包, 还有一个相似的是datetime.time包, 注意不要搞混了\n1import time\n倒计时的基本思路是点击开始按钮时获取一个开启的系统时间, 然后用户会有一个给定的目标时间, 然后点按钮以后会进入一个循环, 知道计时结束才会退出, 在循环里面一直获取系统时间和其实时间运算就得到了已经过了多久, 再和目标时间判断就行了\n1t_start &#x3D; time.time()\n这个语句是获取以秒数显示的当前系统时间, 用于运算会比较方便\n3. 页面元素的交互简单的页面元素交互可以在Qt里直接实现\n原理基本上是, 按下按钮之类的东西, 会发出一个信号\nui_window.button_start.clicked这个信号就是ui_window这个窗口下button_start按钮发出的点击信号, 使用connect绑定一个slot之后\n1ui_window.button_start.clicked.connect(start_a_tomato)\n在这里的意思就是: 单击这个按钮以后执行start_a_tomato函数, 注意函数名在这里不带括号\n二. 已解决的问题1. 倒计时使用time.sleep()效果不好的问题最开始的思路里, 用户点击开始后进入一个循环, 这个循环每次执行一秒, 然后让页面更新一次, 用到的函数是这个\n12import timetime.sleep(1)\t#控制系统空置一秒\n但是问题就是, 和单片机上不能乱用delay()一样, 使用sleep()会使程序整个无法响应, 导致拖拽手感奇怪, 且拖拽时倒计时直接停止\n然后换了思路, 直接不断读取系统时间实时刷新, 解决了拖拽手感的问题, 但拖拽时倒计时还是会停止, 不过放下窗口后时间并不会出错, 就先不管了\n2. 改变窗口元素但窗口显示不刷新的问题最开始在循环里改变了元素, 但发现直到循环退出窗口才改变了显示, 但使用print输出又没什么问题, 于是想可能是窗口刷新的问题, 最后的解决办法就一条指令\n1QtWidgets.QApplication.processEvents()\n让窗口刷新\n三. 待解决的问题1. 拖动窗口时时间不走动的问题暂时没有思路\n2. Qt里写了中文uic()命令就无法成功执行的问题应该是编码不统一的问题, 但是改了Qt的编码几次还是不行, 暂时先用英文顶着, 看看以后有没有解决办法\n暂时没有思路\n四. 下一阶段的目标\n加入自己指定时间的模块\n加入保存用户设置的文件\n在倒计时结束时尝试发出通知\n\n本文永久链接： http://dynais.xyz/posts/378efd60.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-04-10T00:00:00+08:00","dateModified":"2020-07-25T01:09:32+08:00","datePublished":"2020-04-10T00:00:00+08:00","description":"\n项目进度\n实现了番茄钟最基本的倒计时功能\n实现了按钮交互的功能\n\n\n一. 重要代码模块1. 显示时间与计算时间的转换","headline":"番茄钟倒计时模块的基本实现","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212241.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/378efd60.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/378efd60.html","keywords":"Qt, Python","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212241.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"\n项目进度\n实现了番茄钟最基本的倒计时功能\n实现了按钮交互的功能\n\n\n一. 重要代码模块1. 显示时间与计算时间的转换\n实现倒计时时的一个问题是: 显示的时间格式需要是”XX:XX”, 但是为了方便计算, 需要把这个格式的时间转化为秒数的形式, 这就需要一个显示时间与计算时间互相转换的模块\n12345678910111213141516171819# 显示时间转秒数 \"XX:XX\" -&gt; floutdef tomato2sec(tomato):    sec = int(tomato[3:])    sec = sec + 60 * int(tomato[:2])    return sec# 秒数转显示时间 flout -&gt; \"XX:XX\"def sec2tomato(sec):    t = []    t.append(str(int(sec / 60)))    t.append(str(int(sec % 60)))    for i in range(0, len(t)):        if len(t[i]) &lt; 2:            t[i] = \"0\" + t[i]    tomato = \":\".join(t)    return tomato\n2. 获取系统时间获取系统时间在python里我使用的是time包, 还有一个相似的是datetime.time包, 注意不要搞混了\n1import time\n倒计时的基本思路是点击开始按钮时获取一个开启的系统时间, 然后用户会有一个给定的目标时间, 然后点按钮以后会进入一个循环, 知道计时结束才会退出, 在循环里面一直获取系统时间和其实时间运算就得到了已经过了多久, 再和目标时间判断就行了\n1t_start &#x3D; time.time()\n这个语句是获取以秒数显示的当前系统时间, 用于运算会比较方便\n3. 页面元素的交互简单的页面元素交互可以在Qt里直接实现\n原理基本上是, 按下按钮之类的东西, 会发出一个信号\nui_window.button_start.clicked这个信号就是ui_window这个窗口下button_start按钮发出的点击信号, 使用connect绑定一个slot之后\n1ui_window.button_start.clicked.connect(start_a_tomato)\n在这里的意思就是: 单击这个按钮以后执行start_a_tomato函数, 注意函数名在这里不带括号\n二. 已解决的问题1. 倒计时使用time.sleep()效果不好的问题最开始的思路里, 用户点击开始后进入一个循环, 这个循环每次执行一秒, 然后让页面更新一次, 用到的函数是这个\n12import timetime.sleep(1)\t#控制系统空置一秒\n但是问题就是, 和单片机上不能乱用delay()一样, 使用sleep()会使程序整个无法响应, 导致拖拽手感奇怪, 且拖拽时倒计时直接停止\n然后换了思路, 直接不断读取系统时间实时刷新, 解决了拖拽手感的问题, 但拖拽时倒计时还是会停止, 不过放下窗口后时间并不会出错, 就先不管了\n2. 改变窗口元素但窗口显示不刷新的问题最开始在循环里改变了元素, 但发现直到循环退出窗口才改变了显示, 但使用print输出又没什么问题, 于是想可能是窗口刷新的问题, 最后的解决办法就一条指令\n1QtWidgets.QApplication.processEvents()\n让窗口刷新\n三. 待解决的问题1. 拖动窗口时时间不走动的问题暂时没有思路\n2. Qt里写了中文uic()命令就无法成功执行的问题应该是编码不统一的问题, 但是改了Qt的编码几次还是不行, 暂时先用英文顶着, 看看以后有没有解决办法\n暂时没有思路\n四. 下一阶段的目标\n加入自己指定时间的模块\n加入保存用户设置的文件\n在倒计时结束时尝试发出通知\n\n本文永久链接： http://dynais.xyz/posts/378efd60.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-04-10T00:00:00+08:00","dateModified":"2020-07-25T01:09:32+08:00","datePublished":"2020-04-10T00:00:00+08:00","description":"\n项目进度\n实现了番茄钟最基本的倒计时功能\n实现了按钮交互的功能\n\n\n一. 重要代码模块1. 显示时间与计算时间的转换","headline":"番茄钟倒计时模块的基本实现","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212241.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/378efd60.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/378efd60.html","keywords":"Qt, Python","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212241.png"}</script>
     <meta name="description" content="项目进度 实现了番茄钟最基本的倒计时功能 实现了按钮交互的功能   一. 重要代码模块1. 显示时间与计算时间的转换">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="番茄钟倒计时模块的基本实现">
 <meta property="og:url" content="http://dynais.xyz/posts/378efd60.html">
-<meta property="og:site_name" content="知识高塔">
+<meta property="og:site_name" content="DynAis的个人站">
 <meta property="og:description" content="项目进度 实现了番茄钟最基本的倒计时功能 实现了按钮交互的功能   一. 重要代码模块1. 显示时间与计算时间的转换">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725010712.png">
@@ -55,7 +55,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="../assets/css/style-nbyxkjobv8xiw99w0oroobncekqwhnww4s3wbisvj2kkabcm1ecmcoe6w1vb.min.css">
+<link rel="stylesheet" href="../assets/css/style-uc5lrdohep8fiuwzi6puefeshfcv7eacouiyobpc9vu62rsebwcs6wed245a.min.css">
 
     <!--STYLES END-->
     
@@ -90,7 +90,7 @@
             href="http://dynais.xyz/"
             aria-label=""
         >
-            知识高塔
+            DynAis的个人站
         </a>
     </div>
     
@@ -238,6 +238,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/dynais.artstation.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Artstation"
+                        >
+                        <i class="sidebar-button-icon fab fa-artstation" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Artstation</span>
                     </a>
             </li>
             
@@ -398,7 +414,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -423,7 +439,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#gitalk"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -500,7 +516,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -525,7 +541,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#gitalk"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -592,7 +608,7 @@
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>author.job</p>
+                <p>学生</p>
 
             </div>
         
@@ -600,7 +616,7 @@
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
                 <br/>
-                Zhejiang, China Ostfalia, Deutsch
+                Wolfenbüttel, Germany
             </div>
         
     </div>
@@ -611,7 +627,7 @@
 <div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161511.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="../assets/js/script-upvrdkh5go8fn80dvgfkyqqe7ndzale5j7tspitfrzrapnsu5madahzz7cw3.min.js"></script>
+<script src="../assets/js/script-ueej2dtheo2ewchzog44shglnkyezeutobc6ies0hlhptc5rbenp3bzywp0r.min.js"></script>
 
 <!--SCRIPTS END-->
 

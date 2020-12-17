@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="知识高塔">
-    <title>Python+Qt5项目环境的搭建 - 知识高塔</title>
+    <meta name="generator" content="DynAis的个人站">
+    <title>Python+Qt5项目环境的搭建 - DynAis的个人站</title>
     <meta name="author" content="DynAis">
     
         <meta name="keywords" content="DynAis,Dynais,dynais,">
@@ -19,12 +19,12 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"\n一. 软件1. Pycharm 2019.3.3​    Pycharm主要负责进行主体逻辑的编写, 以及统筹整个项目, 此外环境的搭建大多也在Pycharm里完成\n2. Qt 5.12.7 / Qt Creator​    Qt原本是为C++设计的UI界面搭建软件, 通过加入Py包之后同样也可以为Python编写桌面图形应用程序, 这里用的是官网的免费版\n二. 环境搭建(对于已有Anaconda3)1.Python解释器由于已经安装了Anaconda3, 所以没有再安装原生的解释器, 也不清楚, 但觉得应该可以通用\n\n2. 配置环境变量(对于Anaconda3)对于Anaconda3的用户, 需要再自行配置一下环境变量, 在环境变量的path选项卡中添加Anaconda的以下目录\n\n不然在Pycharm中搭建环境时会遇到提示pip无法成功的提示, 导致包无法安装\n3. 在Pycharm里搭建环境/安装必要的包完成以上两步准备就可以开始配置Pycharm了\n首先新建一个项目\n\n有几点需要注意的地方: \n首先, 确保New environment using中是新建了一个环境,而不是使用Conda. \n其次, 确保Base interpreter中选择的是pythonw解释器, 而不是python\n最后注意, 此处不需勾选\n\n然后就可以让它新建一个项目了\n打开工程后进入 文件 -&gt; 设置 -&gt; 项目 -&gt; Project Interpreter 在这里管理需要用到的包文件\n\n\n需要使用Qt编程的话, 必须添加QtPy和PyQt5两个包\nPycharm会自己管理, 下载好就算是配置完成了\n三. 工作流大致的思路是:\n\n使用Qt Creator创作图形界面\n使用包内置函数转化Qt的.ui文件为.py文件, 作为包导入到程序中\n使用Pycharm编写整体逻辑\n\n1. 使用Qt Creator创作图形界面打开Qt Creator新建工程\n\n注意创建时选择桌面图形应用, 这里不需要选Python的那个\n\n 工程最好命名为ui, 保存在一个项目文件夹下\n2. 使用包内置函数转化Qt的.ui文件为.py文件, 作为包导入到程序中在Pycharm中新建一个builder.py文件\n123from qtpy import uicuic.compileUiDir(\"这里填入Qt工程的文件夹路径\")\n运行便可以得到一个.py文件, 里面是应用程序外观的描述\n在主程序py文件中写入\n1234567891011121314import sysfrom qtpy import QtWidgetsfrom ui.mainwindow import Ui_MainWindowapp = QtWidgets.QApplication(sys.argv)\t#设置一个Appwindow = QtWidgets.QMainWindow()\t#新建一个窗口ui_window = Ui_MainWindow()\t#新建一个导入包中窗口的类ui_window.setupUi(window)\t#注意自己的窗口要填入括号window.setWindowTitle(\"Tomato Clock v0\")\t#设置标题window.show()\t#显示窗口sys.exit(app.exec_())\t#设置退出\n设置完成\n本文永久链接： http://dynais.xyz/posts/6b47c0e1.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-04-08T00:00:00+08:00","dateModified":"2020-07-25T01:06:52+08:00","datePublished":"2020-04-08T00:00:00+08:00","description":"\n一. 软件1. Pycharm 2019.3.3​    Pycharm主要负责进行主体逻辑的编写, 以及统筹整个项目, 此外环境的搭建大多也在Pycharm里完成\n2. Qt 5.12.7 / Qt Creator​    Qt原本是为C++设计的UI界面搭建软件, 通过加入Py包之后同样也可以为Python编写桌面图形应用程序, 这里用的是官网的免费版\n二. 环境搭建(对于已有Anaconda3)1.Python解释器由于已经安装了Anaconda3, 所以没有再安装原生的解释器, 也不清楚, 但觉得应该可以通用","headline":"Python+Qt5项目环境的搭建","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212241.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/6b47c0e1.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/6b47c0e1.html","keywords":"Qt, Python","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212241.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"\n一. 软件1. Pycharm 2019.3.3​    Pycharm主要负责进行主体逻辑的编写, 以及统筹整个项目, 此外环境的搭建大多也在Pycharm里完成\n2. Qt 5.12.7 / Qt Creator​    Qt原本是为C++设计的UI界面搭建软件, 通过加入Py包之后同样也可以为Python编写桌面图形应用程序, 这里用的是官网的免费版\n二. 环境搭建(对于已有Anaconda3)1.Python解释器由于已经安装了Anaconda3, 所以没有再安装原生的解释器, 也不清楚, 但觉得应该可以通用\n\n2. 配置环境变量(对于Anaconda3)对于Anaconda3的用户, 需要再自行配置一下环境变量, 在环境变量的path选项卡中添加Anaconda的以下目录\n\n不然在Pycharm中搭建环境时会遇到提示pip无法成功的提示, 导致包无法安装\n3. 在Pycharm里搭建环境/安装必要的包完成以上两步准备就可以开始配置Pycharm了\n首先新建一个项目\n\n有几点需要注意的地方: \n首先, 确保New environment using中是新建了一个环境,而不是使用Conda. \n其次, 确保Base interpreter中选择的是pythonw解释器, 而不是python\n最后注意, 此处不需勾选\n\n然后就可以让它新建一个项目了\n打开工程后进入 文件 -&gt; 设置 -&gt; 项目 -&gt; Project Interpreter 在这里管理需要用到的包文件\n\n\n需要使用Qt编程的话, 必须添加QtPy和PyQt5两个包\nPycharm会自己管理, 下载好就算是配置完成了\n三. 工作流大致的思路是:\n\n使用Qt Creator创作图形界面\n使用包内置函数转化Qt的.ui文件为.py文件, 作为包导入到程序中\n使用Pycharm编写整体逻辑\n\n1. 使用Qt Creator创作图形界面打开Qt Creator新建工程\n\n注意创建时选择桌面图形应用, 这里不需要选Python的那个\n\n 工程最好命名为ui, 保存在一个项目文件夹下\n2. 使用包内置函数转化Qt的.ui文件为.py文件, 作为包导入到程序中在Pycharm中新建一个builder.py文件\n123from qtpy import uicuic.compileUiDir(\"这里填入Qt工程的文件夹路径\")\n运行便可以得到一个.py文件, 里面是应用程序外观的描述\n在主程序py文件中写入\n1234567891011121314import sysfrom qtpy import QtWidgetsfrom ui.mainwindow import Ui_MainWindowapp = QtWidgets.QApplication(sys.argv)\t#设置一个Appwindow = QtWidgets.QMainWindow()\t#新建一个窗口ui_window = Ui_MainWindow()\t#新建一个导入包中窗口的类ui_window.setupUi(window)\t#注意自己的窗口要填入括号window.setWindowTitle(\"Tomato Clock v0\")\t#设置标题window.show()\t#显示窗口sys.exit(app.exec_())\t#设置退出\n设置完成\n本文永久链接： http://dynais.xyz/posts/6b47c0e1.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-04-08T00:00:00+08:00","dateModified":"2020-07-25T01:06:52+08:00","datePublished":"2020-04-08T00:00:00+08:00","description":"\n一. 软件1. Pycharm 2019.3.3​    Pycharm主要负责进行主体逻辑的编写, 以及统筹整个项目, 此外环境的搭建大多也在Pycharm里完成\n2. Qt 5.12.7 / Qt Creator​    Qt原本是为C++设计的UI界面搭建软件, 通过加入Py包之后同样也可以为Python编写桌面图形应用程序, 这里用的是官网的免费版\n二. 环境搭建(对于已有Anaconda3)1.Python解释器由于已经安装了Anaconda3, 所以没有再安装原生的解释器, 也不清楚, 但觉得应该可以通用","headline":"Python+Qt5项目环境的搭建","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212241.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/6b47c0e1.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/6b47c0e1.html","keywords":"Qt, Python","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212241.png"}</script>
     <meta name="description" content="一. 软件1. Pycharm 2019.3.3​    Pycharm主要负责进行主体逻辑的编写, 以及统筹整个项目, 此外环境的搭建大多也在Pycharm里完成 2. Qt 5.12.7 &#x2F; Qt Creator​    Qt原本是为C++设计的UI界面搭建软件, 通过加入Py包之后同样也可以为Python编写桌面图形应用程序, 这里用的是官网的免费版 二. 环境搭建(对于已有Anacond">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Python+Qt5项目环境的搭建">
 <meta property="og:url" content="http://dynais.xyz/posts/6b47c0e1.html">
-<meta property="og:site_name" content="知识高塔">
+<meta property="og:site_name" content="DynAis的个人站">
 <meta property="og:description" content="一. 软件1. Pycharm 2019.3.3​    Pycharm主要负责进行主体逻辑的编写, 以及统筹整个项目, 此外环境的搭建大多也在Pycharm里完成 2. Qt 5.12.7 &#x2F; Qt Creator​    Qt原本是为C++设计的UI界面搭建软件, 通过加入Py包之后同样也可以为Python编写桌面图形应用程序, 这里用的是官网的免费版 二. 环境搭建(对于已有Anacond">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725010627.png">
@@ -61,7 +61,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="../assets/css/style-nbyxkjobv8xiw99w0oroobncekqwhnww4s3wbisvj2kkabcm1ecmcoe6w1vb.min.css">
+<link rel="stylesheet" href="../assets/css/style-uc5lrdohep8fiuwzi6puefeshfcv7eacouiyobpc9vu62rsebwcs6wed245a.min.css">
 
     <!--STYLES END-->
     
@@ -96,7 +96,7 @@
             href="http://dynais.xyz/"
             aria-label=""
         >
-            知识高塔
+            DynAis的个人站
         </a>
     </div>
     
@@ -244,6 +244,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/dynais.artstation.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Artstation"
+                        >
+                        <i class="sidebar-button-icon fab fa-artstation" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Artstation</span>
                     </a>
             </li>
             
@@ -409,7 +425,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -434,7 +450,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#gitalk"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -511,7 +527,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -536,7 +552,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#gitalk"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -603,7 +619,7 @@
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>author.job</p>
+                <p>学生</p>
 
             </div>
         
@@ -611,7 +627,7 @@
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
                 <br/>
-                Zhejiang, China Ostfalia, Deutsch
+                Wolfenbüttel, Germany
             </div>
         
     </div>
@@ -622,7 +638,7 @@
 <div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161511.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="../assets/js/script-upvrdkh5go8fn80dvgfkyqqe7ndzale5j7tspitfrzrapnsu5madahzz7cw3.min.js"></script>
+<script src="../assets/js/script-ueej2dtheo2ewchzog44shglnkyezeutobc6ies0hlhptc5rbenp3bzywp0r.min.js"></script>
 
 <!--SCRIPTS END-->
 

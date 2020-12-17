@@ -1,0 +1,653 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="DynAis的个人站">
+    <title>PSpice模拟数据导入Excel工作流 - DynAis的个人站</title>
+    <meta name="author" content="DynAis">
+    
+        <meta name="keywords" content="DynAis,Dynais,dynais,cursor,pspice">
+    
+    
+        <link rel="icon" href="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161223.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"\n\n概述\n基本思想是先保存到 csv 逗号分隔符文件再导入 Excel 里分析\n\n\n流程\n在 PSpice 得到模拟数据后, 选中需要导出的曲线\n\n看到它变红了\n然后直接 Ctrl + C 就可以获得曲线数据\n然后新建一个文本文档, 复制粘贴保存成 .csv 文件\n直接导入 Excel 应该也是可行的, 但是由于改成了德国的计数方法, 这里的逗号和小数点会有问题, 先导入 csv 文件的话就没问题, 所以还是建议保存到 csv, 这样 Matlab 什么的也能用\n本文永久链接： http://dynais.xyz/posts/da7f3a9c.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2021-12-17T00:00:00+08:00","dateModified":"2020-12-17T16:26:35+08:00","datePublished":"2021-12-17T00:00:00+08:00","description":"\n\n概述\n基本思想是先保存到 csv 逗号分隔符文件再导入 Excel 里分析","headline":"PSpice模拟数据导入Excel工作流","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20201217161006.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/da7f3a9c.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/da7f3a9c.html","keywords":"pspice","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20201217161006.png"}</script>
+    <meta name="description" content="概述 基本思想是先保存到 csv 逗号分隔符文件再导入 Excel 里分析">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="PSpice模拟数据导入Excel工作流">
+<meta property="og:url" content="http://dynais.xyz/posts/da7f3a9c.html">
+<meta property="og:site_name" content="DynAis的个人站">
+<meta property="og:description" content="概述 基本思想是先保存到 csv 逗号分隔符文件再导入 Excel 里分析">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20201217162110.png">
+<meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png">
+<meta property="article:published_time" content="2021-12-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-17T08:26:35.489Z">
+<meta property="article:author" content="DynAis">
+<meta property="article:tag" content="cursor">
+<meta property="article:tag" content="pspice">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20201217162110.png">
+<meta name="twitter:creator" content="@dyn_ais">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"/>
+    
+    
+        <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20201217161006.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20201217161006.png"/>
+    
+    
+        <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="../assets/css/style-uc5lrdohep8fiuwzi6puefeshfcv7eacouiyobpc9vu62rsebwcs6wed245a.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+            
+<link rel="stylesheet" href="../assets/css/gitalk.css">
+
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="http://dynais.xyz/"
+            aria-label=""
+        >
+            DynAis的个人站
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="../#about"
+                aria-label="打开链接: ../#about"
+            >
+        
+        
+            <img class="header-picture" src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg" alt="作者的图片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="../#about"
+                    aria-label="阅读有关作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg" alt="作者的图片"/>
+                </a>
+                <h4 class="sidebar-profile-name">DynAis</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>是败家玩意，喜欢折腾各种觉得好玩的东西</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../index.html"
+                            
+                            rel="noopener"
+                            title="首页"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../all-categories"
+                            
+                            rel="noopener"
+                            title="分类"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../all-tags"
+                            
+                            rel="noopener"
+                            title="标签"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../all-archives"
+                            
+                            rel="noopener"
+                            title="归档"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../#about"
+                            
+                            rel="noopener"
+                            title="关于"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/github.com/DynAis"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/twitter.com/dyn_ais"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/dynais.artstation.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Artstation"
+                        >
+                        <i class="sidebar-button-icon fab fa-artstation" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Artstation</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg');"
+             data-behavior="5">
+            
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            PSpice模拟数据导入Excel工作流
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-12-17T00:00:00+08:00">
+	
+		    12月 17, 2021
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="../categories/note/">note</a>, <a class="category-link" href="../categories/note/pspice/">pspice</a>
+
+
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="5"
+                 class="hasCover
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h1 id="table-of-contents">目录</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#流程"><span class="toc-text">流程</span></a></li></ol>
+<p><br/></p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><hr>
+<p>基本思想是先保存到 csv 逗号分隔符文件再导入 Excel 里分析</p>
+<a id="more"></a>
+<p><br/></p>
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><hr>
+<p>在 PSpice 得到模拟数据后, 选中需要导出的曲线</p>
+<div class="figure center" style="width:50%;"><a class="fancybox" href="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20201217162110.png" target="_blank" rel="noopener" title="" data-caption="" data-fancybox="default"><img class="fig-img" src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20201217162110.png" style="width:50%;height:50%;"alt=""></a></div><div style="clear:both;"></div>
+<p>看到它变红了</p>
+<p>然后直接 <code>Ctrl + C</code> 就可以获得曲线数据</p>
+<p>然后新建一个文本文档, 复制粘贴保存成 <code>.csv</code> 文件</p>
+<p>直接导入 Excel 应该也是可行的, 但是由于改成了德国的计数方法, 这里的逗号和小数点会有问题, 先导入 csv 文件的话就没问题, 所以还是建议保存到 csv, 这样 Matlab 什么的也能用</p>
+<p><br /><br /><br /><strong>本文永久链接</strong>： <a href="http://dynais.xyz/posts/da7f3a9c.html">http://dynais.xyz/posts/da7f3a9c.html</a> <br /><strong>版权声明</strong><br /><img src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png" alt=""><br />This site by DynAis is licensed under a Creative Commons <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC-BY-NC-SA 4.0 International License</a>.<br />由Dynais创作并维护的博客采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">创作共用-署名-非商业性-相同方式共享4.0国际许可证</a>。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="../tags/pspice/" rel="tag">pspice</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="457ee858.html"
+                    data-tooltip="PSpice中常用的Cursor查询命令"
+                    aria-label="上一篇: PSpice中常用的Cursor查询命令"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="4b97ec9b.html"
+                    data-tooltip="艺术造型中的节奏感/力量感/画面平衡的表现"
+                    aria-label="下一篇: 艺术造型中的节奏感/力量感/画面平衡的表现"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/da7f3a9c.html"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目录">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="gitalk"></div>
+
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 DynAis. All Rights Reserved. <br/><a href="http://www.beian.miit.gov.cn/" target="_blank" rel="noopener">浙ICP备20029043号</a>
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="457ee858.html"
+                    data-tooltip="PSpice中常用的Cursor查询命令"
+                    aria-label="上一篇: PSpice中常用的Cursor查询命令"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="4b97ec9b.html"
+                    data-tooltip="艺术造型中的节奏感/力量感/画面平衡的表现"
+                    aria-label="下一篇: 艺术造型中的节奏感/力量感/画面平衡的表现"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/da7f3a9c.html"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目录">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/da7f3a9c.html"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg" alt="作者的图片"/>
+        
+            <h4 id="about-card-name">DynAis</h4>
+        
+            <div id="about-card-bio"><p>是败家玩意，喜欢折腾各种觉得好玩的东西</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>学生</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Wolfenbüttel, Germany
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161511.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="../assets/js/script-ueej2dtheo2ewchzog44shglnkyezeutobc6ies0hlhptc5rbenp3bzywp0r.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        
+<script src="../assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '644eebe2f40d9a8582c4',
+              clientSecret: '2f696b692dceaf847add9a6a459e904a953f3e3b',
+              repo: 'dynais.github.io',
+              owner: 'DynAis',
+              admin: ['DynAis'],
+              id: 'posts/da7f3a9c.html',
+              ...{"language":"zh-cn","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
+    
+
+
+
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
+</html>

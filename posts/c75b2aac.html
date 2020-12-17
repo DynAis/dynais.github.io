@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="知识高塔">
-    <title>DuinoAccess指纹锁项目 - Part.1 - 知识高塔</title>
+    <meta name="generator" content="DynAis的个人站">
+    <title>DuinoAccess指纹锁项目 - Part.1 - DynAis的个人站</title>
     <meta name="author" content="DynAis">
     
         <meta name="keywords" content="DynAis,Dynais,dynais,arduino,vscode,vsc,指纹,platformio">
@@ -19,12 +19,12 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"\n\n0x00 - 前言这次也是因为闲的在家没有事情做，所以又给自己开了一个新坑，其实蛮早以前就有过想做一个电脑上能用的指纹锁的想法了，但是一直没有动手，刚好这次有机会，并且也是刚刚新组了一台电脑，就想着要把这个项目给做了。\n这个项目的一个主要的灵感来源是@稚晖君很早以前发在Arduino论坛上的一个项目 (Link: 如何制作一个带指纹识别的机械键盘), 这次项目的的主要思路都和他的差不多，只不过我想做成独立的一个模块，并且最好能够实现便携功能，也就是说如果可以的话我想加上蓝牙的功能\n然后这次的文章大概也会写好几部分，具体取决于我最后能不能最后好好完成这个项目…\n这是一个开源项目，后续也会一直更新进度，对你有帮助的话可以给我个星星，传送门：https://github.com/DynAis/duino-access\n\n\n\n\n0x01 - 核心部分元器件选型这次的目标是能够使用指纹解锁的方式让电脑自动解锁，思路是使用指纹模块给出信号+单片机模拟键盘输入的简单思路，由于整体的体积要求越小越好，所以元件的选型基本没有选择\n\n\n\n\n使用模块\n价格\n\n\n\n\narduino-pro-micro (VCC 5v or 3.3v)\n19.80 CNY\n\n\nHN0610 指纹模块\n45.00 CNY\n\n\nAMS1117-3.3v/5v 降压模块 (假如使用5v的arduino，3.3v的不需要)\n1.29 CNY\n\n\n蜂鸣器、导线若干\n-\n\n\n\n\n之所以没有用稚晖的那个FPM3X指纹模块的原因是因为那个好像在TB上已经快找不到了，只剩下最后一家而且卖的很贵，所以当时就选择了这个卖得最好的来做(有几天自闭的时候非常后悔这个选择)，并且从外观上来说我更喜欢这款一点\n\n\n\n0x02 - 环境选择与搭建VSCode + PlatformIO整个环境方面没有使用传统的 ArduinoIDE 来做，而是选择的使用 VSCode 来完成这次的项目，主要原因是为了以后做其他单片机项目的时候也都统一到 VSCode上去，这样整个一致性会比较好\n最后选择了 VSCode 的 PlatformIO 拓展\n\n直接在 VSCode 的拓展商店里搜索即可，点击安装即可安装插件，不用动什么脑子，安装过程会有些慢需要耐心等待一会，安装完成后如果成功了你应该可以在左下角看到这个小图标\n\n恭喜，如果你看到了这个小房子，那你基本就是安装成功了，但是由于各种各样的原因，你也很有可能等了半天他也还是在转圈圈加载，像我一样\n\n那么大概率他是不能自己装上了，我们只能来手动安装\n首先，如果你安装失败了，请先卸载原来的安装失败的 PlatformIO ，重启 VSCode，之后在VSCode的终端里输入\nsudo pip --no-cache-dir install -U platformio\n等待他安装完成，重启VSCode，重新去商店点一下安装，就可以顺利的装上了\n如果依旧不行，可以尝试: 移除Anaconda(假如你安装了Anaconda环境)、安装Python2.7版本并且添加进环境变量、安装Python最新版本并添加进环境变量，如果这也不行，那就尝试使用ArduinoIDE吧(不过这样也许需要稍微改动下代码)\n\n\nPlatformIO开发准备点击Home按钮打开 PlatformIO 主界面，new project 后选择对应的板子，他会进行自动的初始化\n\n初始化完成后，在src文件夹里就是我们的main文件\n\nPlatformIO 和 ArduinoIDE 不同的地方就是，他是使用cpp文件来进行编译上传的，而不是ino文件，所以每个需要用到 Arduino 库的文件中，都需要包含#include &quot;Arduino.h&quot;才能够使用\n此外，比较麻烦的一点是，对于某些库的支持，也是需要我们手动来加入的，比如这块 Pro Micro 支持的HID键盘和鼠标的功能，就需要我们手动加入\n首先打开刚才的Home界面，在左边一栏里可以找到 Libraries\n\n搜索keyboard，找到这个 Arduino 的官方库文件安装\n\n安装完成以后，到左边的资源管理器，找到platformio.ini这个文件\n在文件最后加入\n12lib_deps =     Keyboard\n告诉他我们要调用这个库，这样就完成了，可以开始硬件部分的测试了\n\n\n\n0x03 - 硬件部分一定要注意指纹模块的供电是3.3v，使用5v虽然不会烧坏模块但是会无法工作(当初因为这个原因卡了好久不知道哪错了)\n\n指纹模块的话是线给剪了直接焊在了板子上，有点粗糙\n\n看不清楚的话也可以看源文件里 /lib/HN0610/pinDef.h 里的内容\n最后附上Micro的引脚图\n\n\n测试指纹模块修改 /src/min.cpp 文件中参数调整宏定义区域的参数  DASTATE 就可以设定当前运行在什么模式下，由于是测试，就把值改为0，运行在检测手指模式上，其他模式的定义也在下面给出\n\n\n\n\n功能实现\nDASTATE值\n\n\n\n\n检测手指按压\n0\n\n\n指纹注册\n1\n\n\n验证指纹(最后留这一个)\n2\n\n\n检测手指按压后输出硬件信息(需要打开电脑串口)\n3\n\n\n清除所有指纹信息\n4\n\n\n\n\n 点击上传烧录进Arduino\n如果没有问题的话，按下手指蜂鸣器就会鸣响了\n\n\n\n0x04 - 遇到的坑和问题1. 底层数据类型定义问题通常来说，开发单片机会定义一系列的UINT\n在这次，定义文件写在了 hzTypes.h 文件里，其中对于UINT32的定义出现了兼容错误\n原始内容是\n\n我猜测可能是由于他们使用的单片机上int是32位，所以能够正常运行，而在Arduino上，int并不是32位的，long才是，所以需要改为\n\n\n2.电源的坑已经说过了，不过这次也是因为在家里没有万用表的缘故，并且提醒，虽然原理图上有一个SJ1来控制Micro的输出电压是5v还是3.3v，但是你并不可以通过连接或者断开这个引脚来达到修改电压的目的，因为5v的Micro和3.3v的Micro主频也是不一样的，这会导致工作不稳定\n并且很有可能改了也没有作用(对于很多国产板)\n\n\n3.注意Micro的中断脚因为这个指纹识别模块还有自动休眠的功能，所以虽然我现在并没有使用，但是很有可能会用到这个模块的中断信号，那么就要注意Micro的中断引脚定义和Uno是不一样的\n\n\n\n\nPIN\n中断号\n\n\n\n\n3\n0\n\n\n2\n1\n\n\n0\n2\n\n\n1\n3\n\n\n7\n6\n\n\n\n\n\n\n\n0x05 - 后续开发库HN610\n\n\n\n文件名\n内容\n\n\n\n\nauth\n通讯签名算法(默认不签名)\n\n\nfp\n大部分能直接用的API\n\n\nfpmComm\n模块命令API\n\n\nhzDevice\n串口通信底层\n\n\npinDef\n主板引脚定义\n\n\nhzTypes\n数据类型定义\n\n\n\n\n本文永久链接： http://dynais.xyz/posts/c75b2aac.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-08-20T00:00:00+08:00","dateModified":"2020-08-20T20:54:18+08:00","datePublished":"2020-08-20T00:00:00+08:00","description":"\n\n0x00 - 前言这次也是因为闲的在家没有事情做，所以又给自己开了一个新坑，其实蛮早以前就有过想做一个电脑上能用的指纹锁的想法了，但是一直没有动手，刚好这次有机会，并且也是刚刚新组了一台电脑，就想着要把这个项目给做了。\n这个项目的一个主要的灵感来源是@稚晖君很早以前发在Arduino论坛上的一个项目 (Link: 如何制作一个带指纹识别的机械键盘), 这次项目的的主要思路都和他的差不多，只不过我想做成独立的一个模块，并且最好能够实现便携功能，也就是说如果可以的话我想加上蓝牙的功能\n然后这次的文章大概也会写好几部分，具体取决于我最后能不能最后好好完成这个项目…\n这是一个开源项目，后续也会一直更新进度，对你有帮助的话可以给我个星星，传送门：https://github.com/DynAis/duino-access","headline":"DuinoAccess指纹锁项目 - Part.1","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200820183523.jpg","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/c75b2aac.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/c75b2aac.html","keywords":"单片机, Arduino","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200820183523.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"\n\n0x00 - 前言这次也是因为闲的在家没有事情做，所以又给自己开了一个新坑，其实蛮早以前就有过想做一个电脑上能用的指纹锁的想法了，但是一直没有动手，刚好这次有机会，并且也是刚刚新组了一台电脑，就想着要把这个项目给做了。\n这个项目的一个主要的灵感来源是@稚晖君很早以前发在Arduino论坛上的一个项目 (Link: 如何制作一个带指纹识别的机械键盘), 这次项目的的主要思路都和他的差不多，只不过我想做成独立的一个模块，并且最好能够实现便携功能，也就是说如果可以的话我想加上蓝牙的功能\n然后这次的文章大概也会写好几部分，具体取决于我最后能不能最后好好完成这个项目…\n这是一个开源项目，后续也会一直更新进度，对你有帮助的话可以给我个星星，传送门：https://github.com/DynAis/duino-access\n\n\n\n\n0x01 - 核心部分元器件选型这次的目标是能够使用指纹解锁的方式让电脑自动解锁，思路是使用指纹模块给出信号+单片机模拟键盘输入的简单思路，由于整体的体积要求越小越好，所以元件的选型基本没有选择\n\n\n\n\n使用模块\n价格\n\n\n\n\narduino-pro-micro (VCC 5v or 3.3v)\n19.80 CNY\n\n\nHN0610 指纹模块\n45.00 CNY\n\n\nAMS1117-3.3v/5v 降压模块 (假如使用5v的arduino，3.3v的不需要)\n1.29 CNY\n\n\n蜂鸣器、导线若干\n-\n\n\n\n\n之所以没有用稚晖的那个FPM3X指纹模块的原因是因为那个好像在TB上已经快找不到了，只剩下最后一家而且卖的很贵，所以当时就选择了这个卖得最好的来做(有几天自闭的时候非常后悔这个选择)，并且从外观上来说我更喜欢这款一点\n\n\n\n0x02 - 环境选择与搭建VSCode + PlatformIO整个环境方面没有使用传统的 ArduinoIDE 来做，而是选择的使用 VSCode 来完成这次的项目，主要原因是为了以后做其他单片机项目的时候也都统一到 VSCode上去，这样整个一致性会比较好\n最后选择了 VSCode 的 PlatformIO 拓展\n\n直接在 VSCode 的拓展商店里搜索即可，点击安装即可安装插件，不用动什么脑子，安装过程会有些慢需要耐心等待一会，安装完成后如果成功了你应该可以在左下角看到这个小图标\n\n恭喜，如果你看到了这个小房子，那你基本就是安装成功了，但是由于各种各样的原因，你也很有可能等了半天他也还是在转圈圈加载，像我一样\n\n那么大概率他是不能自己装上了，我们只能来手动安装\n首先，如果你安装失败了，请先卸载原来的安装失败的 PlatformIO ，重启 VSCode，之后在VSCode的终端里输入\nsudo pip --no-cache-dir install -U platformio\n等待他安装完成，重启VSCode，重新去商店点一下安装，就可以顺利的装上了\n如果依旧不行，可以尝试: 移除Anaconda(假如你安装了Anaconda环境)、安装Python2.7版本并且添加进环境变量、安装Python最新版本并添加进环境变量，如果这也不行，那就尝试使用ArduinoIDE吧(不过这样也许需要稍微改动下代码)\n\n\nPlatformIO开发准备点击Home按钮打开 PlatformIO 主界面，new project 后选择对应的板子，他会进行自动的初始化\n\n初始化完成后，在src文件夹里就是我们的main文件\n\nPlatformIO 和 ArduinoIDE 不同的地方就是，他是使用cpp文件来进行编译上传的，而不是ino文件，所以每个需要用到 Arduino 库的文件中，都需要包含#include &quot;Arduino.h&quot;才能够使用\n此外，比较麻烦的一点是，对于某些库的支持，也是需要我们手动来加入的，比如这块 Pro Micro 支持的HID键盘和鼠标的功能，就需要我们手动加入\n首先打开刚才的Home界面，在左边一栏里可以找到 Libraries\n\n搜索keyboard，找到这个 Arduino 的官方库文件安装\n\n安装完成以后，到左边的资源管理器，找到platformio.ini这个文件\n在文件最后加入\n12lib_deps =     Keyboard\n告诉他我们要调用这个库，这样就完成了，可以开始硬件部分的测试了\n\n\n\n0x03 - 硬件部分一定要注意指纹模块的供电是3.3v，使用5v虽然不会烧坏模块但是会无法工作(当初因为这个原因卡了好久不知道哪错了)\n\n指纹模块的话是线给剪了直接焊在了板子上，有点粗糙\n\n看不清楚的话也可以看源文件里 /lib/HN0610/pinDef.h 里的内容\n最后附上Micro的引脚图\n\n\n测试指纹模块修改 /src/min.cpp 文件中参数调整宏定义区域的参数  DASTATE 就可以设定当前运行在什么模式下，由于是测试，就把值改为0，运行在检测手指模式上，其他模式的定义也在下面给出\n\n\n\n\n功能实现\nDASTATE值\n\n\n\n\n检测手指按压\n0\n\n\n指纹注册\n1\n\n\n验证指纹(最后留这一个)\n2\n\n\n检测手指按压后输出硬件信息(需要打开电脑串口)\n3\n\n\n清除所有指纹信息\n4\n\n\n\n\n 点击上传烧录进Arduino\n如果没有问题的话，按下手指蜂鸣器就会鸣响了\n\n\n\n0x04 - 遇到的坑和问题1. 底层数据类型定义问题通常来说，开发单片机会定义一系列的UINT\n在这次，定义文件写在了 hzTypes.h 文件里，其中对于UINT32的定义出现了兼容错误\n原始内容是\n\n我猜测可能是由于他们使用的单片机上int是32位，所以能够正常运行，而在Arduino上，int并不是32位的，long才是，所以需要改为\n\n\n2.电源的坑已经说过了，不过这次也是因为在家里没有万用表的缘故，并且提醒，虽然原理图上有一个SJ1来控制Micro的输出电压是5v还是3.3v，但是你并不可以通过连接或者断开这个引脚来达到修改电压的目的，因为5v的Micro和3.3v的Micro主频也是不一样的，这会导致工作不稳定\n并且很有可能改了也没有作用(对于很多国产板)\n\n\n3.注意Micro的中断脚因为这个指纹识别模块还有自动休眠的功能，所以虽然我现在并没有使用，但是很有可能会用到这个模块的中断信号，那么就要注意Micro的中断引脚定义和Uno是不一样的\n\n\n\n\nPIN\n中断号\n\n\n\n\n3\n0\n\n\n2\n1\n\n\n0\n2\n\n\n1\n3\n\n\n7\n6\n\n\n\n\n\n\n\n0x05 - 后续开发库HN610\n\n\n\n文件名\n内容\n\n\n\n\nauth\n通讯签名算法(默认不签名)\n\n\nfp\n大部分能直接用的API\n\n\nfpmComm\n模块命令API\n\n\nhzDevice\n串口通信底层\n\n\npinDef\n主板引脚定义\n\n\nhzTypes\n数据类型定义\n\n\n\n\n本文永久链接： http://dynais.xyz/posts/c75b2aac.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-08-20T00:00:00+08:00","dateModified":"2020-08-20T20:54:18+08:00","datePublished":"2020-08-20T00:00:00+08:00","description":"\n\n0x00 - 前言这次也是因为闲的在家没有事情做，所以又给自己开了一个新坑，其实蛮早以前就有过想做一个电脑上能用的指纹锁的想法了，但是一直没有动手，刚好这次有机会，并且也是刚刚新组了一台电脑，就想着要把这个项目给做了。\n这个项目的一个主要的灵感来源是@稚晖君很早以前发在Arduino论坛上的一个项目 (Link: 如何制作一个带指纹识别的机械键盘), 这次项目的的主要思路都和他的差不多，只不过我想做成独立的一个模块，并且最好能够实现便携功能，也就是说如果可以的话我想加上蓝牙的功能\n然后这次的文章大概也会写好几部分，具体取决于我最后能不能最后好好完成这个项目…\n这是一个开源项目，后续也会一直更新进度，对你有帮助的话可以给我个星星，传送门：https://github.com/DynAis/duino-access","headline":"DuinoAccess指纹锁项目 - Part.1","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200820183523.jpg","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/c75b2aac.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/c75b2aac.html","keywords":"单片机, Arduino","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200820183523.jpg"}</script>
     <meta name="description" content="0x00 - 前言这次也是因为闲的在家没有事情做，所以又给自己开了一个新坑，其实蛮早以前就有过想做一个电脑上能用的指纹锁的想法了，但是一直没有动手，刚好这次有机会，并且也是刚刚新组了一台电脑，就想着要把这个项目给做了。 这个项目的一个主要的灵感来源是@稚晖君很早以前发在Arduino论坛上的一个项目 (Link: 如何制作一个带指纹识别的机械键盘), 这次项目的的主要思路都和他的差不多，只不过">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="DuinoAccess指纹锁项目 - Part.1">
 <meta property="og:url" content="http://dynais.xyz/posts/c75b2aac.html">
-<meta property="og:site_name" content="知识高塔">
+<meta property="og:site_name" content="DynAis的个人站">
 <meta property="og:description" content="0x00 - 前言这次也是因为闲的在家没有事情做，所以又给自己开了一个新坑，其实蛮早以前就有过想做一个电脑上能用的指纹锁的想法了，但是一直没有动手，刚好这次有机会，并且也是刚刚新组了一台电脑，就想着要把这个项目给做了。 这个项目的一个主要的灵感来源是@稚晖君很早以前发在Arduino论坛上的一个项目 (Link: 如何制作一个带指纹识别的机械键盘), 这次项目的的主要思路都和他的差不多，只不过">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200820184349.png">
@@ -70,7 +70,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="../assets/css/style-nbyxkjobv8xiw99w0oroobncekqwhnww4s3wbisvj2kkabcm1ecmcoe6w1vb.min.css">
+<link rel="stylesheet" href="../assets/css/style-uc5lrdohep8fiuwzi6puefeshfcv7eacouiyobpc9vu62rsebwcs6wed245a.min.css">
 
     <!--STYLES END-->
     
@@ -105,7 +105,7 @@
             href="http://dynais.xyz/"
             aria-label=""
         >
-            知识高塔
+            DynAis的个人站
         </a>
     </div>
     
@@ -253,6 +253,22 @@
                         >
                         <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
                         <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/dynais.artstation.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Artstation"
+                        >
+                        <i class="sidebar-button-icon fab fa-artstation" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Artstation</span>
                     </a>
             </li>
             
@@ -582,7 +598,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -607,7 +623,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#gitalk"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -684,7 +700,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -709,7 +725,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#gitalk"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -776,7 +792,7 @@
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>author.job</p>
+                <p>学生</p>
 
             </div>
         
@@ -784,7 +800,7 @@
             <div id="about-card-location">
                 <i class="fa fa-map-marker-alt"></i>
                 <br/>
-                Zhejiang, China Ostfalia, Deutsch
+                Wolfenbüttel, Germany
             </div>
         
     </div>
@@ -795,7 +811,7 @@
 <div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161511.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="../assets/js/script-upvrdkh5go8fn80dvgfkyqqe7ndzale5j7tspitfrzrapnsu5madahzz7cw3.min.js"></script>
+<script src="../assets/js/script-ueej2dtheo2ewchzog44shglnkyezeutobc6ies0hlhptc5rbenp3bzywp0r.min.js"></script>
 
 <!--SCRIPTS END-->
 
