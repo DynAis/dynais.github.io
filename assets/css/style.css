@@ -8043,7 +8043,7 @@ code {
   display: inline-block;
   font-family: Menlo, Consolas, monospace;
   font-weight: 400;
-  background-color: #f2f2f3;
+  background-color: #F7F8F8;
   padding: 0 10px; }
 
 acronym,
@@ -8407,7 +8407,7 @@ blockquote {
 #main {
   display: block;
   min-height: 100%;
-  background: #fcfcfc;
+  background: #f2f2f3;
   transition: transform .25s ease-in-out;
   -webkit-transition: -webkit-transform .25s ease-in-out; }
   #main.hasCover.hasCoverCaption, #main.hasCover.hasCoverMetaOut {
@@ -9778,7 +9778,7 @@ a.fancybox {
   width: 100%;
   display: inline-block;
   vertical-align: top;
-  background-color: #fff; }
+  background-color: #FCFCFC; }
   .post .post-header .post-title {
     margin: 0;
     word-break: initial;
@@ -10552,11 +10552,11 @@ a.tag--small,
     transform: translateY(-50%); }
 
 pre > code {
-  background: #f2f2f3;
+  background: #F7F8F8;
   color: #333; }
 
 code {
-  background-color: #f2f2f3; }
+  background-color: #F7F8F8; }
 
 .codeblock--tabbed figcaption .tab.active {
   background: #349ef3;
@@ -10564,15 +10564,15 @@ code {
 
 figure.highlight,
 .codeblock {
-  background: #f2f2f3;
+  background: #F7F8F8;
   color: #333; }
   figure.highlight figcaption,
   .codeblock figcaption {
-    background: #f2f2f3;
+    background: #F7F8F8;
     color: #999999; }
   figure.highlight .gutter,
   .codeblock .gutter {
-    background: #f2f2f3;
+    background: #F7F8F8;
     border-right-color: #e6e6e6; }
     figure.highlight .gutter .line,
     .codeblock .gutter .line {
