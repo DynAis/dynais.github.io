@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"工程目标\n知道芯片GPIO口的基本操作函数\n根据原理图操作GPIO口使蜂鸣器发声\n\n问题解决思路通过类比C51的发声思路，使GPIO口通过循环发出高低电平形成方波，驱动蜂鸣器鸣响（注意延时函数）\n待解决问题\n通过哪些引脚可以操控蜂鸣器？（已解决）\n如何操作这些引脚？（初始化，输出信号，结束信号）（已解决）\n如何使单片机产生延时函数？（已解决）\n如何调用ARM库函数？（已解决）\n\n\n实行（可能）流程\n通过例程观察如何初始化并定义引脚\n看原理图找到操作蜂鸣器的引脚\n找到实现延时函数的方法：\n使用单片机小精灵\n向大佬请教\n说不定本身就有这个函数，搜索一下\n\n\n编写程序\n封装程序\n\n\nLösungen\n如何操作引脚？\n123456/*********************************************************************************************************************    * COPYRIGHT NOTICE    * Copyright (c) 2018,逐飞科技    * All rights reserved.    * 技术讨论QQ群：179029047    *\n\n以下所有内容版权均属逐飞科技所有，未经允许不得用于商业用途，\n欢迎各位使用并传播本程序，修改内容时必须保留逐飞科技的版权声明。*\n@file               GPIO\n@company               成都逐飞科技有限公司\n@author             逐飞科技(QQ3184284598)\n@version            查看LPC546XX_config.h文件内版本宏定义\n@Software         IAR 7.8 or MDK 5.24a\n@Target core        LPC54606J512BD100\n@Taobao           https://seekfree.taobao.com/\n@date               2018-05-24**/\n\n\n\n\n\ninclude “common.h”include “LPC546XX_iocon.h”include “LPC546XX_gpio.h”   //—————————————————————————————————————————————————————————-   //  @brief      GPIO初始化   //  @param      pin         选择引脚（A0-A31  B0-B31）   //  @param      dir         引脚方向 GPI：输入   GPO：输出   //  @param      dat         引脚电平 0：低电平   1：高电平  设置为输入是该参数无效   //  @param      pull        设置上下拉电阻 NOPULL:不设置    PULLDOWN:下拉    PULLUP:上拉  NOPULL:没有上下拉电阻   //  @return     void   //  Sample usage:           gpio_init(A8,GPO,0,NOPULL);     // 初始化A8引脚为输出模式,输出低电平,没有上下拉电阻   //—————————————————————————————————————————————————————————-   void gpio_init(PIN_enum pin, GPIODIR_enum dir, uint8 dat, uint32 pull)   {       uint16 port;       uint16 pinn;\n   port = pin&gt;&gt;5;\n   pinn = pin&amp;0x1f;\n\n   if(P0 == port)      \n   {\n       SYSCON-&gt;AHBCLKCTRLSET[0] = SYSCON_AHBCLKCTRL_GPIO0_MASK;        //打开GPIO0时钟\n       SYSCON-&gt;PRESETCTRLCLR[0] = SYSCON_PRESETCTRL_GPIO0_RST_MASK;    //清除复位GPIO0时钟\n   }\n   else if(P1 == port) \n   {\n       SYSCON-&gt;AHBCLKCTRLSET[0] = SYSCON_AHBCLKCTRL_GPIO1_MASK;        //打开GPIO1时钟\n       SYSCON-&gt;PRESETCTRLCLR[0] = SYSCON_PRESETCTRL_GPIO1_RST_MASK;    //清除复位GPIO1时钟\n   }\n\n   iocon_init(pin,ALT0 | DIGITAL | pull);//设置复用功能为通用IO\n\n   if(GPI == dir)\n   {\n       if(pin&lt;29)  GPIO-&gt;DIRCLR[port] = 1&lt;&lt;pinn;\n       else\n       {\n           DisableInterrupts;\n           GPIO-&gt;DIR[port] &amp;= ~((uint32)1&lt;&lt;pinn);\n           EnableInterrupts;\n       }\n\n   }\n   else if(GPO == dir)\n   {\n       if(pinn&lt;29)  GPIO-&gt;DIRSET[port] = 1&lt;&lt;pinn;\n       else\n       {\n           DisableInterrupts;\n           GPIO-&gt;DIR[port] |= 1&lt;&lt;pinn;\n           EnableInterrupts;\n       }\n       if(!dat)        GPIO-&gt;CLR[port]  = 1&lt;&lt;pinn;\n       else            GPIO-&gt;SET[port]  = 1&lt;&lt;pinn;\n   }\n   }\n   //—————————————————————————————————————————————————————————-   //  @brief      GPIO设置引脚上下拉电阻设置   //  @param      pin         选择引脚（A0-A31  B0-B31）   //  @param      pull        设置上下拉电阻 NOPULL:不设置    PULLDOWN:下拉    PULLUP:上拉  NOPULL:没有上下拉电阻   //  @return     void   //  Sample usage:           gpio_pull_set(A8,NOPULL);       // 设置A8引脚没有上下拉电阻   //—————————————————————————————————————————————————————————-   void gpio_pull_set(PIN_enum pin, uint8 pull)   {       uint16 port;       uint16 pinn;\n   port = pin&gt;&gt;5;\n   pinn = pin&amp;0x1f;\n\n   SYSCON-&gt;AHBCLKCTRLSET[0] = SYSCON_AHBCLKCTRL_IOCON_MASK;        //打开IOCON时钟\n   SYSCON-&gt;PRESETCTRLCLR[0] = SYSCON_PRESETCTRL_IOCON_RST_MASK;    //清除复位IOCON时钟\n\n   IOCON-&gt;PIO[port][pinn] = (IOCON-&gt;PIO[port][pinn] &amp; ~((uint32)IOCON_PIO_MODE_MASK)) | pull;\n   }\n   //—————————————————————————————————————————————————————————-   //  @brief      GPIO设置引脚电平   //  @param      pin         选择引脚（A0-A31  B0-B31）   //  @param      dat         引脚电平 0：低电平   1：高电平   //  @return     void   //  Sample usage:           gpio_set(A8,0);       // 设置A8引脚输出低电平   //—————————————————————————————————————————————————————————-   void gpio_set(PIN_enum pin, uint8 dat)   {       if(!dat)        GPIO-&gt;CLR[pin&gt;&gt;5]  = 1&lt;&lt;(pin&amp;0x1f);       else            GPIO-&gt;SET[pin&gt;&gt;5]  = 1&lt;&lt;(pin&amp;0x1f);   }\n   //—————————————————————————————————————————————————————————-   //  @brief      GPIO设置引脚方向   //  @param      pin         选择引脚（A0-A31  B0-B31）   //  @param      dir         引脚方向 GPI：输入   GPO：输出   //  @return     void   //  Sample usage:           gpio_dir(A8,GPI);       // 设置A8引脚为输入模式   //—————————————————————————————————————————————————————————-   void gpio_dir(PIN_enum pin, GPIODIR_enum dir)   {       uint16 port;       uint16 pinn;\n   port = pin&gt;&gt;5;\n   pinn = pin&amp;0x1f;\n\n   if(GPI == dir)\n   {\n       if(pinn&lt;29)  GPIO-&gt;DIRCLR[port] = 1&lt;&lt;pinn;\n       else\n       {\n           DisableInterrupts;\n           GPIO-&gt;DIR[port] &amp;= ~((uint32)1&lt;&lt;pinn);\n           EnableInterrupts;\n       }\n   }\n   else if(GPO == dir)\n   {\n       if(pinn&lt;29)  GPIO-&gt;DIRSET[port] = 1&lt;&lt;pinn;\n       else\n       {\n           DisableInterrupts;\n           GPIO-&gt;DIR[port] |= 1&lt;&lt;pinn;\n           EnableInterrupts;\n       }\n   }\n   }\n   //—————————————————————————————————————————————————————————-   //  @brief      GPIO获取引脚电平   //  @param      pin         选择引脚（A0-A31  B0-B31）   //  @return     uint8       引脚电平 0：低电平   1：高电平   //  Sample usage:           uint8 dat gpio_get(A8);  // 获取A8引脚电平   //—————————————————————————————————————————————————————————-   uint8 gpio_get(PIN_enum pin)   {       return (GPIO-&gt;B[pin&gt;&gt;5][pin&amp;0x1f]);   }\n   //—————————————————————————————————————————————————————————-   //  @brief      GPIO设置引脚切换(翻转)   //  @param      pin         选择引脚（A0-A31  B0-B31）   //  @return     void   //  Sample usage:           gpio_toggle(A8);       // 切换A8引脚电平   //—————————————————————————————————————————————————————————-   void gpio_toggle(PIN_enum pin)   {       GPIO-&gt;NOT[pin&gt;&gt;5]  = 1&lt;&lt;(pin&amp;0x1f);   }\n   1 \n\n如何设置延时？\n1234567891011//-------------------------------------------------------------------------------------------------------------------//  @brief      毫秒级systick延时函数//  @param      ms              延时多少毫秒//  @return     void//  Sample usage:               systick_delay_ms(1000);   //延时1000毫秒//-------------------------------------------------------------------------------------------------------------------void systick_delay_ms(uint32 ms)&#123;    //get_clk();//获取内核时钟便于后面设置\twhile(ms--) systick_delay(main_clk_mhz*1000);&#125;\n\n\n本文永久链接： http://dynais.xyz/posts/f58b8a1c.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2019-12-07T00:00:00+08:00","dateModified":"2020-07-25T00:49:58+08:00","datePublished":"2019-12-07T00:00:00+08:00","description":"工程目标\n知道芯片GPIO口的基本操作函数\n根据原理图操作GPIO口使蜂鸣器发声\n\n问题解决思路通过类比C51的发声思路，使GPIO口通过循环发出高低电平形成方波，驱动蜂鸣器鸣响（注意延时函数）\n待解决问题\n通过哪些引脚可以操控蜂鸣器？（已解决）\n如何操作这些引脚？（初始化，输出信号，结束信号）（已解决）\n如何使单片机产生延时函数？（已解决）\n如何调用ARM库函数？（已解决）\n","headline":"调用GPIO口并使蜂鸣器鸣响","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725003554.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/f58b8a1c.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/f58b8a1c.html","keywords":"单片机","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725003554.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"工程目标\n知道芯片GPIO口的基本操作函数\n根据原理图操作GPIO口使蜂鸣器发声\n\n问题解决思路通过类比C51的发声思路，使GPIO口通过循环发出高低电平形成方波，驱动蜂鸣器鸣响（注意延时函数）\n待解决问题\n通过哪些引脚可以操控蜂鸣器？（已解决）\n如何操作这些引脚？（初始化，输出信号，结束信号）（已解决）\n如何使单片机产生延时函数？（已解决）\n如何调用ARM库函数？（已解决）\n\n\n实行（可能）流程\n通过例程观察如何初始化并定义引脚\n看原理图找到操作蜂鸣器的引脚\n找到实现延时函数的方法：\n使用单片机小精灵\n向大佬请教\n说不定本身就有这个函数，搜索一下\n\n\n编写程序\n封装程序\n\n\nLösungen\n如何操作引脚？\n123456/*********************************************************************************************************************    * COPYRIGHT NOTICE    * Copyright (c) 2018,逐飞科技    * All rights reserved.    * 技术讨论QQ群：179029047    *\n\n以下所有内容版权均属逐飞科技所有，未经允许不得用于商业用途，\n欢迎各位使用并传播本程序，修改内容时必须保留逐飞科技的版权声明。*\n@file               GPIO\n@company               成都逐飞科技有限公司\n@author             逐飞科技(QQ3184284598)\n@version            查看LPC546XX_config.h文件内版本宏定义\n@Software         IAR 7.8 or MDK 5.24a\n@Target core        LPC54606J512BD100\n@Taobao           https://seekfree.taobao.com/\n@date               2018-05-24**/\n\n\n\n\n\ninclude “common.h”include “LPC546XX_iocon.h”include “LPC546XX_gpio.h”   //—————————————————————————————————————————————————————————-   //  @brief      GPIO初始化   //  @param      pin         选择引脚（A0-A31  B0-B31）   //  @param      dir         引脚方向 GPI：输入   GPO：输出   //  @param      dat         引脚电平 0：低电平   1：高电平  设置为输入是该参数无效   //  @param      pull        设置上下拉电阻 NOPULL:不设置    PULLDOWN:下拉    PULLUP:上拉  NOPULL:没有上下拉电阻   //  @return     void   //  Sample usage:           gpio_init(A8,GPO,0,NOPULL);     // 初始化A8引脚为输出模式,输出低电平,没有上下拉电阻   //—————————————————————————————————————————————————————————-   void gpio_init(PIN_enum pin, GPIODIR_enum dir, uint8 dat, uint32 pull)   {       uint16 port;       uint16 pinn;\n   port = pin&gt;&gt;5;\n   pinn = pin&amp;0x1f;\n\n   if(P0 == port)      \n   {\n       SYSCON-&gt;AHBCLKCTRLSET[0] = SYSCON_AHBCLKCTRL_GPIO0_MASK;        //打开GPIO0时钟\n       SYSCON-&gt;PRESETCTRLCLR[0] = SYSCON_PRESETCTRL_GPIO0_RST_MASK;    //清除复位GPIO0时钟\n   }\n   else if(P1 == port) \n   {\n       SYSCON-&gt;AHBCLKCTRLSET[0] = SYSCON_AHBCLKCTRL_GPIO1_MASK;        //打开GPIO1时钟\n       SYSCON-&gt;PRESETCTRLCLR[0] = SYSCON_PRESETCTRL_GPIO1_RST_MASK;    //清除复位GPIO1时钟\n   }\n\n   iocon_init(pin,ALT0 | DIGITAL | pull);//设置复用功能为通用IO\n\n   if(GPI == dir)\n   {\n       if(pin&lt;29)  GPIO-&gt;DIRCLR[port] = 1&lt;&lt;pinn;\n       else\n       {\n           DisableInterrupts;\n           GPIO-&gt;DIR[port] &amp;= ~((uint32)1&lt;&lt;pinn);\n           EnableInterrupts;\n       }\n\n   }\n   else if(GPO == dir)\n   {\n       if(pinn&lt;29)  GPIO-&gt;DIRSET[port] = 1&lt;&lt;pinn;\n       else\n       {\n           DisableInterrupts;\n           GPIO-&gt;DIR[port] |= 1&lt;&lt;pinn;\n           EnableInterrupts;\n       }\n       if(!dat)        GPIO-&gt;CLR[port]  = 1&lt;&lt;pinn;\n       else            GPIO-&gt;SET[port]  = 1&lt;&lt;pinn;\n   }\n   }\n   //—————————————————————————————————————————————————————————-   //  @brief      GPIO设置引脚上下拉电阻设置   //  @param      pin         选择引脚（A0-A31  B0-B31）   //  @param      pull        设置上下拉电阻 NOPULL:不设置    PULLDOWN:下拉    PULLUP:上拉  NOPULL:没有上下拉电阻   //  @return     void   //  Sample usage:           gpio_pull_set(A8,NOPULL);       // 设置A8引脚没有上下拉电阻   //—————————————————————————————————————————————————————————-   void gpio_pull_set(PIN_enum pin, uint8 pull)   {       uint16 port;       uint16 pinn;\n   port = pin&gt;&gt;5;\n   pinn = pin&amp;0x1f;\n\n   SYSCON-&gt;AHBCLKCTRLSET[0] = SYSCON_AHBCLKCTRL_IOCON_MASK;        //打开IOCON时钟\n   SYSCON-&gt;PRESETCTRLCLR[0] = SYSCON_PRESETCTRL_IOCON_RST_MASK;    //清除复位IOCON时钟\n\n   IOCON-&gt;PIO[port][pinn] = (IOCON-&gt;PIO[port][pinn] &amp; ~((uint32)IOCON_PIO_MODE_MASK)) | pull;\n   }\n   //—————————————————————————————————————————————————————————-   //  @brief      GPIO设置引脚电平   //  @param      pin         选择引脚（A0-A31  B0-B31）   //  @param      dat         引脚电平 0：低电平   1：高电平   //  @return     void   //  Sample usage:           gpio_set(A8,0);       // 设置A8引脚输出低电平   //—————————————————————————————————————————————————————————-   void gpio_set(PIN_enum pin, uint8 dat)   {       if(!dat)        GPIO-&gt;CLR[pin&gt;&gt;5]  = 1&lt;&lt;(pin&amp;0x1f);       else            GPIO-&gt;SET[pin&gt;&gt;5]  = 1&lt;&lt;(pin&amp;0x1f);   }\n   //—————————————————————————————————————————————————————————-   //  @brief      GPIO设置引脚方向   //  @param      pin         选择引脚（A0-A31  B0-B31）   //  @param      dir         引脚方向 GPI：输入   GPO：输出   //  @return     void   //  Sample usage:           gpio_dir(A8,GPI);       // 设置A8引脚为输入模式   //—————————————————————————————————————————————————————————-   void gpio_dir(PIN_enum pin, GPIODIR_enum dir)   {       uint16 port;       uint16 pinn;\n   port = pin&gt;&gt;5;\n   pinn = pin&amp;0x1f;\n\n   if(GPI == dir)\n   {\n       if(pinn&lt;29)  GPIO-&gt;DIRCLR[port] = 1&lt;&lt;pinn;\n       else\n       {\n           DisableInterrupts;\n           GPIO-&gt;DIR[port] &amp;= ~((uint32)1&lt;&lt;pinn);\n           EnableInterrupts;\n       }\n   }\n   else if(GPO == dir)\n   {\n       if(pinn&lt;29)  GPIO-&gt;DIRSET[port] = 1&lt;&lt;pinn;\n       else\n       {\n           DisableInterrupts;\n           GPIO-&gt;DIR[port] |= 1&lt;&lt;pinn;\n           EnableInterrupts;\n       }\n   }\n   }\n   //—————————————————————————————————————————————————————————-   //  @brief      GPIO获取引脚电平   //  @param      pin         选择引脚（A0-A31  B0-B31）   //  @return     uint8       引脚电平 0：低电平   1：高电平   //  Sample usage:           uint8 dat gpio_get(A8);  // 获取A8引脚电平   //—————————————————————————————————————————————————————————-   uint8 gpio_get(PIN_enum pin)   {       return (GPIO-&gt;B[pin&gt;&gt;5][pin&amp;0x1f]);   }\n   //—————————————————————————————————————————————————————————-   //  @brief      GPIO设置引脚切换(翻转)   //  @param      pin         选择引脚（A0-A31  B0-B31）   //  @return     void   //  Sample usage:           gpio_toggle(A8);       // 切换A8引脚电平   //—————————————————————————————————————————————————————————-   void gpio_toggle(PIN_enum pin)   {       GPIO-&gt;NOT[pin&gt;&gt;5]  = 1&lt;&lt;(pin&amp;0x1f);   }\n   1 \n\n如何设置延时？\n1234567891011//-------------------------------------------------------------------------------------------------------------------//  @brief      毫秒级systick延时函数//  @param      ms              延时多少毫秒//  @return     void//  Sample usage:               systick_delay_ms(1000);   //延时1000毫秒//-------------------------------------------------------------------------------------------------------------------void systick_delay_ms(uint32 ms)&#123;    //get_clk();//获取内核时钟便于后面设置\twhile(ms--) systick_delay(main_clk_mhz*1000);&#125;\n\n\n本文永久链接： http://dynais.xyz/posts/f58b8a1c.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2019-12-07T00:00:00+08:00","dateModified":"2021-02-21T18:00:16+08:00","datePublished":"2019-12-07T00:00:00+08:00","description":"工程目标\n知道芯片GPIO口的基本操作函数\n根据原理图操作GPIO口使蜂鸣器发声\n\n问题解决思路通过类比C51的发声思路，使GPIO口通过循环发出高低电平形成方波，驱动蜂鸣器鸣响（注意延时函数）\n待解决问题\n通过哪些引脚可以操控蜂鸣器？（已解决）\n如何操作这些引脚？（初始化，输出信号，结束信号）（已解决）\n如何使单片机产生延时函数？（已解决）\n如何调用ARM库函数？（已解决）\n","headline":"调用GPIO口并使蜂鸣器鸣响","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725003554.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/f58b8a1c.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/f58b8a1c.html","keywords":"单片机","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725003554.png"}</script>
     <meta name="description" content="工程目标 知道芯片GPIO口的基本操作函数 根据原理图操作GPIO口使蜂鸣器发声  问题解决思路通过类比C51的发声思路，使GPIO口通过循环发出高低电平形成方波，驱动蜂鸣器鸣响（注意延时函数） 待解决问题 通过哪些引脚可以操控蜂鸣器？（已解决） 如何操作这些引脚？（初始化，输出信号，结束信号）（已解决） 如何使单片机产生延时函数？（已解决） 如何调用ARM库函数？（已解决）">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="调用GPIO口并使蜂鸣器鸣响">
@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png">
 <meta property="article:published_time" content="2019-12-06T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-24T16:49:58.349Z">
+<meta property="article:modified_time" content="2021-02-21T10:00:16.243Z">
 <meta property="article:author" content="DynAis">
 <meta property="article:tag" content="单片机">
 <meta name="twitter:card" content="summary">
@@ -53,7 +53,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="../assets/css/style-uc5lrdohep8fiuwzi6puefeshfcv7eacouiyobpc9vu62rsebwcs6wed245a.min.css">
+<link rel="stylesheet" href="../assets/css/style-myzbibmusxypwte8k1gmvhboo65nik5tcaz9jpdvoppkkt0ktccma9gkbhp5.min.css">
 
     <!--STYLES END-->
     
@@ -80,7 +80,7 @@
         
     
 
-<header id="header" data-behavior="5">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -113,7 +113,7 @@
         
     
 
-<nav id="sidebar" data-behavior="5">
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -283,7 +283,7 @@
                     text-center
                     post-header-cover--partial"
              style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg');"
-             data-behavior="5">
+             data-behavior="2">
             
                 <div class="post-header main-content-wrap text-center">
     
@@ -301,7 +301,7 @@
     
         <span>发布在 </span>
         
-    <a class="category-link" href="../categories/project/">project</a>, <a class="category-link" href="../categories/project/nxp-smart-car/">nxp-smart-car</a>
+    <a class="category-link" href="../categories/%E9%A1%B9%E7%9B%AE/">项目</a>, <a class="category-link" href="../categories/%E9%A1%B9%E7%9B%AE/nxp-smart-car/">nxp-smart-car</a>
 
 
     
@@ -313,7 +313,7 @@
             
         </div>
 
-            <div id="main" data-behavior="5"
+            <div id="main" data-behavior="2"
                  class="hasCover
                         hasCoverMetaIn
                         ">
@@ -560,13 +560,13 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 DynAis. All Rights Reserved. <br/><a href="http://www.beian.miit.gov.cn/" target="_blank" rel="noopener">浙ICP备20029043号</a>
+        Copyrights &copy; 2021 DynAis. All Rights Reserved. <br/><a href="http://www.beian.miit.gov.cn/" target="_blank" rel="noopener">浙ICP备20029043号</a>
     </span>
 </footer>
 
             </div>
             
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
                     <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
@@ -647,7 +647,7 @@
 
                 </div>
                 
-    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
         <i id="btn-close-shareoptions" class="fa fa-times"></i>
         <ul class="share-options">
             
@@ -710,10 +710,10 @@
 
         
         
-<div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161511.jpg');"></div>
+<div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20210222214304.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="../assets/js/script-ueej2dtheo2ewchzog44shglnkyezeutobc6ies0hlhptc5rbenp3bzywp0r.min.js"></script>
+<script src="../assets/js/script-u9qi9r3ou5dfxsq542hh4ir1ltg1gkuievzkmpqwwlj3nslqll1xdrl6hjl3.min.js"></script>
 
 <!--SCRIPTS END-->
 

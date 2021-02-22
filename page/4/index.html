@@ -43,7 +43,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="../../assets/css/style-uc5lrdohep8fiuwzi6puefeshfcv7eacouiyobpc9vu62rsebwcs6wed245a.min.css">
+<link rel="stylesheet" href="../../assets/css/style-myzbibmusxypwte8k1gmvhboo65nik5tcaz9jpdvoppkkt0ktccma9gkbhp5.min.css">
 
     <!--STYLES END-->
     
@@ -274,6 +274,82 @@
         <div class="postShorten-wrap">
             
                 <a
+                    href="../../posts/432b5708.html"
+                    aria-label=": 由MRT为原理的OLED计时显示器"
+                >
+                    <div class="postShorten-thumbnailimg">
+                        <img alt="" src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725003554.png"/>
+                    </div>
+                </a>
+                
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="../../posts/432b5708.html"
+                            aria-label=": 由MRT为原理的OLED计时显示器"
+                        >
+                            由MRT为原理的OLED计时显示器
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-12-08T00:00:00+08:00">
+	
+		    12月 08, 2019
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="../../categories/%E9%A1%B9%E7%9B%AE/">项目</a>, <a class="category-link" href="../../categories/%E9%A1%B9%E7%9B%AE/nxp-smart-car/">nxp-smart-car</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ol>
+<li><h4 id="OLED无法点亮"><a href="#OLED无法点亮" class="headerlink" title="OLED无法点亮"></a>OLED无法点亮</h4><p>困扰了很久的问题，最后发现是硬件上出了毛病，使用飞线或者杜邦线会导致连接不稳定</p>
+</li>
+</ol>
+<ol>
+<li><h4 id="OLED屏幕显示闪烁"><a href="#OLED屏幕显示闪烁" class="headerlink" title="OLED屏幕显示闪烁"></a>OLED屏幕显示闪烁</h4><p>可能是因为屏幕刷新不够快，尝试保持一个高刷新率即可</p>
+</li>
+</ol>
+<ol>
+<li><h4 id="OLED屏幕数字重叠"><a href="#OLED屏幕数字重叠" class="headerlink" title="OLED屏幕数字重叠"></a>OLED屏幕数字重叠</h4><p>使用uint16时调用现有函数显示数字会有5位的空位（0占位）在设定的坐标之前，注意防止显示内容重叠</p>
+</li>
+</ol>
+<ol>
+<li><h4 id="中断计时时间不准确（很慢）"><a href="#中断计时时间不准确（很慢）" class="headerlink" title="中断计时时间不准确（很慢）"></a>中断计时时间不准确（很慢）</h4><p>原因是在中断中加入了函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mrt_clean(MRT_CH0);</span><br></pre></td></tr></table></figure>
+<p>本来是我认为防止数据溢出而使用的，最后发现会使每次中断的速度大大降低，导致计时不准确，并且去掉这个函数数据好像也不会溢出…</p>
+                    
+                        <a
+                            href="../../posts/432b5708.html"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 由MRT为原理的OLED计时显示器"
+                        >
+                            阅读全文
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-top">
+        <div class="postShorten-wrap">
+            
+                <a
                     href="../../posts/f58b8a1c.html"
                     aria-label=": 调用GPIO口并使蜂鸣器鸣响"
                 >
@@ -304,7 +380,7 @@
     
         <span>发布在 </span>
         
-    <a class="category-link" href="../../categories/project/">project</a>, <a class="category-link" href="../../categories/project/nxp-smart-car/">nxp-smart-car</a>
+    <a class="category-link" href="../../categories/%E9%A1%B9%E7%9B%AE/">项目</a>, <a class="category-link" href="../../categories/%E9%A1%B9%E7%9B%AE/nxp-smart-car/">nxp-smart-car</a>
 
 
     
@@ -364,7 +440,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 DynAis. All Rights Reserved. <br/><a href="http://www.beian.miit.gov.cn/" target="_blank" rel="noopener">浙ICP备20029043号</a>
+        Copyrights &copy; 2021 DynAis. All Rights Reserved. <br/><a href="http://www.beian.miit.gov.cn/" target="_blank" rel="noopener">浙ICP备20029043号</a>
     </span>
 </footer>
 
@@ -411,10 +487,10 @@
 
         
         
-<div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161511.jpg');"></div>
+<div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20210222214304.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="../../assets/js/script-ueej2dtheo2ewchzog44shglnkyezeutobc6ies0hlhptc5rbenp3bzywp0r.min.js"></script>
+<script src="../../assets/js/script-u9qi9r3ou5dfxsq542hh4ir1ltg1gkuievzkmpqwwlj3nslqll1xdrl6hjl3.min.js"></script>
 
 <!--SCRIPTS END-->
 

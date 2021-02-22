@@ -43,7 +43,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="../../../assets/css/style-uc5lrdohep8fiuwzi6puefeshfcv7eacouiyobpc9vu62rsebwcs6wed245a.min.css">
+<link rel="stylesheet" href="../../../assets/css/style-myzbibmusxypwte8k1gmvhboo65nik5tcaz9jpdvoppkkt0ktccma9gkbhp5.min.css">
 
     <!--STYLES END-->
     
@@ -305,7 +305,7 @@
     
         <span>发布在 </span>
         
-    <a class="category-link" href="../../../categories/note/">note</a>, <a class="category-link" href="../../../categories/note/open-cv-py/">open-cv-py</a>
+    <a class="category-link" href="../../../categories/%E7%AC%94%E8%AE%B0/">笔记</a>, <a class="category-link" href="../../../categories/%E7%AC%94%E8%AE%B0/OpenCV/">OpenCV</a>
 
 
     
@@ -314,20 +314,24 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <h2 id="Detect-and-remove-duplicate-images-from-a-dataset-for-deep-learning"><a href="#Detect-and-remove-duplicate-images-from-a-dataset-for-deep-learning" class="headerlink" title="Detect and remove duplicate images from a dataset for deep learning"></a>Detect and remove duplicate images from a dataset for deep learning</h2><!-- toc -->
-<blockquote>
-<p>文章链接:</p>
-<p><a href="https://www.pyimagesearch.com/2017/11/27/image-hashing-opencv-python/" target="_blank" rel="noopener">https://www.pyimagesearch.com/2017/11/27/image-hashing-opencv-python/</a></p>
-<p><a href="https://www.pyimagesearch.com/2020/04/20/detect-and-remove-duplicate-images-from-a-dataset-for-deep-learning/?__s=bnfo5g8qgjr6gztmvjlb" target="_blank" rel="noopener">https://www.pyimagesearch.com/2020/04/20/detect-and-remove-duplicate-images-from-a-dataset-for-deep-learning/?__s=bnfo5g8qgjr6gztmvjlb</a></p>
-<p>前言: </p>
-<p>为什么要删去数据集中重复的图片?</p>
-<p><em>Having duplicate images in your dataset creates a problem for two reasons:</em></p>
+                    <p>关于散列(Hash), 网上的介绍有很多,这里就不费力介绍.</p>
+<p>而对于这个具体的项目要求来说, 我们所做的只是需要把一个图像转换为一个Hash值, 然后储存到字典中. 并且有一下要求:</p>
+<ul>
+<li>视觉上相差不大的图片, 他们的Hash值也应该相同</li>
+<li>这个Hash计算需要快, 因为有时候数据量会很大</li>
+</ul>
+<p>那么我们有以下几个Hash函数的选择:</p>
+<ul>
+<li><strong>差分散列(<em>difference hashing</em>)</strong></li>
+<li><strong>md5</strong></li>
+<li><strong>sha-1</strong></li>
+</ul>
+<p>最终我们选择了<strong>差分散列</strong>的方法, 有以下的原因:</p>
 <ol>
-<li><em>It introduces bias into your dataset, giving your deep neural network additional opportunities to learn patterns specific to the duplicates</em></li>
-<li><em>It hurts the ability of your model to generalize to new images outside of what it was trained on</em></li>
+<li>差分散列速度很快, 计算量小</li>
+<li>对于肉眼相差不大的图片, 差分散列可以得出相似的值</li>
+<li>md5 和 sha-1 只要有一点变化, 输出值就会完全改变(这本来很好, 但在这里非常不好!)</li>
 </ol>
-<p><em>Take the time to remove duplicates from your image dataset so you don’t accidentally introduce bias or hurt the ability of your model to generalize.</em></p>
-</blockquote>
                     
                         <a
                             href="../../../posts/a33aff37.html"
@@ -379,7 +383,7 @@
     
         <span>发布在 </span>
         
-    <a class="category-link" href="../../../categories/project/">project</a>, <a class="category-link" href="../../../categories/project/tomato-clock/">tomato-clock</a>
+    <a class="category-link" href="../../../categories/%E9%A1%B9%E7%9B%AE/">项目</a>, <a class="category-link" href="../../../categories/%E9%A1%B9%E7%9B%AE/tomato-clock/">tomato-clock</a>
 
 
     
@@ -452,7 +456,7 @@
     
         <span>发布在 </span>
         
-    <a class="category-link" href="../../../categories/project/">project</a>, <a class="category-link" href="../../../categories/project/tomato-clock/">tomato-clock</a>
+    <a class="category-link" href="../../../categories/%E9%A1%B9%E7%9B%AE/">项目</a>, <a class="category-link" href="../../../categories/%E9%A1%B9%E7%9B%AE/tomato-clock/">tomato-clock</a>
 
 
     
@@ -526,7 +530,7 @@
     
         <span>发布在 </span>
         
-    <a class="category-link" href="../../../categories/project/">project</a>, <a class="category-link" href="../../../categories/project/tomato-clock/">tomato-clock</a>
+    <a class="category-link" href="../../../categories/%E9%A1%B9%E7%9B%AE/">项目</a>, <a class="category-link" href="../../../categories/%E9%A1%B9%E7%9B%AE/tomato-clock/">tomato-clock</a>
 
 
     
@@ -593,7 +597,7 @@
     
         <span>发布在 </span>
         
-    <a class="category-link" href="../../../categories/project/">project</a>, <a class="category-link" href="../../../categories/project/tomato-clock/">tomato-clock</a>
+    <a class="category-link" href="../../../categories/%E9%A1%B9%E7%9B%AE/">项目</a>, <a class="category-link" href="../../../categories/%E9%A1%B9%E7%9B%AE/tomato-clock/">tomato-clock</a>
 
 
     
@@ -636,7 +640,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 DynAis. All Rights Reserved. <br/><a href="http://www.beian.miit.gov.cn/" target="_blank" rel="noopener">浙ICP备20029043号</a>
+        Copyrights &copy; 2021 DynAis. All Rights Reserved. <br/><a href="http://www.beian.miit.gov.cn/" target="_blank" rel="noopener">浙ICP备20029043号</a>
     </span>
 </footer>
 
@@ -683,10 +687,10 @@
 
         
         
-<div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161511.jpg');"></div>
+<div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20210222214304.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="../../../assets/js/script-ueej2dtheo2ewchzog44shglnkyezeutobc6ies0hlhptc5rbenp3bzywp0r.min.js"></script>
+<script src="../../../assets/js/script-u9qi9r3ou5dfxsq542hh4ir1ltg1gkuievzkmpqwwlj3nslqll1xdrl6hjl3.min.js"></script>
 
 <!--SCRIPTS END-->
 
