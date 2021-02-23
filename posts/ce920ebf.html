@@ -6,10 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="DynAis的个人站">
-    <title>OpenCV学习笔记02-图像读取 - DynAis的个人站</title>
+    <title>解决Python脚本在运行环境下依赖库缺失的问题 - DynAis的个人站</title>
     <meta name="author" content="DynAis">
     
-        <meta name="keywords" content="DynAis,Dynais,dynais,opencv,图像,读取">
+        <meta name="keywords" content="DynAis,Dynais,dynais,-库文件 -python">
     
     
         <link rel="icon" href="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161223.png">
@@ -19,24 +19,22 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"完成\n实现静态图片读取功能\n\n复习cmd指令\n\n学习了在cmd下使用exe文件\n\n\n实现\n相关\n本文永久链接： http://dynais.xyz/posts/db26335f.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2020-01-15T00:00:00+08:00","dateModified":"2021-02-21T17:51:25+08:00","datePublished":"2020-01-15T00:00:00+08:00","description":"完成\n实现静态图片读取功能\n\n复习cmd指令\n\n学习了在cmd下使用exe文件\n\n\n实现\n相关","headline":"OpenCV学习笔记02-图像读取","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212717.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/db26335f.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/db26335f.html","keywords":"OpenCV, 数字图像处理","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212717.png"}</script>
-    <meta name="description" content="完成 实现静态图片读取功能  复习cmd指令  学习了在cmd下使用exe文件   实现 相关">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"\n问题描述在某一个虚拟环境中完成脚本后, 想要实际使用时可能会出现错误这是由于虚拟环境和运行环境不一致导致依赖库缺失无法import导致的\n解决方法解决方式就是在编写脚本时, 对于第三方的库进行一次检测, 如果没有的话就进行pip install12345try:    import regex as reexcept ImportError:    os.system('pip install regex')    import regex as re对于小脚本来说这样就足够了, 项目大的话不建议这样使用\n本文永久链接： http://dynais.xyz/posts/ce920ebf.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。","dateCreated":"2021-02-23T12:40:37+08:00","dateModified":"2021-02-23T12:45:02+08:00","datePublished":"2021-02-23T12:40:37+08:00","description":"在某一个虚拟环境中完成脚本后, 想要实际使用时可能会出现错误这是由于虚拟环境和运行环境不一致导致依赖库缺失无法import导致的","headline":"解决Python脚本在运行环境下依赖库缺失的问题","image":[null,"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/ce920ebf.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/ce920ebf.html","keywords":"-Python","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"}</script>
+    <meta name="description" content="在某一个虚拟环境中完成脚本后, 想要实际使用时可能会出现错误这是由于虚拟环境和运行环境不一致导致依赖库缺失无法import导致的">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="OpenCV学习笔记02-图像读取">
-<meta property="og:url" content="http://dynais.xyz/posts/db26335f.html">
+<meta property="og:title" content="解决Python脚本在运行环境下依赖库缺失的问题">
+<meta property="og:url" content="http://dynais.xyz/posts/ce920ebf.html">
 <meta property="og:site_name" content="DynAis的个人站">
-<meta property="og:description" content="完成 实现静态图片读取功能  复习cmd指令  学习了在cmd下使用exe文件   实现 相关">
+<meta property="og:description" content="在某一个虚拟环境中完成脚本后, 想要实际使用时可能会出现错误这是由于虚拟环境和运行环境不一致导致依赖库缺失无法import导致的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725010411.png">
+<meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20210223124433.png?x-oss-process=image/resize,h_2000/quality,q_90">
 <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png">
-<meta property="article:published_time" content="2020-01-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-02-21T09:51:25.590Z">
+<meta property="article:published_time" content="2021-02-23T04:40:37.000Z">
+<meta property="article:modified_time" content="2021-02-23T04:45:02.734Z">
 <meta property="article:author" content="DynAis">
-<meta property="article:tag" content="opencv">
-<meta property="article:tag" content="图像">
-<meta property="article:tag" content="读取">
+<meta property="article:tag" content="-库文件 -python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725010411.png">
+<meta name="twitter:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20210223124433.png?x-oss-process=image/resize,h_2000/quality,q_90">
 <meta name="twitter:creator" content="@dyn_ais">
     
     
@@ -45,9 +43,6 @@
     
         <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"/>
     
-    
-        <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212717.png"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200724212717.png"/>
     
     
         <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"/>
@@ -291,20 +286,20 @@
                 <div class="post-header main-content-wrap text-center">
     
         <h1 class="post-title">
-            OpenCV学习笔记02-图像读取
+            解决Python脚本在运行环境下依赖库缺失的问题
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2020-01-15T00:00:00+08:00">
+    <time datetime="2021-02-23T12:40:37+08:00">
 	
-		    1月 15, 2020
+		    2月 23, 2021
     	
     </time>
     
         <span>发布在 </span>
         
-    <a class="category-link" href="../categories/%E7%AC%94%E8%AE%B0/">笔记</a>, <a class="category-link" href="../categories/%E7%AC%94%E8%AE%B0/OpenCV/">OpenCV</a>
+    <a class="category-link" href="../categories/%E7%AC%94%E8%AE%B0-Python/">-笔记 -Python</a>
 
 
     
@@ -326,18 +321,10 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <h3 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h3><ul>
-<li><p>实现静态图片读取功能</p>
-</li>
-<li><p>复习cmd指令</p>
-</li>
-<li><p>学习了在cmd下使用exe文件</p>
-</li>
-</ul>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p><img src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725010411.png" alt=""></p>
-<h3 id="相关"><a href="#相关" class="headerlink" title="相关"></a>相关</h3><a id="more"></a>
-<p><br /><br /><br /><strong>本文永久链接</strong>： <a href="http://dynais.xyz/posts/db26335f.html">http://dynais.xyz/posts/db26335f.html</a> <br /><strong>版权声明</strong><br /><img src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png" alt=""><br />This site by DynAis is licensed under a Creative Commons <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC-BY-NC-SA 4.0 International License</a>.<br />由Dynais创作并维护的博客采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">创作共用-署名-非商业性-相同方式共享4.0国际许可证</a>。</p>
-
+            <!-- excerpt -->
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在某一个虚拟环境中完成脚本后, 想要实际使用时可能会出现错误<br><div class="figure center" style="width:;"><a class="fancybox" href="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20210223124433.png?x-oss-process=image/resize,h_2000/quality,q_90" target="_blank" rel="noopener" title="" data-caption="" data-fancybox="default"><img class="fig-img" src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20210223124433.png?x-oss-process=image/resize,h_2000/quality,q_90" alt=""></a></div><div style="clear:both;"></div><br>这是由于虚拟环境和运行环境不一致导致依赖库缺失无法<code>import</code>导致的<br><br><br><br></p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>解决方式就是在编写脚本时, 对于第三方的库进行一次检测, 如果没有的话就进行<code>pip install</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">import</span> regex <span class="keyword">as</span> re</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    os.system(<span class="string">'pip install regex'</span>)</span><br><span class="line">    <span class="keyword">import</span> regex <span class="keyword">as</span> re</span><br></pre></td></tr></table></figure><br>对于小脚本来说这样就足够了, 项目大的话不建议这样使用</p>
+<p><br /><br /><br /><strong>本文永久链接</strong>： <a href="http://dynais.xyz/posts/ce920ebf.html">http://dynais.xyz/posts/ce920ebf.html</a> <br /><strong>版权声明</strong><br /><img src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png" alt=""><br />This site by DynAis is licensed under a Creative Commons <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC-BY-NC-SA 4.0 International License</a>.<br />由Dynais创作并维护的博客采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">创作共用-署名-非商业性-相同方式共享4.0国际许可证</a>。</p>
             
 
 
@@ -348,7 +335,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">标签</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="../tags/OpenCV/" rel="tag">OpenCV</a> <a class="tag tag--primary tag--small t-link" href="../tags/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag">数字图像处理</a>
+    <a class="tag tag--primary tag--small t-link" href="../tags/Python/" rel="tag">-Python</a>
 
             </div>
         
@@ -361,9 +348,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="a5f2a55c.html"
-                    data-tooltip="OpenCV学习笔记03-线性滤波器-色彩空间转换"
-                    aria-label="上一篇: OpenCV学习笔记03-线性滤波器-色彩空间转换"
+                    href="872a1608.html"
+                    data-tooltip="欢迎! Willkommen!"
+                    aria-label="上一篇: 欢迎! Willkommen!"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -375,9 +362,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="21afdccc.html"
-                    data-tooltip="CMD控制台常用指令"
-                    aria-label="下一篇: CMD控制台常用指令"
+                    href="4618ba09.html"
+                    data-tooltip="线性回归模型分析"
+                    aria-label="下一篇: 线性回归模型分析"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
@@ -402,7 +389,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/db26335f.html"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/ce920ebf.html"
                     title="分享到 Twitter"
                     aria-label="分享到 Twitter"
                 >
@@ -463,9 +450,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="a5f2a55c.html"
-                    data-tooltip="OpenCV学习笔记03-线性滤波器-色彩空间转换"
-                    aria-label="上一篇: OpenCV学习笔记03-线性滤波器-色彩空间转换"
+                    href="872a1608.html"
+                    data-tooltip="欢迎! Willkommen!"
+                    aria-label="上一篇: 欢迎! Willkommen!"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -477,9 +464,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="21afdccc.html"
-                    data-tooltip="CMD控制台常用指令"
-                    aria-label="下一篇: CMD控制台常用指令"
+                    href="4618ba09.html"
+                    data-tooltip="线性回归模型分析"
+                    aria-label="下一篇: 线性回归模型分析"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
@@ -504,7 +491,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/db26335f.html"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/ce920ebf.html"
                     title="分享到 Twitter"
                     aria-label="分享到 Twitter"
                 >
@@ -548,7 +535,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/db26335f.html"
+                        href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/ce920ebf.html"
                         aria-label="分享到 Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
@@ -621,7 +608,7 @@
               repo: 'dynais.github.io',
               owner: 'DynAis',
               admin: ['DynAis'],
-              id: 'posts/db26335f.html',
+              id: 'posts/ce920ebf.html',
               ...{"language":"zh-cn","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
             }).render('gitalk')
           })()
