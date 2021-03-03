@@ -47,7 +47,7 @@
     <link href="http://dynais.xyz/posts/ce920ebf.html"/>
     <id>http://dynais.xyz/posts/ce920ebf.html</id>
     <published>2021-02-23T04:40:37.000Z</published>
-    <updated>2021-02-24T09:08:29.668Z</updated>
+    <updated>2021-03-03T03:07:32.054Z</updated>
     
     <content type="html"><![CDATA[<!-- excerpt --><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在某一个虚拟环境中完成脚本后, 想要实际使用时可能会出现错误<br><div class="figure center" style="width:;"><a class="fancybox" href="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20210223124433.png?x-oss-process=image/resize,h_2000/quality,q_90" target="_blank" rel="noopener" title="" data-caption="" data-fancybox="default"><img class="fig-img" src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20210223124433.png?x-oss-process=image/resize,h_2000/quality,q_90" alt=""></a></div><div style="clear:both;"></div><br>这是由于虚拟环境和运行环境不一致导致依赖库缺失无法<code>import</code>导致的<br><br><br><br></p><h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>解决方式就是在编写脚本时, 对于第三方的库进行一次检测, 如果没有的话就进行<code>pip install</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">import</span> regex <span class="keyword">as</span> re</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    os.system(<span class="string">'pip install regex'</span>)</span><br><span class="line">    <span class="keyword">import</span> regex <span class="keyword">as</span> re</span><br></pre></td></tr></table></figure><br>对于小脚本来说这样就足够了, 项目大的话不建议这样使用</p><p><br /><br /><br /><strong>本文永久链接</strong>： <a href="http://dynais.xyz/posts/ce920ebf.html">http://dynais.xyz/posts/ce920ebf.html</a> <br /><strong>版权声明</strong><br /><img src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png" alt=""><br />This site by DynAis is licensed under a Creative Commons <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC-BY-NC-SA 4.0 International License</a>.<br />由Dynais创作并维护的博客采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">创作共用-署名-非商业性-相同方式共享4.0国际许可证</a>。</p>]]></content>
     
@@ -58,10 +58,12 @@
     </summary>
     
     
-      <category term="-笔记 -Python" scheme="http://dynais.xyz/categories/%E7%AC%94%E8%AE%B0-Python/"/>
+      <category term="笔记" scheme="http://dynais.xyz/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="Python" scheme="http://dynais.xyz/categories/%E7%AC%94%E8%AE%B0/Python/"/>
     
     
-      <category term="-Python" scheme="http://dynais.xyz/tags/Python/"/>
+      <category term="Python" scheme="http://dynais.xyz/tags/Python/"/>
     
   </entry>
   
