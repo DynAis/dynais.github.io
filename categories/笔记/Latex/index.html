@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="DynAis的个人站">
-    <title>分类: my-blog - DynAis的个人站</title>
+    <title>分类: Latex - DynAis的个人站</title>
     <meta name="author" content="DynAis">
     
         <meta name="keywords" content="DynAis,Dynais,dynais,">
@@ -22,7 +22,7 @@
     <script type="application/ld+json">{}</script>
     <meta property="og:type" content="blog">
 <meta property="og:title" content="DynAis的个人站">
-<meta property="og:url" content="http://dynais.xyz/categories/project/my-blog/index.html">
+<meta property="og:url" content="http://dynais.xyz/categories/%E7%AC%94%E8%AE%B0/Latex/index.html">
 <meta property="og:site_name" content="DynAis的个人站">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="DynAis">
@@ -52,6 +52,8 @@
 
     
 </head>
+
+
 
     <body>
         <div id="blog">
@@ -275,11 +277,11 @@
         <div class="postShorten-wrap">
             
                 <a
-                    href="../../../posts/4f8b0717.html"
-                    aria-label=": [转载]Hexo+Github Page搭建博客教程"
+                    href="../../../posts/ae2a8b3f.html"
+                    aria-label=": 在Markdown文件中使用Latex表示数学公式"
                 >
                     <div class="postShorten-thumbnailimg">
-                        <img alt="" src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725003809.png"/>
+                        <img alt="" src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005610.png"/>
                     </div>
                 </a>
                 
@@ -289,41 +291,65 @@
                     
                         <a
                             class="link-unstyled"
-                            href="../../../posts/4f8b0717.html"
-                            aria-label=": [转载]Hexo+Github Page搭建博客教程"
+                            href="../../../posts/ae2a8b3f.html"
+                            aria-label=": 在Markdown文件中使用Latex表示数学公式"
                         >
-                            [转载]Hexo+Github Page搭建博客教程
+                            在Markdown文件中使用Latex表示数学公式
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2020-07-23T10:40:06+08:00">
+    <time datetime="2020-03-05T22:00:00+08:00">
 	
-		    7月 23, 2020
+		    3月 05, 2020
     	
     </time>
     
         <span>发布在 </span>
         
-    <a class="category-link" href="../">project</a>, <a class="category-link" href="">my-blog</a>
+    <a class="category-link" href="../">笔记</a>, <a class="category-link" href="">Latex</a>
 
 
+        <span id="busuanzi_container_site_pv">
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        </span>
+    
     
 </div>
 
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p><strong><a href="https://segmentfault.com/a/1190000017986794" target="_blank" rel="noopener">前往原文</a></strong></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>博客有第三方平台，也可以自建，比较早的有博客园、CSDN，近几年新兴的也比较多诸如：WordPress、segmentFault、简书、掘金、知乎专栏、Github Page 等等。</p>
-<p>这次我要说的就是 Github Page + Hexo 搭建个人博客的方式！Github Page 是 Github 提供的一种免费的静态网页托管服务（所以想想免费的空间不用也挺浪费的哈哈哈），可以用来托管博客、项目官网等静态网页。支持 Jekyll、Hugo、Hexo 编译静态资源，这次我们的主角就是 Hexo 了，具体的内容下面在文章内介绍。</p>
-<p>下面就开始吧~</p>
-<h2 id="准备环境"><a href="#准备环境" class="headerlink" title="准备环境"></a>准备环境</h2><p>准备 node 和 git 环境，<br>首先，安装 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">NodeJS</a>，因为 <a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo</a> 是基于 Node.js 驱动的一款博客框架，相比起前面提到过的 Jekyll 框架更快更简洁，因为天*朝网络被墙的原因尝试过安装 Jekyll 失败而放弃了。<br>然后，安装 <a href="https://git-scm.com/" target="_blank" rel="noopener">git</a>，一个分布式版本控制系统，用于项目的版本控制管理，作者是 Linux 之父。如果 Git 还不熟悉可以参考廖雪峰大神的 <a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="noopener">Git</a> 教程。</p>
+                    <p> 在Markdown中插入数学公式的语法是 <code>$数学公式$</code> 和 <code>$$数学公式$$</code>.</p>
+<h2 id="行内公式"><a href="#行内公式" class="headerlink" title="行内公式"></a>行内公式</h2><p>行内公式是可以让公式在文中与文字或其他东西混编，不独占一行.在数学模式下,符号会使用单独的字体,字母通常是倾斜的意大利体,数字和符号则是直立体.而且,数学符号之间的距离也与一般的水平模式不同:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>示例</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$2x+3y=34$</code></td>
+<td><img src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005742.svg" alt="2x+3y=34"></td>
+</tr>
+<tr>
+<td><code>2x+3y=34</code></td>
+<td>2x+3y=34</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>因此,在排版数学公式时,即使没有特殊符号的算式如1+1=2,或者简单的一个字母变量<img src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725010108.svg" alt="x">,也要进入数学模式,使用<code>$1+1=2$</code>,<code>$x$</code>,而不是使用排版普通文字的方式</p>
+<h2 id="独立公式"><a href="#独立公式" class="headerlink" title="独立公式"></a>独立公式</h2><p>独立公式单独占一行,不和其他文字混编</p>
+<h2 id="多行公式"><a href="#多行公式" class="headerlink" title="多行公式"></a>多行公式</h2><p>在独立公式中使用\\来换行<br> 示例:</p>
                     
                         <a
-                            href="../../../posts/4f8b0717.html"
+                            href="../../../posts/ae2a8b3f.html"
                             class="postShorten-excerpt_link link"
-                            aria-label=": [转载]Hexo+Github Page搭建博客教程"
+                            aria-label=": 在Markdown文件中使用Latex表示数学公式"
                         >
                             阅读全文
                         </a>
@@ -407,5 +433,21 @@
 
 
 
-    </body>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
 </html>
