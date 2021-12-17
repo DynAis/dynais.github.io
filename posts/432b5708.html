@@ -1,0 +1,702 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="DynAis的个人站">
+    <title>由MRT为原理的OLED计时显示器 - DynAis的个人站</title>
+    <meta name="author" content="DynAis">
+    
+        <meta name="keywords" content="DynAis,Dynais,dynais,">
+    
+    
+        <link rel="icon" href="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725161223.png">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="../atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"},"articleBody":"遇到的问题\nOLED无法点亮困扰了很久的问题，最后发现是硬件上出了毛病，使用飞线或者杜邦线会导致连接不稳定\n\n\n\nOLED屏幕显示闪烁可能是因为屏幕刷新不够快，尝试保持一个高刷新率即可\n\n\n\nOLED屏幕数字重叠使用uint16时调用现有函数显示数字会有5位的空位（0占位）在设定的坐标之前，注意防止显示内容重叠\n\n\n\n中断计时时间不准确（很慢）原因是在中断中加入了函数\n1mrt_clean(MRT_CH0);\n本来是我认为防止数据溢出而使用的，最后发现会使每次中断的速度大大降低，导致计时不准确，并且去掉这个函数数据好像也不会溢出…\n\n\n\n\n工程目标\n了解MRT的使用方法\n了解OLED的工作协议和引脚定义\n了解IIC的工作原理\n结合MET和OLED制作计时器\n使用按钮控制调节计时器的几个工作状态\n\n问题解决思路查阅底层函数了解使用方法，结合OLED的数据手册了解OLED的使用方法，查阅IIC的时序，通过一步步调试减少错误，也便于即时修改。\n待解决问题\n如何初始化，打开，调用和关闭MRT\nIIC协议如何工作\n如何开启MRT的计时中断操作\nOLED的数据引脚如何发送命令\n如何把MRT的反馈显示到OLED上\n如何通过按钮控制计时器状态\n\n实行（可能）流程\n通过底层函数观察如何使用MRT\n通过网上资料或数据手册了解IIC如何工作\n通过底层函数观察如何使用OLED\n通过简单的程序让OLED显示字符\n编写计时函数\n编写按钮函数\n封装程序\n\n\nLösungen\n如何操作MRT\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106/********************************************************************************************************************* * COPYRIGHT NOTICE * Copyright (c) 2018,逐飞科技 * All rights reserved. * 技术讨论QQ群：179029047 * * 以下所有内容版权均属逐飞科技所有，未经允许不得用于商业用途， * 欢迎各位使用并传播本程序，修改内容时必须保留逐飞科技的版权声明。 * * @file       \t\tMRT(多速率定时器) * @company\t   \t\t成都逐飞科技有限公司 * @author     \t\t逐飞科技(QQ3184284598) * @version    \t\t查看LPC546XX_config.h文件内版本宏定义 * @Software \t\tIAR 7.8 or MDK 5.24a * @Target core\t\tLPC54606J512BD100 * @Taobao   \t\thttps://seekfree.taobao.com/ * @date       \t\t2018-11-21 ********************************************************************************************************************/#include \"LPC546XX_mrt.h\"//-------------------------------------------------------------------------------------------------------------------//  @brief      MRT周期中断模式初始化//  @param      mrtchx      MRT通道号//  @param      time        周期中断时间//  @return     void//  Sample usage:           mrt_pit_init(MRT_CH0,1000);         //无需用户调用 请使用H文件内的宏定义//-------------------------------------------------------------------------------------------------------------------void mrt_pit_init(MRTNUM_enum mrtchx, uint32 time)&#123;    SYSCON-&gt;AHBCLKCTRLSET[1] = SYSCON_AHBCLKCTRL_MRT_MASK;      //打开MRT时钟    SYSCON-&gt;PRESETCTRLCLR[1] = SYSCON_PRESETCTRL_MRT_RST_MASK;  //清除MRT复位时钟        ASSERT(time &lt;= MRT_CHANNEL_TIMER_VALUE_MASK);//断言        MRT0-&gt;CHANNEL[mrtchx].CTRL = MRT_CHANNEL_CTRL_INTEN_MASK | MRT_CHANNEL_CTRL_MODE(0);//PIT模式 打开中断    MRT0-&gt;CHANNEL[mrtchx].INTVAL = time;        //设置间隔时间 定时器停止后载入时间 并启动定时器    enable_irq(MRT0_IRQn);     \t\t\t\t    //开启RIT中断    //set_irq_priority(MRT0_IRQn,0);//设置优先级 越低优先级越高&#125;//-------------------------------------------------------------------------------------------------------------------//  @brief      MRT延时函数//  @param      mrtchx      MRT通道号//  @param      time        周期中断时间//  @return     void//  Sample usage:           mrt_delay(MRT_CH0,1000);            //无需用户调用 请使用H文件内的宏定义//-------------------------------------------------------------------------------------------------------------------void mrt_delay(MRTNUM_enum mrtchx, uint32 time)&#123;    SYSCON-&gt;AHBCLKCTRLSET[1] = SYSCON_AHBCLKCTRL_MRT_MASK;      //打开MRT时钟    SYSCON-&gt;PRESETCTRLCLR[1] = SYSCON_PRESETCTRL_MRT_RST_MASK;  //清除MRT复位时钟        ASSERT(time &lt;= MRT_CHANNEL_TIMER_VALUE_MASK);//断言    MRT0-&gt;CHANNEL[mrtchx].CTRL = MRT_CHANNEL_CTRL_MODE(1);      //一次中断模式模式    MRT0-&gt;CHANNEL[mrtchx].INTVAL = time | MRT_CHANNEL_INTVAL_LOAD_MASK;        //设置间隔时间 立即载入时间 并启动定时器    while(!MRT_FLAG_READ(mrtchx));              //等待时间到    MRT_FLAG_CLR(mrtchx);                       //清除标志位&#125;//-------------------------------------------------------------------------------------------------------------------//  @brief      MRT开始计时//  @param      mrtchx      MRT通道号//  @param      time        周期中断时间//  @return     void//  Sample usage:           mrt_start(MRT_CH0);            //-------------------------------------------------------------------------------------------------------------------void mrt_start(MRTNUM_enum mrtchx)&#123;    SYSCON-&gt;AHBCLKCTRLSET[1] = SYSCON_AHBCLKCTRL_MRT_MASK;      //打开MRT时钟    SYSCON-&gt;PRESETCTRLCLR[1] = SYSCON_PRESETCTRL_MRT_RST_MASK;  //清除MRT复位时钟        MRT0-&gt;CHANNEL[mrtchx].CTRL = MRT_CHANNEL_CTRL_MODE(1);      //一次中断模式模式    MRT0-&gt;CHANNEL[mrtchx].INTVAL = MRT_CHANNEL_INTVAL_IVALUE_MASK | MRT_CHANNEL_INTVAL_LOAD_MASK;//设置间隔时间 立即载入时间 并启动定时器&#125;//-------------------------------------------------------------------------------------------------------------------//  @brief      MRT获取计时时间//  @param      mrtchx      MRT通道号//  @return     void//  Sample usage:           uint32 time = mrt_get(MRT_CH0);     //无需用户调用 请使用H文件内的宏定义//-------------------------------------------------------------------------------------------------------------------uint32 mrt_get(MRTNUM_enum mrtchx)&#123;    return (MRT_CHANNEL_INTVAL_IVALUE_MASK - MRT0-&gt;CHANNEL[mrtchx].TIMER); //如果返回的是0，则计时已经超出&#125;//-------------------------------------------------------------------------------------------------------------------//  @brief      MRT计时清除//  @param      mrtchx      MRT通道号//  @return     void//  Sample usage:           清除计时并重新启动//-------------------------------------------------------------------------------------------------------------------void mrt_clean(MRTNUM_enum mrtchx)&#123;    MRT0-&gt;CHANNEL[mrtchx].INTVAL = MRT_CHANNEL_INTVAL_IVALUE_MASK | MRT_CHANNEL_INTVAL_LOAD_MASK;//设置间隔时间 立即载入时间 并启动定时器&#125;\n\n\n\n如何设置延时？\n1234567891011//-------------------------------------------------------------------------------------------------------------------//  @brief      毫秒级systick延时函数//  @param      ms              延时多少毫秒//  @return     void//  Sample usage:               systick_delay_ms(1000);   //延时1000毫秒//-------------------------------------------------------------------------------------------------------------------void systick_delay_ms(uint32 ms)&#123;    //get_clk();//获取内核时钟便于后面设置\twhile(ms--) systick_delay(main_clk_mhz*1000);&#125;\n\n\n本文永久链接： http://dynais.xyz/posts/432b5708.html 版权声明This site by DynAis is licensed under a Creative Commons CC-BY-NC-SA 4.0 International License.由Dynais创作并维护的博客采用创作共用-署名-非商业性-相同方式共享4.0国际许可证。\n","dateCreated":"2019-12-08T00:00:00+01:00","dateModified":"2021-02-21T11:00:24+01:00","datePublished":"2019-12-08T00:00:00+01:00","description":"遇到的问题\nOLED无法点亮困扰了很久的问题，最后发现是硬件上出了毛病，使用飞线或者杜邦线会导致连接不稳定\n\n\n\nOLED屏幕显示闪烁可能是因为屏幕刷新不够快，尝试保持一个高刷新率即可\n\n\n\nOLED屏幕数字重叠使用uint16时调用现有函数显示数字会有5位的空位（0占位）在设定的坐标之前，注意防止显示内容重叠\n\n\n\n中断计时时间不准确（很慢）原因是在中断中加入了函数\n1mrt_clean(MRT_CH0);\n本来是我认为防止数据溢出而使用的，最后发现会使每次中断的速度大大降低，导致计时不准确，并且去掉这个函数数据好像也不会溢出…","headline":"由MRT为原理的OLED计时显示器","image":["https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725003554.png","https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"../http:/dynais.xyz/posts/432b5708.html"},"publisher":{"@type":"Organization","name":"DynAis","sameAs":["https://github.com/DynAis","https://twitter.com/dyn_ais","https://dynais.artstation.com/"],"image":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg","logo":{"@type":"ImageObject","url":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"}},"url":"../http:/dynais.xyz/posts/432b5708.html","keywords":"单片机","thumbnailUrl":"https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725003554.png"}</script>
+    <meta name="description" content="遇到的问题 OLED无法点亮困扰了很久的问题，最后发现是硬件上出了毛病，使用飞线或者杜邦线会导致连接不稳定    OLED屏幕显示闪烁可能是因为屏幕刷新不够快，尝试保持一个高刷新率即可    OLED屏幕数字重叠使用uint16时调用现有函数显示数字会有5位的空位（0占位）在设定的坐标之前，注意防止显示内容重叠    中断计时时间不准确（很慢）原因是在中断中加入了函数 1mrt_clean(MRT">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="由MRT为原理的OLED计时显示器">
+<meta property="og:url" content="http://dynais.xyz/posts/432b5708.html">
+<meta property="og:site_name" content="DynAis的个人站">
+<meta property="og:description" content="遇到的问题 OLED无法点亮困扰了很久的问题，最后发现是硬件上出了毛病，使用飞线或者杜邦线会导致连接不稳定    OLED屏幕显示闪烁可能是因为屏幕刷新不够快，尝试保持一个高刷新率即可    OLED屏幕数字重叠使用uint16时调用现有函数显示数字会有5位的空位（0占位）在设定的坐标之前，注意防止显示内容重叠    中断计时时间不准确（很慢）原因是在中断中加入了函数 1mrt_clean(MRT">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png">
+<meta property="article:published_time" content="2019-12-07T23:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-21T10:00:24.000Z">
+<meta property="article:author" content="DynAis">
+<meta property="article:tag" content="单片机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png">
+<meta name="twitter:creator" content="@dyn_ais">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg"/>
+    
+    
+        <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725003554.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725003554.png"/>
+    
+    
+        <meta property="og:image" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg"/>
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="../assets/css/style-xhjd7357zb3drmtxrl6ibwkwtysdo9ks2wpx9xdqkfdj2sweu7obrhjymtqh.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+            
+<link rel="stylesheet" href="../assets/css/gitalk.css">
+
+        
+    
+</head>
+
+
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="http://dynais.xyz/"
+            aria-label=""
+        >
+            DynAis的个人站
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="../#about"
+                aria-label="打开链接: ../#about"
+            >
+        
+        
+            <img class="header-picture" src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg" alt="作者的图片"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="../#about"
+                    aria-label="阅读有关作者的更多信息"
+                >
+                    <img class="sidebar-profile-picture" src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg" alt="作者的图片"/>
+                </a>
+                <h4 class="sidebar-profile-name">DynAis</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>是败家玩意，喜欢折腾各种觉得好玩的东西</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../index.html"
+                            
+                            rel="noopener"
+                            title="首页"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../all-categories"
+                            
+                            rel="noopener"
+                            title="分类"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../all-tags"
+                            
+                            rel="noopener"
+                            title="标签"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../all-archives"
+                            
+                            rel="noopener"
+                            title="归档"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../#about"
+                            
+                            rel="noopener"
+                            title="关于"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/github.com/DynAis"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/twitter.com/dyn_ais"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../https:/dynais.artstation.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Artstation"
+                        >
+                        <i class="sidebar-button-icon fab fa-artstation" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Artstation</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="../atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725004705.jpg');"
+             data-behavior="2">
+            
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            由MRT为原理的OLED计时显示器
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-12-08T00:00:00+01:00">
+	
+		    12月 08, 2019
+    	
+    </time>
+    
+        <span>发布在 </span>
+        
+    <a class="category-link" href="../categories/%E9%A1%B9%E7%9B%AE/">项目</a>, <a class="category-link" href="../categories/%E9%A1%B9%E7%9B%AE/nxp-smart-car/">nxp-smart-car</a>
+
+
+        <br>
+        本文被读了<span id="busuanzi_value_page_pv"></span>次
+        </br>
+    
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="2"
+                 class="hasCover
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ol>
+<li><h4 id="OLED无法点亮"><a href="#OLED无法点亮" class="headerlink" title="OLED无法点亮"></a>OLED无法点亮</h4><p>困扰了很久的问题，最后发现是硬件上出了毛病，使用飞线或者杜邦线会导致连接不稳定</p>
+</li>
+</ol>
+<ol>
+<li><h4 id="OLED屏幕显示闪烁"><a href="#OLED屏幕显示闪烁" class="headerlink" title="OLED屏幕显示闪烁"></a>OLED屏幕显示闪烁</h4><p>可能是因为屏幕刷新不够快，尝试保持一个高刷新率即可</p>
+</li>
+</ol>
+<ol>
+<li><h4 id="OLED屏幕数字重叠"><a href="#OLED屏幕数字重叠" class="headerlink" title="OLED屏幕数字重叠"></a>OLED屏幕数字重叠</h4><p>使用uint16时调用现有函数显示数字会有5位的空位（0占位）在设定的坐标之前，注意防止显示内容重叠</p>
+</li>
+</ol>
+<ol>
+<li><h4 id="中断计时时间不准确（很慢）"><a href="#中断计时时间不准确（很慢）" class="headerlink" title="中断计时时间不准确（很慢）"></a>中断计时时间不准确（很慢）</h4><p>原因是在中断中加入了函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mrt_clean(MRT_CH0);</span><br></pre></td></tr></table></figure>
+<p>本来是我认为防止数据溢出而使用的，最后发现会使每次中断的速度大大降低，导致计时不准确，并且去掉这个函数数据好像也不会溢出…</p>
+<a id="more"></a>
+</li>
+</ol>
+<hr>
+<h3 id="工程目标"><a href="#工程目标" class="headerlink" title="工程目标"></a>工程目标</h3><ol>
+<li>了解MRT的使用方法</li>
+<li>了解OLED的工作协议和引脚定义</li>
+<li>了解IIC的工作原理</li>
+<li>结合MET和OLED制作计时器</li>
+<li>使用按钮控制调节计时器的几个工作状态</li>
+</ol>
+<h3 id="问题解决思路"><a href="#问题解决思路" class="headerlink" title="问题解决思路"></a>问题解决思路</h3><p>查阅底层函数了解使用方法，结合OLED的数据手册了解OLED的使用方法，查阅IIC的时序，通过一步步调试减少错误，也便于即时修改。</p>
+<h3 id="待解决问题"><a href="#待解决问题" class="headerlink" title="待解决问题"></a>待解决问题</h3><ol>
+<li>如何初始化，打开，调用和关闭MRT</li>
+<li>IIC协议如何工作</li>
+<li>如何开启MRT的计时中断操作</li>
+<li>OLED的数据引脚如何发送命令</li>
+<li>如何把MRT的反馈显示到OLED上</li>
+<li>如何通过按钮控制计时器状态</li>
+</ol>
+<h3 id="实行（可能）流程"><a href="#实行（可能）流程" class="headerlink" title="实行（可能）流程"></a>实行（可能）流程</h3><ol>
+<li>通过底层函数观察如何使用MRT</li>
+<li>通过网上资料或数据手册了解IIC如何工作</li>
+<li>通过底层函数观察如何使用OLED</li>
+<li>通过简单的程序让OLED显示字符</li>
+<li>编写计时函数</li>
+<li>编写按钮函数</li>
+<li>封装程序</li>
+</ol>
+<hr>
+<h3 id="Losungen"><a href="#Losungen" class="headerlink" title="Lösungen"></a>Lösungen</h3><ol>
+<li><p><strong>如何操作MRT</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*********************************************************************************************************************</span></span><br><span class="line"><span class="comment"> * COPYRIGHT NOTICE</span></span><br><span class="line"><span class="comment"> * Copyright (c) 2018,逐飞科技</span></span><br><span class="line"><span class="comment"> * All rights reserved.</span></span><br><span class="line"><span class="comment"> * 技术讨论QQ群：179029047</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 以下所有内容版权均属逐飞科技所有，未经允许不得用于商业用途，</span></span><br><span class="line"><span class="comment"> * 欢迎各位使用并传播本程序，修改内容时必须保留逐飞科技的版权声明。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @file       		MRT(多速率定时器)</span></span><br><span class="line"><span class="comment"> * @company	   		成都逐飞科技有限公司</span></span><br><span class="line"><span class="comment"> * @author     		逐飞科技(QQ3184284598)</span></span><br><span class="line"><span class="comment"> * @version    		查看LPC546XX_config.h文件内版本宏定义</span></span><br><span class="line"><span class="comment"> * @Software 		IAR 7.8 or MDK 5.24a</span></span><br><span class="line"><span class="comment"> * @Target core		LPC54606J512BD100</span></span><br><span class="line"><span class="comment"> * @Taobao   		https://seekfree.taobao.com/</span></span><br><span class="line"><span class="comment"> * @date       		2018-11-21</span></span><br><span class="line"><span class="comment"> ********************************************************************************************************************/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"LPC546XX_mrt.h"</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//  @brief      MRT周期中断模式初始化</span></span><br><span class="line"><span class="comment">//  @param      mrtchx      MRT通道号</span></span><br><span class="line"><span class="comment">//  @param      time        周期中断时间</span></span><br><span class="line"><span class="comment">//  @return     void</span></span><br><span class="line"><span class="comment">//  Sample usage:           mrt_pit_init(MRT_CH0,1000);         //无需用户调用 请使用H文件内的宏定义</span></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mrt_pit_init</span><span class="params">(MRTNUM_enum mrtchx, uint32 time)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    SYSCON-&gt;AHBCLKCTRLSET[<span class="number">1</span>] = SYSCON_AHBCLKCTRL_MRT_MASK;      <span class="comment">//打开MRT时钟</span></span><br><span class="line">    SYSCON-&gt;PRESETCTRLCLR[<span class="number">1</span>] = SYSCON_PRESETCTRL_MRT_RST_MASK;  <span class="comment">//清除MRT复位时钟</span></span><br><span class="line">    </span><br><span class="line">    ASSERT(time &lt;= MRT_CHANNEL_TIMER_VALUE_MASK);<span class="comment">//断言</span></span><br><span class="line">    </span><br><span class="line">    MRT0-&gt;CHANNEL[mrtchx].CTRL = MRT_CHANNEL_CTRL_INTEN_MASK | MRT_CHANNEL_CTRL_MODE(<span class="number">0</span>);<span class="comment">//PIT模式 打开中断</span></span><br><span class="line">    MRT0-&gt;CHANNEL[mrtchx].INTVAL = time;        <span class="comment">//设置间隔时间 定时器停止后载入时间 并启动定时器</span></span><br><span class="line">    enable_irq(MRT0_IRQn);     				    <span class="comment">//开启RIT中断</span></span><br><span class="line">    <span class="comment">//set_irq_priority(MRT0_IRQn,0);//设置优先级 越低优先级越高</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//  @brief      MRT延时函数</span></span><br><span class="line"><span class="comment">//  @param      mrtchx      MRT通道号</span></span><br><span class="line"><span class="comment">//  @param      time        周期中断时间</span></span><br><span class="line"><span class="comment">//  @return     void</span></span><br><span class="line"><span class="comment">//  Sample usage:           mrt_delay(MRT_CH0,1000);            //无需用户调用 请使用H文件内的宏定义</span></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mrt_delay</span><span class="params">(MRTNUM_enum mrtchx, uint32 time)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    SYSCON-&gt;AHBCLKCTRLSET[<span class="number">1</span>] = SYSCON_AHBCLKCTRL_MRT_MASK;      <span class="comment">//打开MRT时钟</span></span><br><span class="line">    SYSCON-&gt;PRESETCTRLCLR[<span class="number">1</span>] = SYSCON_PRESETCTRL_MRT_RST_MASK;  <span class="comment">//清除MRT复位时钟</span></span><br><span class="line">    </span><br><span class="line">    ASSERT(time &lt;= MRT_CHANNEL_TIMER_VALUE_MASK);<span class="comment">//断言</span></span><br><span class="line"></span><br><span class="line">    MRT0-&gt;CHANNEL[mrtchx].CTRL = MRT_CHANNEL_CTRL_MODE(<span class="number">1</span>);      <span class="comment">//一次中断模式模式</span></span><br><span class="line"></span><br><span class="line">    MRT0-&gt;CHANNEL[mrtchx].INTVAL = time | MRT_CHANNEL_INTVAL_LOAD_MASK;        <span class="comment">//设置间隔时间 立即载入时间 并启动定时器</span></span><br><span class="line">    <span class="keyword">while</span>(!MRT_FLAG_READ(mrtchx));              <span class="comment">//等待时间到</span></span><br><span class="line">    MRT_FLAG_CLR(mrtchx);                       <span class="comment">//清除标志位</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//  @brief      MRT开始计时</span></span><br><span class="line"><span class="comment">//  @param      mrtchx      MRT通道号</span></span><br><span class="line"><span class="comment">//  @param      time        周期中断时间</span></span><br><span class="line"><span class="comment">//  @return     void</span></span><br><span class="line"><span class="comment">//  Sample usage:           mrt_start(MRT_CH0);            </span></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mrt_start</span><span class="params">(MRTNUM_enum mrtchx)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    SYSCON-&gt;AHBCLKCTRLSET[<span class="number">1</span>] = SYSCON_AHBCLKCTRL_MRT_MASK;      <span class="comment">//打开MRT时钟</span></span><br><span class="line">    SYSCON-&gt;PRESETCTRLCLR[<span class="number">1</span>] = SYSCON_PRESETCTRL_MRT_RST_MASK;  <span class="comment">//清除MRT复位时钟</span></span><br><span class="line">    </span><br><span class="line">    MRT0-&gt;CHANNEL[mrtchx].CTRL = MRT_CHANNEL_CTRL_MODE(<span class="number">1</span>);      <span class="comment">//一次中断模式模式</span></span><br><span class="line">    MRT0-&gt;CHANNEL[mrtchx].INTVAL = MRT_CHANNEL_INTVAL_IVALUE_MASK | MRT_CHANNEL_INTVAL_LOAD_MASK;<span class="comment">//设置间隔时间 立即载入时间 并启动定时器</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//  @brief      MRT获取计时时间</span></span><br><span class="line"><span class="comment">//  @param      mrtchx      MRT通道号</span></span><br><span class="line"><span class="comment">//  @return     void</span></span><br><span class="line"><span class="comment">//  Sample usage:           uint32 time = mrt_get(MRT_CH0);     //无需用户调用 请使用H文件内的宏定义</span></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="function">uint32 <span class="title">mrt_get</span><span class="params">(MRTNUM_enum mrtchx)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (MRT_CHANNEL_INTVAL_IVALUE_MASK - MRT0-&gt;CHANNEL[mrtchx].TIMER); <span class="comment">//如果返回的是0，则计时已经超出</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//  @brief      MRT计时清除</span></span><br><span class="line"><span class="comment">//  @param      mrtchx      MRT通道号</span></span><br><span class="line"><span class="comment">//  @return     void</span></span><br><span class="line"><span class="comment">//  Sample usage:           清除计时并重新启动</span></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mrt_clean</span><span class="params">(MRTNUM_enum mrtchx)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    MRT0-&gt;CHANNEL[mrtchx].INTVAL = MRT_CHANNEL_INTVAL_IVALUE_MASK | MRT_CHANNEL_INTVAL_LOAD_MASK;<span class="comment">//设置间隔时间 立即载入时间 并启动定时器</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol>
+<li><p><strong>如何设置延时？</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//-------------------------------------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//  @brief      毫秒级systick延时函数</span></span><br><span class="line"><span class="comment">//  @param      ms              延时多少毫秒</span></span><br><span class="line"><span class="comment">//  @return     void</span></span><br><span class="line"><span class="comment">//  Sample usage:               systick_delay_ms(1000);   //延时1000毫秒</span></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">systick_delay_ms</span><span class="params">(uint32 ms)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//get_clk();//获取内核时钟便于后面设置</span></span><br><span class="line">	<span class="keyword">while</span>(ms--) systick_delay(main_clk_mhz*<span class="number">1000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><br /><br /><br /><strong>本文永久链接</strong>： <a href="http://dynais.xyz/posts/432b5708.html">http://dynais.xyz/posts/432b5708.html</a> <br /><strong>版权声明</strong><br /><img src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725160918.png" alt=""><br />This site by DynAis is licensed under a Creative Commons <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC-BY-NC-SA 4.0 International License</a>.<br />由Dynais创作并维护的博客采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">创作共用-署名-非商业性-相同方式共享4.0国际许可证</a>。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="../tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="da06c78d.html"
+                    data-tooltip="利用泛洪填充（Flood Fill）的优化方式完成对特定图像的主要信息的提取"
+                    aria-label="上一篇: 利用泛洪填充（Flood Fill）的优化方式完成对特定图像的主要信息的提取"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="f58b8a1c.html"
+                    data-tooltip="调用GPIO口并使蜂鸣器鸣响"
+                    aria-label="下一篇: 调用GPIO口并使蜂鸣器鸣响"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/432b5708.html"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="gitalk"></div>
+
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 DynAis. All Rights Reserved. <br/><a href="http://www.beian.miit.gov.cn/" target="_blank" rel="noopener">浙ICP备20029043号</a>
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="da06c78d.html"
+                    data-tooltip="利用泛洪填充（Flood Fill）的优化方式完成对特定图像的主要信息的提取"
+                    aria-label="上一篇: 利用泛洪填充（Flood Fill）的优化方式完成对特定图像的主要信息的提取"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="f58b8a1c.html"
+                    data-tooltip="调用GPIO口并使蜂鸣器鸣响"
+                    aria-label="下一篇: 调用GPIO口并使蜂鸣器鸣响"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/432b5708.html"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://dynais.xyz/posts/432b5708.html"
+                        aria-label="分享到 Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20200725005402.jpg" alt="作者的图片"/>
+        
+            <h4 id="about-card-name">DynAis</h4>
+        
+            <div id="about-card-bio"><p>是败家玩意，喜欢折腾各种觉得好玩的东西</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>学生</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Wolfenbüttel, Germany
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20210222214304.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="../assets/js/script-fdrx9ea59bzxnmwiygmq2jzwttcftgjdhkzgk2pmihhld5wmcig9wa2x5umy.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        
+<script src="../assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '644eebe2f40d9a8582c4',
+              clientSecret: '2f696b692dceaf847add9a6a459e904a953f3e3b',
+              repo: 'dynais.github.io',
+              owner: 'DynAis',
+              admin: ['DynAis'],
+              id: 'posts/432b5708.html',
+              ...{"language":"zh-cn","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
+    
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
+</html>
