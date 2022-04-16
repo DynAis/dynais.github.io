@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tags on Code</title>
+    <link>https://dynais.github.io/code/tags/</link>
+    <description>Recent content in Tags on Code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <copyright>Copyrights © 2022 DynAis. All Rights Reserved.</copyright>
+    <lastBuildDate>Tue, 23 Feb 2021 12:40:37 +0000</lastBuildDate><atom:link href="https://dynais.github.io/code/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Python</title>
+      <link>https://dynais.github.io/code/tags/python/</link>
+      <pubDate>Tue, 23 Feb 2021 12:40:37 +0000</pubDate>
+      
+      <guid>https://dynais.github.io/code/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>机器学习</title>
+      <link>https://dynais.github.io/code/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Sun, 21 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://dynais.github.io/code/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OpenCV</title>
+      <link>https://dynais.github.io/code/tags/opencv/</link>
+      <pubDate>Wed, 22 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dynais.github.io/code/tags/opencv/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>数字图像处理</title>
+      <link>https://dynais.github.io/code/tags/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/</link>
+      <pubDate>Wed, 22 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dynais.github.io/code/tags/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>TEMPLET</title>
+      <link>https://dynais.github.io/code/tags/templet/</link>
+      <pubDate>Wed, 15 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dynais.github.io/code/tags/templet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>控制台</title>
+      <link>https://dynais.github.io/code/tags/%E6%8E%A7%E5%88%B6%E5%8F%B0/</link>
+      <pubDate>Wed, 15 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dynais.github.io/code/tags/%E6%8E%A7%E5%88%B6%E5%8F%B0/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>计算机科学</title>
+      <link>https://dynais.github.io/code/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/</link>
+      <pubDate>Wed, 15 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://dynais.github.io/code/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
