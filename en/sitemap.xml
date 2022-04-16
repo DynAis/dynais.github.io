@@ -2,11 +2,39 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://dynais.github.io/posts/templet/</loc>
-    <lastmod>2020-01-15T00:00:00+00:00</lastmod>
+    <loc>https://dynais.github.io/categories/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="major"
+                href="https://dynais.github.io/major/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="code"
+                href="https://dynais.github.io/code/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="art"
+                href="https://dynais.github.io/art/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="vrc"
+                href="https://dynais.github.io/vrc/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="project"
+                href="https://dynais.github.io/project/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://dynais.github.io/categories/"
+                />
   </url><url>
     <loc>https://dynais.github.io/</loc>
-    <lastmod>2020-01-15T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="major"
@@ -38,8 +66,9 @@
                 href="https://dynais.github.io/"
                 />
   </url><url>
+    <loc>https://dynais.github.io/posts/templet/new/</loc>
+  </url><url>
     <loc>https://dynais.github.io/posts/</loc>
-    <lastmod>2020-01-15T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="major"
@@ -67,7 +96,6 @@
                 />
   </url><url>
     <loc>https://dynais.github.io/tags/</loc>
-    <lastmod>2020-01-15T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="major"
@@ -100,38 +128,5 @@
                 />
   </url><url>
     <loc>https://dynais.github.io/tags/templet/</loc>
-    <lastmod>2020-01-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://dynais.github.io/categories/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="major"
-                href="https://dynais.github.io/major/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="code"
-                href="https://dynais.github.io/code/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="art"
-                href="https://dynais.github.io/art/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="vrc"
-                href="https://dynais.github.io/vrc/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="project"
-                href="https://dynais.github.io/project/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://dynais.github.io/categories/"
-                />
   </url>
 </urlset>

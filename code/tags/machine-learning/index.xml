@@ -10,10 +10,10 @@
     <lastBuildDate>Sun, 21 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://dynais.github.io/code/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>线性回归模型</title>
-      <link>https://dynais.github.io/code/posts/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/</link>
+      <link>https://dynais.github.io/code/posts/code.ml.%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/</link>
       <pubDate>Sun, 21 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://dynais.github.io/code/posts/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/</guid>
+      <guid>https://dynais.github.io/code/posts/code.ml.%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/</guid>
       <description>&lt;p&gt;线性回归是回归问题中的一种，线性回归假设目标值与特征之间线性相关，即满足一个多元一次方程。通过构建损失函数，来求解损失函数最小时的参数 $w$ 和$b$。通常我们可以表达成如下公式：
 $$
 \hat{y} = wX + b

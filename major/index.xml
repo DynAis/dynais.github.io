@@ -10,10 +10,10 @@
     <lastBuildDate>Thu, 17 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://dynais.github.io/major/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PSpice中常用的Cursor查询命令</title>
-      <link>https://dynais.github.io/major/posts/pspice%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84cursor%E6%9F%A5%E8%AF%A2%E5%91%BD%E4%BB%A4/</link>
+      <link>https://dynais.github.io/major/posts/major.pspice%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84cursor%E6%9F%A5%E8%AF%A2%E5%91%BD%E4%BB%A4/</link>
       <pubDate>Thu, 17 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dynais.github.io/major/posts/pspice%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84cursor%E6%9F%A5%E8%AF%A2%E5%91%BD%E4%BB%A4/</guid>
+      <guid>https://dynais.github.io/major/posts/major.pspice%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84cursor%E6%9F%A5%E8%AF%A2%E5%91%BD%E4%BB%A4/</guid>
       <description>受够了在 Probe 窗口中用鼠标拖 Cursor 来找结果数据了, 所以想找一下 Probe 的 SerchCommand 结果连官方用户指导里都找不到, 好不容易才在帮助文档里找到了, 写文档的真不是人, 记录一下防止以后忘了
 Orcad Pspice版本: 9.1 Student
 概述  受够了在 Probe 窗口中用鼠标拖 Cursor 来找结果数据了, 所以想找一下 Probe 的 SerchCommand 结果连官方用户指导里都找不到, 好不容易才在帮助文档里找到了, 写文档的真不是人, 记录一下防止以后忘了
@@ -29,10 +29,10 @@ Win10还要上网找一下win32hlp.exe装一下才能看, 下载: win32hlp.exe
     
     <item>
       <title>PSpice模拟数据导入Excel工作流</title>
-      <link>https://dynais.github.io/major/posts/pspice%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5excel%E5%B7%A5%E4%BD%9C%E6%B5%81/</link>
+      <link>https://dynais.github.io/major/posts/major.pspice%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5excel%E5%B7%A5%E4%BD%9C%E6%B5%81/</link>
       <pubDate>Thu, 17 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://dynais.github.io/major/posts/pspice%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5excel%E5%B7%A5%E4%BD%9C%E6%B5%81/</guid>
+      <guid>https://dynais.github.io/major/posts/major.pspice%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5excel%E5%B7%A5%E4%BD%9C%E6%B5%81/</guid>
       <description>基本思想是先保存到 csv 逗号分隔符文件再导入 Excel 里分析
 概述  基本思想是先保存到 csv 逗号分隔符文件再导入 Excel 里分析
 流程  在 PSpice 得到模拟数据后, 选中需要导出的曲线
@@ -46,10 +46,10 @@ Win10还要上网找一下win32hlp.exe装一下才能看, 下载: win32hlp.exe
     
     <item>
       <title>Latex公式查找表</title>
-      <link>https://dynais.github.io/major/posts/latex%E5%85%AC%E5%BC%8F%E6%9F%A5%E6%89%BE%E8%A1%A8/</link>
+      <link>https://dynais.github.io/major/posts/major.latex.latex%E5%85%AC%E5%BC%8F%E6%9F%A5%E6%89%BE%E8%A1%A8/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://dynais.github.io/major/posts/latex%E5%85%AC%E5%BC%8F%E6%9F%A5%E6%89%BE%E8%A1%A8/</guid>
+      <guid>https://dynais.github.io/major/posts/major.latex.latex%E5%85%AC%E5%BC%8F%E6%9F%A5%E6%89%BE%E8%A1%A8/</guid>
       <description>在Markdown中插入数学公式的语法是 $数学公式$ 和 $$数学公式$$.
 行内公式 行内公式是可以让公式在文中与文字或其他东西混编，不独占一行.在数学模式下,符号会使用单独的字体,字母通常是倾斜的意大利体,数字和符号则是直立体.而且,数学符号之间的距离也与一般的水平模式不同:
    示例 显示     $2x+3y=34$    2x+3y=34 2x+3y=34    因此,在排版数学公式时,即使没有特殊符号的算式如1+1=2,或者简单的一个字母变量,也要进入数学模式,使用$1+1=2$,$x$,而不是使用排版普通文字的方式
