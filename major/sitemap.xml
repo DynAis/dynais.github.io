@@ -2,8 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://dynais.github.io/major/tags/latex/</loc>
+    <lastmod>2022-04-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://dynais.github.io/major/posts/major.latex.latex%E5%85%AC%E5%BC%8F%E6%9F%A5%E6%89%BE%E8%A1%A8/</loc>
+    <lastmod>2022-04-16T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://dynais.github.io/major/</loc>
-    <lastmod>2020-12-17T00:00:00+00:00</lastmod>
+    <lastmod>2022-04-16T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -36,7 +42,7 @@
                 />
   </url><url>
     <loc>https://dynais.github.io/major/posts/</loc>
-    <lastmod>2020-12-17T00:00:00+00:00</lastmod>
+    <lastmod>2022-04-16T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -63,17 +69,8 @@
                 href="https://dynais.github.io/major/posts/"
                 />
   </url><url>
-    <loc>https://dynais.github.io/major/tags/pspice/</loc>
-    <lastmod>2020-12-17T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://dynais.github.io/major/posts/major.pspice%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84cursor%E6%9F%A5%E8%AF%A2%E5%91%BD%E4%BB%A4/</loc>
-    <lastmod>2020-12-17T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://dynais.github.io/major/posts/major.pspice%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5excel%E5%B7%A5%E4%BD%9C%E6%B5%81/</loc>
-    <lastmod>2020-12-17T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://dynais.github.io/major/tags/</loc>
-    <lastmod>2020-12-17T00:00:00+00:00</lastmod>
+    <lastmod>2022-04-16T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -104,6 +101,15 @@
                 hreflang="major"
                 href="https://dynais.github.io/major/tags/"
                 />
+  </url><url>
+    <loc>https://dynais.github.io/major/tags/pspice/</loc>
+    <lastmod>2020-12-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://dynais.github.io/major/posts/major.pspice%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84cursor%E6%9F%A5%E8%AF%A2%E5%91%BD%E4%BB%A4/</loc>
+    <lastmod>2020-12-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://dynais.github.io/major/posts/major.pspice%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5excel%E5%B7%A5%E4%BD%9C%E6%B5%81/</loc>
+    <lastmod>2020-12-17T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://dynais.github.io/archives/</loc>
     <xhtml:link
@@ -163,10 +169,6 @@
                 hreflang="major"
                 href="https://dynais.github.io/major/categories/"
                 />
-  </url><url>
-    <loc>https://dynais.github.io/major/tags/latex/</loc>
-  </url><url>
-    <loc>https://dynais.github.io/major/posts/major.latex.latex%E5%85%AC%E5%BC%8F%E6%9F%A5%E6%89%BE%E8%A1%A8/</loc>
   </url><url>
     <loc>https://dynais.github.io/major/search/</loc>
     <xhtml:link

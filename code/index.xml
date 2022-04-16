@@ -14,9 +14,10 @@
       <pubDate>Tue, 23 Feb 2021 00:00:00 +0000</pubDate>
       
       <guid>https://dynais.github.io/code/posts/code.python.%E8%A7%A3%E5%86%B3python%E8%84%9A%E6%9C%AC%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%B8%8B%E4%BE%9D%E8%B5%96%E5%BA%93%E7%BC%BA%E5%A4%B1%E7%9A%84%E9%97%AE%E9%A2%98/</guid>
-      <description>在某一个虚拟环境中完成脚本后, 想要实际使用时可能会出现错误 {% image fancybox center clear group:default https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20210223124433.png?x-oss-process=image/resize,h_2000/quality,q_90 %} 这是由于虚拟环境和运行环境不一致导致依赖库缺失无法import导致的
-问题描述 在某一个虚拟环境中完成脚本后, 想要实际使用时可能会出现错误 {% image fancybox center clear group:default https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20210223124433.png?x-oss-process=image/resize,h_2000/quality,q_90 %} 这是由于虚拟环境和运行环境不一致导致依赖库缺失无法import导致的 解决方法 解决方式就是在编写脚本时, 对于第三方的库进行一次检测, 如果没有的话就进行pip install
-try: import regex as re except ImportError: os.system(&amp;#39;pip install regex&amp;#39;) import regex as re 对于小脚本来说这样就足够了, 项目大的话不建议这样使用</description>
+      <description>&lt;p&gt;在某一个虚拟环境中完成脚本后, 想要实际使用时可能会出现错误
+&lt;img loading=&#34;lazy&#34; src=&#34;https://dynais-imh-hub.oss-cn-hangzhou.aliyuncs.com/img/20210223124433.png?x-oss-process=image/resize,h_2000/quality,q_90#center&#34; alt=&#34;&#34;  /&gt;
+
+这是由于虚拟环境和运行环境不一致导致依赖库缺失无法&lt;code&gt;import&lt;/code&gt;导致的&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -25,23 +26,7 @@ try: import regex as re except ImportError: os.system(&amp;#39;pip install regex
       <pubDate>Sun, 21 Feb 2021 00:00:00 +0000</pubDate>
       
       <guid>https://dynais.github.io/code/posts/code.ml.%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/</guid>
-      <description>&lt;p&gt;线性回归是回归问题中的一种，线性回归假设目标值与特征之间线性相关，即满足一个多元一次方程。通过构建损失函数，来求解损失函数最小时的参数 $w$ 和$b$。通常我们可以表达成如下公式：
-$$
-\hat{y} = wX + b
-$$
-$\hat{y}$ 为预测值，自变量 $x$ 和因变量 $y$ 是已知的，而我们想实现的是预测新增一个 $x$ ，其对应的 $y$ 是多少。因此，为了构建这个函数关系，目标是通过已知数据点，求解线性模型中 $w$ 和 $b$ 两个参数。&lt;/p&gt;
-&lt;!-- excerpt --&gt;
-&lt;h2 id=&#34;1线性回归概述&#34;&gt;1.线性回归概述&lt;/h2&gt;
-&lt;hr&gt;
-&lt;p&gt;线性回归是回归问题中的一种，线性回归假设目标值与特征之间线性相关，即满足一个多元一次方程。通过构建损失函数，来求解损失函数最小时的参数 $w$ 和$b$。通常我们可以表达成如下公式：&lt;/p&gt;
-&lt;p&gt;$$
-\begin{equation}&lt;/p&gt;
-&lt;p&gt;\hat{y} = wX + b \tag{1}&lt;/p&gt;
-&lt;p&gt;\end{equation}
-$$&lt;/p&gt;
-&lt;p&gt;$\hat{y}$ 为预测值，自变量 $x$ 和因变量 $y$ 是已知的，而我们想实现的是预测新增一个 $x$ ，其对应的 $y$ 是多少。因此，为了构建这个函数关系，目标是通过已知数据点，求解线性模型中 $w$ 和 $b$ 两个参数。&lt;/p&gt;
-&lt;p&gt;为此, 线性回归分为两个部分, 向前传播和向后传播, 向前传播负责验证当前参数下对数据的拟合程度, 而向后传播通过在向前传播内得到的数据对参数进行优化&lt;/p&gt;
-&lt;hr&gt;</description>
+      <description>&lt;p&gt;线性回归是回归问题中的一种，线性回归假设目标值与特征之间线性相关，即满足一个多元一次方程。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -240,7 +225,8 @@ Sobel是离散的一阶微分算子,可以用来计算图像的梯度(一阶), �
       <pubDate>Wed, 15 Jan 2020 00:00:00 +0000</pubDate>
       
       <guid>https://dynais.github.io/code/posts/code.cmd%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%9F%A5%E6%89%BE%E8%A1%A8/</guid>
-      <description>进入某个盘 进入d盘
+      <description>记了一些常用的CMD命令
+ 进入某个盘 进入d盘
 D: 进入F盘
 F: 查看目录文件 查看当前目录下的文件，类似于linux下的ls
 dir 如果是需要查看隐藏文件的或者更多操作的话，可以使用
