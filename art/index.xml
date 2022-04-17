@@ -1,20 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>Art</title>
-    <link>https://dynais.github.io/art/</link>
-    <description>Recent content on Art</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>Copyrights © 2022 DynAis. All Rights Reserved.</copyright>
-    <lastBuildDate>Thu, 16 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://dynais.github.io/art/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>节奏变化在艺术造型中的应用</title>
-      <link>https://dynais.github.io/art/posts/art.%E8%8A%82%E5%A5%8F%E5%8F%98%E5%8C%96%E5%9C%A8%E8%89%BA%E6%9C%AF%E9%80%A0%E5%9E%8B%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/</link>
-      <pubDate>Thu, 16 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://dynais.github.io/art/posts/art.%E8%8A%82%E5%A5%8F%E5%8F%98%E5%8C%96%E5%9C%A8%E8%89%BA%E6%9C%AF%E9%80%A0%E5%9E%8B%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/</guid>
-      <description>营造画面的节奏感 反面：缺乏节奏的画面 如下图所示, 三块石头放在一起, 如果大小一致, 看起来就会觉得单调, 这就是节奏单一的表现
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Art</title><link>https://dynais.github.io/art/</link><description>Recent content on Art</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Copyrights © 2022 DynAis. All Rights Reserved.</copyright><lastBuildDate>Sun, 17 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://dynais.github.io/art/index.xml" rel="self" type="application/rss+xml"/><item><title>Spleeter实现背景人声轨道分离</title><link>https://dynais.github.io/art/posts/art.spleeter%E5%AE%9E%E7%8E%B0%E8%83%8C%E6%99%AF%E4%BA%BA%E5%A3%B0%E8%BD%A8%E9%81%93%E5%88%86%E7%A6%BB/</link><pubDate>Sun, 17 Apr 2022 00:00:00 +0000</pubDate><guid>https://dynais.github.io/art/posts/art.spleeter%E5%AE%9E%E7%8E%B0%E8%83%8C%E6%99%AF%E4%BA%BA%E5%A3%B0%E8%BD%A8%E9%81%93%E5%88%86%E7%A6%BB/</guid><description>&lt;p>使用spleeter的python包实现提取MP3文件的背景和人声轨道&lt;/p></description></item><item><title>使用ARKIT在网页嵌入USDZ文件</title><link>https://dynais.github.io/art/posts/art.%E4%BD%BF%E7%94%A8arkit%E5%9C%A8%E7%BD%91%E9%A1%B5%E5%B5%8C%E5%85%A5usdz%E6%96%87%E4%BB%B6/</link><pubDate>Sun, 17 Apr 2022 00:00:00 +0000</pubDate><guid>https://dynais.github.io/art/posts/art.%E4%BD%BF%E7%94%A8arkit%E5%9C%A8%E7%BD%91%E9%A1%B5%E5%B5%8C%E5%85%A5usdz%E6%96%87%E4%BB%B6/</guid><description>&lt;p>某些时候做成一个小礼物也不错&lt;/p></description></item><item><title>简单VFX工作流</title><link>https://dynais.github.io/art/posts/art.vfx.%E7%AE%80%E5%8D%95vfx%E5%B7%A5%E4%BD%9C%E6%B5%81/</link><pubDate>Sun, 17 Apr 2022 00:00:00 +0000</pubDate><guid>https://dynais.github.io/art/posts/art.vfx.%E7%AE%80%E5%8D%95vfx%E5%B7%A5%E4%BD%9C%E6%B5%81/</guid><description>&lt;p>自己摸索出来的简单VFX所需要的全部流程. 基于ACES工作流. 以一个小项目作为案例讲解.&lt;/p></description></item><item><title>线稿提取</title><link>https://dynais.github.io/art/posts/art.ps.%E7%BA%BF%E7%A8%BF%E6%8F%90%E5%8F%96/</link><pubDate>Sun, 17 Apr 2022 00:00:00 +0000</pubDate><guid>https://dynais.github.io/art/posts/art.ps.%E7%BA%BF%E7%A8%BF%E6%8F%90%E5%8F%96/</guid><description>&lt;p>提供了一种通过图像处理的手段提取线条清晰的图片线稿的思路.&lt;/p></description></item><item><title>节奏变化在艺术造型中的应用</title><link>https://dynais.github.io/art/posts/art.%E8%8A%82%E5%A5%8F%E5%8F%98%E5%8C%96%E5%9C%A8%E8%89%BA%E6%9C%AF%E9%80%A0%E5%9E%8B%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/</link><pubDate>Thu, 16 Jan 2020 00:00:00 +0000</pubDate><guid>https://dynais.github.io/art/posts/art.%E8%8A%82%E5%A5%8F%E5%8F%98%E5%8C%96%E5%9C%A8%E8%89%BA%E6%9C%AF%E9%80%A0%E5%9E%8B%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/</guid><description>营造画面的节奏感 反面：缺乏节奏的画面 如下图所示, 三块石头放在一起, 如果大小一致, 看起来就会觉得单调, 这就是节奏单一的表现
 节奏也可以称为变化, 大小, 形状, 疏密, 明暗都可以称为节奏的一部分, 具有节奏感的画面看起来就会觉得舒适, 具有视觉重心
 大小的变化 大小的对比可以很简单的营造画面的节奏感, 但是需要注意在分布大小比例时不要束缚手脚，对于绘画来说, 可以适当夸大对比，3：7和2：8是比较推荐的尺寸
 下图是一个很好地例子: 角色的身体部位被适当的夸张比例, 营造出了很好地节奏感
@@ -29,10 +13,4 @@
 总结：忌讳重复，需要有一定的变化
 节奏变化在建模中的具体表现（以卡通为例） 上图是节奏变化理论在卡通造型中的一种体现(也许是卡通特色), 人物的肩甲及手环腰带等常规来说是粗细相等的物体在实际建模的时候变成了粗细不一的样子, 在一些不需要特别写实的动画上, 这样做能显著加强画面的动感.
 营造画面和力量感 力量感的表现 观察迪士尼的动画
-如上图中的史迪奇, 右边的史迪奇明显看起来更加具有动感, 这是因为左边的史迪奇相比拥有了更多的曲线变化, 简而言之就是没有&amp;quot;大曲线&amp;quot;, 或者说, 原有曲线的力量感被多余的曲线给&amp;quot;打断了&amp;quot;</description>
-    </item>
-    
-    
-    
-  </channel>
-</rss>
+如上图中的史迪奇, 右边的史迪奇明显看起来更加具有动感, 这是因为左边的史迪奇相比拥有了更多的曲线变化, 简而言之就是没有&amp;quot;大曲线&amp;quot;, 或者说, 原有曲线的力量感被多余的曲线给&amp;quot;打断了&amp;quot;</description></item></channel></rss>
